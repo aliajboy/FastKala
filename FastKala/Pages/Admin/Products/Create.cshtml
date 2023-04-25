@@ -1,0 +1,69 @@
+﻿@page
+@model FastKala.Pages.Admin.Products.CreateModel
+
+@{
+    ViewData["Title"] = "ساخت محصول جدید";
+    Layout = "~/Pages/Admin/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-10">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-2">
+                <label asp-for="Product.Name" class="control-label"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="bg-white mt-2 p-3 rounded-3 shadow-sm">
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label asp-for="Product.Price" class="control-label"></label>
+                        <input asp-for="Product.Price" class="form-control" />
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="Product.SalePrice" class="control-label"></label>
+                        <input asp-for="Product.SalePrice" class="form-control" />
+                        <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-4">
+                        <label asp-for="Product.StockQuantity" class="control-label"></label>
+                        <input asp-for="Product.StockQuantity" class="form-control" />
+                        <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-4">
+                        <label asp-for="Product.Sku" class="control-label"></label>
+                        <input asp-for="Product.Sku" class="form-control" />
+                        <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="انتشار" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="card col-2 mt-4 h-25">
+        <div class="card-body">
+            <h5 class="card-title">Card with titles, buttons, and links</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
