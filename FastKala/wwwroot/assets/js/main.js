@@ -318,3 +318,36 @@
   }
 
 })();
+var itemCount = 1;
+$('#cmdAdd1').click(function () { addNewItem(); });
+
+function addNewItem() {
+    var thisItem = itemCount;
+    // Change button to Remove button
+    $('#cmdAdd' + itemCount).attr('value', 'Remove');
+    $('#cmdAdd' + itemCount).off();
+    $('#cmdAdd' + itemCount).click(function () { removeItem(thisItem); });
+
+    // Add new line with text field and button
+    itemCount++;
+    var newItem = ' <div id="item' + itemCount + '" class="input-group mb-2">'
+    newItem += '<input id="title' + itemCount + '" name="title' + itemCount + '" class="form-control" type="text"/>';
+    newItem += '<input id="value' + itemCount + '" name="value' + itemCount + '" class="form-control" type="text"/>';
+    newItem += '<input id="cmdAdd' + itemCount + '" type="button" class="btn btn-primary" value="Add"></input>';
+    newItem += "</div>";
+
+    $('#features').append(newItem);
+    $('#cmdAdd' + itemCount).click(function () { addNewItem(); });
+}
+
+function removeItem(i) {
+    $('#item' + i).remove();
+}
+
+//<div id="features" class="form-group">
+//    <label asp-for="Product.ProductFeatures" class="control-label"></label>
+//    <div id="item1" class="input-group mb-2">
+//        <input id="txt1" class="form-control" name="txt1" type="text" />
+//        <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+//    </div>
+//</div>

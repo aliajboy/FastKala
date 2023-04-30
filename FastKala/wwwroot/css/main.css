@@ -6947,9 +6947,6 @@ main.single-product .product .gallery-items li img:hover {
 }
 
 .tabs .tabs-content .content-expert-summary .mask-text {
-    max-height: 250px;
-    height: unset;
-    overflow: hidden;
     padding-bottom: 15px;
     font-size: 14px;
     color: #777777;

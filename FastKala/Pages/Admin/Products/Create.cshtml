@@ -2,7 +2,7 @@
 @model FastKala.Pages.Admin.Products.CreateModel
 
 @{
-    ViewData["Title"] = "ساخت محصول جدید";
+    ViewData["Title"] = "Create";
     Layout = "~/Pages/Admin/_Layout.cshtml";
 }
 
@@ -10,43 +10,93 @@
     <div class="col-10">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-2">
+            <div class="form-group">
                 <label asp-for="Product.Name" class="control-label"></label>
                 <input asp-for="Product.Name" class="form-control" />
                 <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
-            </div>
-            <div class="bg-white mt-2 p-3 rounded-3 shadow-sm">
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label asp-for="Product.Price" class="control-label"></label>
-                        <input asp-for="Product.Price" class="form-control" />
-                        <span asp-validation-for="Product.Price" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-4">
-                        <label asp-for="Product.SalePrice" class="control-label"></label>
-                        <input asp-for="Product.SalePrice" class="form-control" />
-                        <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-4">
-                        <label asp-for="Product.StockQuantity" class="control-label"></label>
-                        <input asp-for="Product.StockQuantity" class="form-control" />
-                        <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-4">
-                        <label asp-for="Product.Sku" class="control-label"></label>
-                        <input asp-for="Product.Sku" class="form-control" />
-                        <span asp-validation-for="Product.Sku" class="text-danger"></span>
-                    </div>
-                </div>
+                <label asp-for="Product.EnglishName" class="control-label"></label>
+                <input asp-for="Product.EnglishName" class="form-control" />
+                <span asp-validation-for="Product.EnglishName" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
-                <input type="submit" value="انتشار" class="btn btn-primary" />
+                <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Price" class="control-label"></label>
+                <input asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.SalePrice" class="control-label"></label>
+                <input asp-for="Product.SalePrice" class="form-control" />
+                <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Sku" class="control-label"></label>
+                <input asp-for="Product.Sku" class="form-control" />
+                <span asp-validation-for="Product.Sku" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.StockQuantity" class="control-label"></label>
+                <input asp-for="Product.StockQuantity" class="form-control" />
+                <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Product.ManageStockQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageStockQuantity)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Product.ManageSaleQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageSaleQuantity)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
+                <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
+                <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
+                <input asp-for="Product.SaleQuantityStep" class="form-control" />
+                <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Weight" class="control-label"></label>
+                <input asp-for="Product.Weight" class="form-control" />
+                <span asp-validation-for="Product.Weight" class="text-danger"></span>
+            </div>
+            <div id="features" class="form-group">
+                <label asp-for="Product.ProductFeatures" class="control-label"></label>
+                <div id="item1" class="input-group mb-2">
+                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
+                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
+                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+                </div>
+            </div>
+            <div id="features" class="form-group">
+                <label asp-for="Product.ProductPros" class="control-label"></label>
+                <div id="item1" class="input-group mb-2">
+                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
+                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
+                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+                </div>
+            </div>
+            <div id="features" class="form-group">
+                <label asp-for="Product.ProductCons" class="control-label"></label>
+                <div id="item1" class="input-group mb-2">
+                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
+                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
+                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

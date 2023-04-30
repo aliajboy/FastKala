@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FastKala.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using FastKala.Data;
+using FastKala.Models;
 
 namespace FastKala.Pages.Admin.Products
 {
     public class CreateModel : PageModel
     {
-        private readonly FsContext _context;
+        private readonly FastKala.Data.FsContext _context;
 
-        public CreateModel(FsContext context)
+        public CreateModel(FastKala.Data.FsContext context)
         {
             _context = context;
         }
@@ -25,13 +26,25 @@ namespace FastKala.Pages.Admin.Products
 
         [BindProperty]
         public Product Product { get; set; } = default!;
-        
 
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.Products == null || Product == null)
+            if (!ModelState.IsValid || _context.Products == null || Product == null)
             {
                 return Page();
+            }
+
+            // Add Product Features
+            int n = 1;
+            while (Request.Form["title" + n].FirstOrDefault() != null)
+            {
+                Product.ProductFeatures.Add(new ProductFeature()
+                {
+                    TitleName = Request.Form["title" + n].FirstOrDefault(),
+                    Value = Request.Form["value" + n].FirstOrDefault()
+                });
+                n++;
             }
 
             _context.Products.Add(Product);

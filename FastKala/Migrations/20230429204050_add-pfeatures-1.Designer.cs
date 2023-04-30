@@ -4,6 +4,7 @@ using FastKala.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastKala.Migrations
 {
     [DbContext(typeof(FsContext))]
-    partial class FsContextModelSnapshot : ModelSnapshot
+    [Migration("20230429204050_add-pfeatures-1")]
+    partial class addpfeatures1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,28 +75,6 @@ namespace FastKala.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("FastKala.Models.ProductCons", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCons");
-                });
-
             modelBuilder.Entity("FastKala.Models.ProductFeature", b =>
                 {
                     b.Property<int>("Id")
@@ -118,39 +99,6 @@ namespace FastKala.Migrations
                     b.ToTable("ProductFeature");
                 });
 
-            modelBuilder.Entity("FastKala.Models.ProductPros", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductPros");
-                });
-
-            modelBuilder.Entity("FastKala.Models.ProductCons", b =>
-                {
-                    b.HasOne("FastKala.Models.Product", "Product")
-                        .WithMany("ProductCons")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("FastKala.Models.ProductFeature", b =>
                 {
                     b.HasOne("FastKala.Models.Product", "Product")
@@ -162,24 +110,9 @@ namespace FastKala.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("FastKala.Models.ProductPros", b =>
-                {
-                    b.HasOne("FastKala.Models.Product", "Product")
-                        .WithMany("ProductPros")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("FastKala.Models.Product", b =>
                 {
-                    b.Navigation("ProductCons");
-
                     b.Navigation("ProductFeatures");
-
-                    b.Navigation("ProductPros");
                 });
 #pragma warning restore 612, 618
         }
