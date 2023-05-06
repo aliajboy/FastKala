@@ -10,40 +10,45 @@
     <div class="col-10">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Product.Name" class="control-label"></label>
-                <input asp-for="Product.Name" class="form-control" />
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            <div class="card p-3 my-2">
+                <div class="form-group">
+                    <label asp-for="Product.Name" class="control-label"></label>
+                    <input asp-for="Product.Name" class="form-control" />
+                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Product.EnglishName" class="control-label"></label>
+                    <input asp-for="Product.EnglishName" class="form-control" />
+                    <span asp-validation-for="Product.EnglishName" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Product.EnglishName" class="control-label"></label>
-                <input asp-for="Product.EnglishName" class="form-control" />
-                <span asp-validation-for="Product.EnglishName" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-2">
                 <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
                 <span asp-validation-for="Product.Description" class="text-danger"></span>
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Product.Price" class="control-label"></label>
-                <input asp-for="Product.Price" class="form-control" />
-                <span asp-validation-for="Product.Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.SalePrice" class="control-label"></label>
-                <input asp-for="Product.SalePrice" class="form-control" />
-                <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.Sku" class="control-label"></label>
-                <input asp-for="Product.Sku" class="form-control" />
-                <span asp-validation-for="Product.Sku" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.StockQuantity" class="control-label"></label>
-                <input asp-for="Product.StockQuantity" class="form-control" />
-                <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+            <div class="card p-3 my-2">
+                <div class="row">
+                    <div class="col-6">
+                        <label asp-for="Product.Price" class="control-label"></label>
+                        <input asp-for="Product.Price" class="form-control" />
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
+                    </div>
+                    <div class="col-6">
+                        <label asp-for="Product.SalePrice" class="control-label"></label>
+                        <input asp-for="Product.SalePrice" class="form-control" />
+                        <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
+                    </div>
+                    <div class="col-6">
+                        <label asp-for="Product.Sku" class="control-label"></label>
+                        <input asp-for="Product.Sku" class="form-control" />
+                        <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                    </div>
+                    <div class="col-6">
+                        <label asp-for="Product.StockQuantity" class="control-label"></label>
+                        <input asp-for="Product.StockQuantity" class="form-control" />
+                        <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -78,20 +83,18 @@
                     <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
                 </div>
             </div>
-            <div id="features" class="form-group">
+            <div id="product-pros" class="form-group">
                 <label asp-for="Product.ProductPros" class="control-label"></label>
-                <div id="item1" class="input-group mb-2">
-                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
-                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
-                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+                <div id="prositem1" class="input-group mb-2">
+                    <input id="title1" class="form-control" name="title1" type="text" />
+                    <input id="cmdAddpros1" class="btn btn-primary" type="button" value="+" />
                 </div>
             </div>
-            <div id="features" class="form-group">
+            <div id="product-cons" class="form-group">
                 <label asp-for="Product.ProductCons" class="control-label"></label>
-                <div id="item1" class="input-group mb-2">
-                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
-                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
-                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="Add" />
+                <div id="consitem1" class="input-group mb-2">
+                    <input id="title1" class="form-control" name="title1" type="text" />
+                    <input id="cmdAddcons1" class="btn btn-primary" type="button" value="+" />
                 </div>
             </div>
 
@@ -100,7 +103,7 @@
             </div>
         </form>
     </div>
-    <div class="card col-2 mt-4 h-25">
+    <div class="card col-2 mt-2 h-25">
         <div class="card-body">
             <h5 class="card-title">Card with titles, buttons, and links</h5>
             <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
