@@ -118,7 +118,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Nunito", sans-serif;
+    font-family: "IRANSans", sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -318,7 +318,7 @@ h6 {
 
 /* Card */
 .card {
-    margin-bottom: 30px;
+    margin-bottom: .5rem;
     border: none;
     border-radius: 5px;
     box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
@@ -327,8 +327,8 @@ h6 {
 .card-header,
 .card-footer {
     border-color: #ebeef4;
-    background-color: #fff;
-    color: #798eb3;
+    background-color: #f9f9f9;
+    color: #747474;
     padding: 15px;
 }
 
@@ -337,7 +337,7 @@ h6 {
     font-size: 18px;
     font-weight: 500;
     color: #012970;
-    font-family: "Poppins", sans-serif;
+    font-family: "IRANSans", sans-serif;
 }
 
     .card-title span {
@@ -346,9 +346,6 @@ h6 {
         font-weight: 400;
     }
 
-.card-body {
-    padding: 0 20px 20px 20px;
-}
 
 .card-img-overlay {
     background-color: rgba(255, 255, 255, 0.6);
@@ -357,7 +354,7 @@ h6 {
 /* Alerts */
 .alert-heading {
     font-weight: 500;
-    font-family: "Poppins", sans-serif;
+    font-family: "IRANSans", sans-serif;
     font-size: 20px;
 }
 
@@ -406,7 +403,7 @@ h6 {
 /* Breadcrumbs */
 .breadcrumb {
     font-size: 14px;
-    font-family: "Nunito", sans-serif;
+    font-family: "IRANSans", sans-serif;
     color: #899bbd;
     font-weight: 600;
 }
@@ -473,7 +470,7 @@ h6 {
     font-size: 26px;
     font-weight: 700;
     color: #012970;
-    font-family: "Nunito", sans-serif;
+    font-family: "IRANSans", sans-serif;
 }
 
 .header {

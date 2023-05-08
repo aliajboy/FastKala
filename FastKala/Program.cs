@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<FsContext>(option=> option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+builder.Services.AddDbContext<FsContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 builder.Services.AddRazorPages();
+builder.Services.AddResponseCompression(option => option.EnableForHttps = true);
+builder.Services.AddResponseCaching();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,6 +24,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseResponseCompression();
+app.UseResponseCaching();
 
 app.MapRazorPages();
 

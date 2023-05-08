@@ -39,7 +39,7 @@ public class Product
     public List<ProductFeature>? ProductFeatures { get; set; } = new List<ProductFeature>();
 
     [DisplayName("نقاط قوت")]
-    public List<ProductPros>? ProductPros { get; set; }
+    public List<ProductPros>? ProductPros { get; set; } = new List<ProductPros>();
     [DisplayName("نقاط ضعف")]
-    public List<ProductCons>? ProductCons { get; set; }
+    public List<ProductCons>? ProductCons { get; set; } = new List<ProductCons>();
 }

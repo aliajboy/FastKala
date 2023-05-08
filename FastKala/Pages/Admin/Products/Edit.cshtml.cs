@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FastKala.Data;
 using FastKala.Models;
 
 namespace FastKala.Pages.Admin.Products
@@ -30,7 +24,7 @@ namespace FastKala.Pages.Admin.Products
                 return NotFound();
             }
 
-            var product =  await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
+            var product =  await _context.Products.Include(x=>x.ProductPros).Include(x=>x.ProductCons).Include(x=>x.ProductFeatures).FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -66,7 +60,7 @@ namespace FastKala.Pages.Admin.Products
                 }
             }
 
-            return Page();
+            return RedirectToPage("./Index");
         }
 
         private bool ProductExists(int id)

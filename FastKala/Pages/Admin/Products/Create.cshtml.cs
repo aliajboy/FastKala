@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using FastKala.Data;
 using FastKala.Models;
 
 namespace FastKala.Pages.Admin.Products
@@ -43,6 +37,26 @@ namespace FastKala.Pages.Admin.Products
                 {
                     TitleName = Request.Form["title" + n].FirstOrDefault(),
                     Value = Request.Form["value" + n].FirstOrDefault()
+                });
+                n++;
+            }
+            // Add Product Pros
+            n = 1;
+            while (Request.Form["pros" + n].FirstOrDefault() != null)
+            {
+                Product.ProductPros.Add(new ProductPros()
+                {
+                    Text = Request.Form["pros" + n].FirstOrDefault()
+                });
+                n++;
+            }
+            // Add Product Cons
+            n = 1;
+            while (Request.Form["cons" + n].FirstOrDefault() != null)
+            {
+                Product.ProductCons.Add(new ProductCons()
+                {
+                    Text = Request.Form["cons" + n].FirstOrDefault()
                 });
                 n++;
             }
