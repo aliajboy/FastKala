@@ -1,0 +1,33 @@
+﻿@page
+@model FastKala.Pages.Admin.PoductsAttributes.EditModel
+
+@{
+    ViewData["Title"] = "ویرایش ویژگی";
+    Layout = "~/Pages/Admin/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductAttribute.Id" />
+            <div class="form-group">
+                <label asp-for="ProductAttribute.Name" class="control-label"></label>
+                <input asp-for="ProductAttribute.Name" class="form-control" />
+                <span asp-validation-for="ProductAttribute.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductAttribute.Link" class="control-label"></label>
+                <input asp-for="ProductAttribute.Link" class="form-control" />
+                <span asp-validation-for="ProductAttribute.Link" class="text-danger"></span>
+            </div>
+            <div class="form-group my-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

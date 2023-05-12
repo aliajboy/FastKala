@@ -10,7 +10,6 @@
     <div class="col-10">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Product.Id" />
             <div class="card p-3 my-2">
                 <div class="form-group">
                     <label asp-for="Product.Name" class="control-label"></label>
@@ -27,105 +26,123 @@
                 <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
                 <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
-            <div class="card p-3 my-2">
-                <h5 class="card-header">
-                    اطلاعات محصول
-                </h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
+            <div class="accordion my-2" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#product-features" aria-expanded="true" aria-controls="product-features">
+                            ویژگی های محصول
+                        </button>
+                    </h2>
+                    <div id="product-features" class="accordion-collapse collapse">
+                        <div class="accordion-body w-50">
+                            <div id="features" class="form-group">
+                                <label asp-for="Product.ProductFeatures" class="control-label"></label>
+                                <div id="item1" class="input-group mb-2">
+                                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
+                                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
+                                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="افزودن ویژگی" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion my-2" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#product-pros-cons" aria-expanded="true" aria-controls="product-pros-cons">
+                            نقاط قوت و ضعف
+                        </button>
+                    </h2>
+                    <div id="product-pros-cons" class="accordion-collapse collapse">
+                        <div class="accordion-body">
                             <div class="row">
-                                <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
-                                    <label class="form-check-label">
-                                        <input id="manage-stock-quantity" class="form-check-input" asp-for="Product.ManageStockQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageStockQuantity)
-                                    </label>
+                                <div id="product-pros" class="form-group col-6">
+                                    <label asp-for="Product.ProductPros" class="control-label"></label>
+                                    <div id="prositem1" class="input-group mb-2">
+                                        <input id="pros1" class="form-control" name="pros1" type="text" />
+                                        <input id="cmdAddpros1" class="btn btn-primary" type="button" value="+" />
+                                    </div>
                                 </div>
-                                <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
-                                    <label class="form-check-label">
-                                        <input id="manage-sale-quantity" class="form-check-input" asp-for="Product.ManageSaleQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageSaleQuantity)
-                                    </label>
-                                </div>
-                                <div class="col-xxl-6">
-                                    <label asp-for="Product.Sku" class="control-label"></label>
-                                    <input asp-for="Product.Sku" class="form-control" />
-                                    <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                                <div id="product-cons" class="form-group col-6">
+                                    <label asp-for="Product.ProductCons" class="control-label"></label>
+                                    <div id="consitem1" class="input-group mb-2">
+                                        <input id="cons1" class="form-control" name="cons1" type="text" />
+                                        <input id="cmdAddcons1" class="btn btn-danger" type="button" value="+" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr class="mt-3" style="color:#a1a1a1;" />
-                        <div class="col-6">
-                            <label asp-for="Product.Price" class="control-label"></label>
-                            <input asp-for="Product.Price" class="form-control" />
-                            <span asp-validation-for="Product.Price" class="text-danger"></span>
-                        </div>
-                        <div class="col-6">
-                            <label asp-for="Product.SalePrice" class="control-label"></label>
-                            <input asp-for="Product.SalePrice" class="form-control" />
-                            <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
-                        </div>
-                        <div class="col-6">
-                            <label asp-for="Product.Weight" class="control-label"></label>
-                            <input asp-for="Product.Weight" class="form-control" />
-                            <span asp-validation-for="Product.Weight" class="text-danger"></span>
-                        </div>
-                        <div id="stock-quantity-input" class="col-6 invisible">
-                            <label asp-for="Product.StockQuantity" class="control-label"></label>
-                            <input asp-for="Product.StockQuantity" class="form-control" />
-                            <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
-                        </div>
-                        <div id="min-sale-quantity" class="col-6 d-none">
-                            <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
-                            <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
-                            <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
-                        </div>
-                        <div id="sale-quantity-step" class="col-6 d-none">
-                            <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
-                            <input asp-for="Product.SaleQuantityStep" class="form-control" />
-                            <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card p-3 my-2">
-                <h5 class="card-header">
-                    ویژگی های محصول
-                </h5>
-                <div class="card-body w-50">
-                    <div id="features" class="form-group">
-                        <label asp-for="Product.ProductFeatures" class="control-label"></label>
-                        <div id="item1" class="input-group mb-2">
-                            <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
-                            <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
-                            <input id="cmdAdd1" class="btn btn-primary" type="button" value="افزودن ویژگی" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card p-3 my-2">
-                <h5 class="card-header">
-                    نقاط قوت و ضعف
-                </h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div id="product-pros" class="form-group col-6">
-                            <label asp-for="Product.ProductPros" class="control-label"></label>
-                            <div id="prositem1" class="input-group mb-2">
-                                <input id="pros1" class="form-control" name="pros1" type="text" />
-                                <input id="cmdAddpros1" class="btn btn-primary" type="button" value="+" />
-                            </div>
-                        </div>
-                        <div id="product-cons" class="form-group col-6">
-                            <label asp-for="Product.ProductCons" class="control-label"></label>
-                            <div id="consitem1" class="input-group mb-2">
-                                <input id="cons1" class="form-control" name="cons1" type="text" />
-                                <input id="cmdAddcons1" class="btn btn-danger" type="button" value="+" />
+            <div class="accordion my-2" id="accordionPanelsStayOpenExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#product-info" aria-expanded="true" aria-controls="product-info">
+                            اطلاعات محصول
+                        </button>
+                    </h2>
+                    <div id="product-info" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
+                                            <label class="form-check-label">
+                                                <input id="manage-stock-quantity" class="form-check-input" asp-for="Product.ManageStockQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageStockQuantity)
+                                            </label>
+                                        </div>
+                                        <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
+                                            <label class="form-check-label">
+                                                <input id="manage-sale-quantity" class="form-check-input" asp-for="Product.ManageSaleQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageSaleQuantity)
+                                            </label>
+                                        </div>
+                                        <div class="col-xxl-6">
+                                            <label asp-for="Product.Sku" class="control-label"></label>
+                                            <input asp-for="Product.Sku" class="form-control" />
+                                            <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="mt-3" style="color:#a1a1a1;" />
+                                <div class="col-6">
+                                    <label asp-for="Product.Price" class="control-label"></label>
+                                    <input asp-for="Product.Price" class="form-control" />
+                                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label asp-for="Product.SalePrice" class="control-label"></label>
+                                    <input asp-for="Product.SalePrice" class="form-control" />
+                                    <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
+                                </div>
+                                <div class="col-6">
+                                    <label asp-for="Product.Weight" class="control-label"></label>
+                                    <input asp-for="Product.Weight" class="form-control" />
+                                    <span asp-validation-for="Product.Weight" class="text-danger"></span>
+                                </div>
+                                <div id="stock-quantity-input" class="col-6 invisible">
+                                    <label asp-for="Product.StockQuantity" class="control-label"></label>
+                                    <input asp-for="Product.StockQuantity" class="form-control" />
+                                    <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                                </div>
+                                <div id="min-sale-quantity" class="col-6 d-none">
+                                    <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
+                                    <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
+                                    <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
+                                </div>
+                                <div id="sale-quantity-step" class="col-6 d-none">
+                                    <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
+                                    <input asp-for="Product.SaleQuantityStep" class="form-control" />
+                                    <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="انتشار" class="btn btn-primary" />
             </div>
         </form>
     </div>

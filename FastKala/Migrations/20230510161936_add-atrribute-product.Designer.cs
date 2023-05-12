@@ -4,6 +4,7 @@ using FastKala.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FastKala.Migrations
 {
     [DbContext(typeof(FsContext))]
-    partial class FsContextModelSnapshot : ModelSnapshot
+    [Migration("20230510161936_add-atrribute-product")]
+    partial class addatrributeproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,43 +84,16 @@ namespace FastKala.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Link")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("ProductAttributes");
-                });
-
-            modelBuilder.Entity("FastKala.Models.ProductAttributeValues", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductAttributeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductAttributeId");
-
-                    b.ToTable("ProductAttributeValues");
                 });
 
             modelBuilder.Entity("FastKala.Models.ProductCons", b =>
@@ -188,17 +164,6 @@ namespace FastKala.Migrations
                     b.ToTable("ProductPros");
                 });
 
-            modelBuilder.Entity("FastKala.Models.ProductAttributeValues", b =>
-                {
-                    b.HasOne("FastKala.Models.ProductAttribute", "ProductAttribute")
-                        .WithMany("AttributeValues")
-                        .HasForeignKey("ProductAttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductAttribute");
-                });
-
             modelBuilder.Entity("FastKala.Models.ProductCons", b =>
                 {
                     b.HasOne("FastKala.Models.Product", "Product")
@@ -239,11 +204,6 @@ namespace FastKala.Migrations
                     b.Navigation("ProductFeatures");
 
                     b.Navigation("ProductPros");
-                });
-
-            modelBuilder.Entity("FastKala.Models.ProductAttribute", b =>
-                {
-                    b.Navigation("AttributeValues");
                 });
 #pragma warning restore 612, 618
         }

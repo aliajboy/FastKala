@@ -19,4 +19,6 @@ public class FsContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductAttribute> ProductAttributes { get; set; }
+    public DbSet<ProductAttributeValues> ProductAttributeValues { get; set; }
 }
