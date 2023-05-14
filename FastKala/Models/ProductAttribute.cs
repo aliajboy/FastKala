@@ -23,6 +23,6 @@ public class ProductAttributeValues
     public string? value { get; set; }
 
     // Relations
-    public ProductAttribute ProductAttribute { get; set; }
+    public ProductAttribute? ProductAttribute { get; set; }
     public int ProductAttributeId { get; set; }
 }

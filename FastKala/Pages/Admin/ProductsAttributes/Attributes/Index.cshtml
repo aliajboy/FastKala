@@ -12,7 +12,6 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="ProductAttributeValue.Name" class="control-label"></label>
                 <input asp-for="ProductAttributeValue.Name" class="form-control" />
@@ -24,7 +23,7 @@
                 <span asp-validation-for="ProductAttributeValue.value" class="text-danger"></span>
             </div>
             <div class="form-group my-3">
-                <input asp-page-handler="Add" type="submit" value="افزودن" class="btn btn-primary" />
+                <input asp-page-handler="Add" asp-route-id="@PageContext.HttpContext.Request.Query["id"]" type="submit" value="افزودن" class="btn btn-primary" />
             </div>
         </form>
     </div>
