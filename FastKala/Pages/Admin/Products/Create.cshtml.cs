@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FastKala.Models;
+using NuGet.Protocol;
 
 namespace FastKala.Pages.Admin.Products
 {
@@ -40,6 +41,7 @@ namespace FastKala.Pages.Admin.Products
                 });
                 n++;
             }
+
             // Add Product Pros
             n = 1;
             while (Request.Form["pros" + n].FirstOrDefault() != null)
@@ -50,6 +52,7 @@ namespace FastKala.Pages.Admin.Products
                 });
                 n++;
             }
+
             // Add Product Cons
             n = 1;
             while (Request.Form["cons" + n].FirstOrDefault() != null)

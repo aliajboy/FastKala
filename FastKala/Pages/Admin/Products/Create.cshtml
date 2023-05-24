@@ -36,13 +36,8 @@
                     <div id="product-features" class="accordion-collapse collapse">
                         <div class="accordion-body w-50">
                             <div id="features" class="form-group">
-                                <label asp-for="Product.ProductFeatures" class="control-label"></label>
-                                <div id="item1" class="input-group mb-2">
-                                    <input id="title1" class="form-control" placeholder="عنوان" name="title1" type="text" />
-                                    <input id="value1" class="form-control" placeholder="مقدار" name="value1" type="text" />
-                                    <input id="cmdAdd1" class="btn btn-primary" type="button" value="افزودن ویژگی" />
-                                </div>
                             </div>
+                            <input id="cmdAdd1" class="btn btn-primary" type="button" value="افزودن ویژگی" />
                         </div>
                     </div>
                 </div>
@@ -85,56 +80,73 @@
                     </h2>
                     <div id="product-info" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
-                                            <label class="form-check-label">
-                                                <input id="manage-stock-quantity" class="form-check-input" asp-for="Product.ManageStockQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageStockQuantity)
-                                            </label>
-                                        </div>
-                                        <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
-                                            <label class="form-check-label">
-                                                <input id="manage-sale-quantity" class="form-check-input" asp-for="Product.ManageSaleQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageSaleQuantity)
-                                            </label>
-                                        </div>
-                                        <div class="col-xxl-6">
-                                            <label asp-for="Product.Sku" class="control-label"></label>
-                                            <input asp-for="Product.Sku" class="form-control" />
-                                            <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                            <div class="d-flex align-items-start">
+                                <div class="nav flex-column nav-pills me-3" style="min-width:12%;" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">اطلاعات کلی</button>
+                                    <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">ویژگی ها</button>
+                                    <button class="nav-link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" disabled>Disabled</button>
+                                    <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</button>
+                                    <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+                                </div>
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
+                                                        <label class="form-check-label">
+                                                            <input id="manage-stock-quantity" class="form-check-input" asp-for="Product.ManageStockQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageStockQuantity)
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-xl-4 d-flex align-items-center">
+                                                        <label class="form-check-label">
+                                                            <input id="manage-sale-quantity" class="form-check-input" asp-for="Product.ManageSaleQuantity" /> @Html.DisplayNameFor(model => model.Product.ManageSaleQuantity)
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xxl-6">
+                                                        <label asp-for="Product.Sku" class="control-label"></label>
+                                                        <input asp-for="Product.Sku" class="form-control" />
+                                                        <span asp-validation-for="Product.Sku" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="mt-3" style="color:#a1a1a1;" />
+                                            <div class="col-6">
+                                                <label asp-for="Product.Price" class="control-label"></label>
+                                                <input asp-for="Product.Price" class="form-control" />
+                                                <span asp-validation-for="Product.Price" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label asp-for="Product.SalePrice" class="control-label"></label>
+                                                <input asp-for="Product.SalePrice" class="form-control" />
+                                                <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label asp-for="Product.Weight" class="control-label"></label>
+                                                <input asp-for="Product.Weight" class="form-control" />
+                                                <span asp-validation-for="Product.Weight" class="text-danger"></span>
+                                            </div>
+                                            <div id="stock-quantity-input" class="col-6 invisible">
+                                                <label asp-for="Product.StockQuantity" class="control-label"></label>
+                                                <input asp-for="Product.StockQuantity" class="form-control" />
+                                                <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
+                                            </div>
+                                            <div id="min-sale-quantity" class="col-6 d-none">
+                                                <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
+                                                <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
+                                                <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
+                                            </div>
+                                            <div id="sale-quantity-step" class="col-6 d-none">
+                                                <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
+                                                <input asp-for="Product.SaleQuantityStep" class="form-control" />
+                                                <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <hr class="mt-3" style="color:#a1a1a1;" />
-                                <div class="col-6">
-                                    <label asp-for="Product.Price" class="control-label"></label>
-                                    <input asp-for="Product.Price" class="form-control" />
-                                    <span asp-validation-for="Product.Price" class="text-danger"></span>
-                                </div>
-                                <div class="col-6">
-                                    <label asp-for="Product.SalePrice" class="control-label"></label>
-                                    <input asp-for="Product.SalePrice" class="form-control" />
-                                    <span asp-validation-for="Product.SalePrice" class="text-danger"></span>
-                                </div>
-                                <div class="col-6">
-                                    <label asp-for="Product.Weight" class="control-label"></label>
-                                    <input asp-for="Product.Weight" class="form-control" />
-                                    <span asp-validation-for="Product.Weight" class="text-danger"></span>
-                                </div>
-                                <div id="stock-quantity-input" class="col-6 invisible">
-                                    <label asp-for="Product.StockQuantity" class="control-label"></label>
-                                    <input asp-for="Product.StockQuantity" class="form-control" />
-                                    <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
-                                </div>
-                                <div id="min-sale-quantity" class="col-6 d-none">
-                                    <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
-                                    <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
-                                    <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
-                                </div>
-                                <div id="sale-quantity-step" class="col-6 d-none">
-                                    <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
-                                    <input asp-for="Product.SaleQuantityStep" class="form-control" />
-                                    <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
+                                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">...</div>
+                                    <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">...</div>
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">...</div>
+                                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">...</div>
                                 </div>
                             </div>
                         </div>
