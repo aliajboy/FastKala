@@ -23,7 +23,7 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> NewProduct(ProductViewModel product)
+    public async Task<IActionResult> NewProduct(ProductViewModel productView)
     {
         return View();
     }

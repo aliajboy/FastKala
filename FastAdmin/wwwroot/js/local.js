@@ -27,22 +27,22 @@ function lastId() {
 function addNewFeature() {
     // Add new line with text field and button
     if (removedItems.length == 0) {
-        itemCount++;
         var newItem = ' <div id="item' + itemCount + '" class="input-group mb-2">';
-        newItem += '<input id="title' + itemCount + '" name="title' + itemCount + '" placeholder="عنوان" class="form-control" type="text"/>';
-        newItem += '<input id="value' + itemCount + '" name="value' + itemCount + '" placeholder="مقدار" class="form-control" type="text"/>';
+        newItem += '<input id="title' + itemCount + '" name="Product.ProductFeatures[' + itemCount + '].TitleName" placeholder="عنوان" class="form-control" type="text"/>';
+        newItem += '<input id="value' + itemCount + '" name="Product.ProductFeatures[' + itemCount + '].Value" placeholder="مقدار" class="form-control" type="text"/>';
         newItem += '<input id="cmdAdd' + itemCount + '" type="button" class="btn btn-danger" value="حذف ویژگی"></input>';
         newItem += "</div>";
 
         $('#features').append(newItem);
         var thisItem = itemCount;
         $('#cmdAdd' + itemCount).click(function () { removeItem(thisItem); });
+        itemCount++;
     }
     else {
         var id = removedItems[0];
         var newItem = ' <div id="item' + id + '" class="input-group mb-2">';
-        newItem += '<input id="title' + id + '" name="title' + id + '" placeholder="عنوان" class="form-control" type="text"/>';
-        newItem += '<input id="value' + id + '" name="value' + id + '" placeholder="مقدار" class="form-control" type="text"/>';
+        newItem += '<input id="title' + id + '" name="Product.ProductFeatures[' + id + '].TitleName" placeholder="عنوان" class="form-control" type="text"/>';
+        newItem += '<input id="value' + id + '" name="Product.ProductFeatures[' + id + '].Value" placeholder="مقدار" class="form-control" type="text"/>';
         newItem += '<input id="cmdAdd' + id + '" type="button" class="btn btn-danger" value="حذف ویژگی"></input>';
         newItem += "</div>";
 
