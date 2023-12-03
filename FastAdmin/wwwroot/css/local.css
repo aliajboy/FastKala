@@ -1,0 +1,15 @@
+﻿strong.product-name {
+    font-size: 17px;
+}
+
+a.product-name {
+    font-size: 14px;
+}
+
+button.remove-product {
+    color: indianred;
+}
+
+    button.remove-product:hover {
+        color: red;
+    }

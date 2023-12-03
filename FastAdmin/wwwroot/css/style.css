@@ -78,23 +78,6 @@ body {
     color: #444444;
 }
 
-strong.product-name {
-    font-size: 17px;
-}
-
-a.product-name {
-    font-size: 14px;
-}
-
-button.remove-product {
-    color: indianred;
-}
-
-    button.remove-product:hover {
-        color: red;
-    }
-
-
 a {
     color: #4154f1;
     text-decoration: none;

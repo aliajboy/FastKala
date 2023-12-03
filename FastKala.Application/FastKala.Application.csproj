@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Admin\Interfaces\" />
-    <Folder Include="Admin\" />
-    <Folder Include="Admin\ViewModels\" />
-    <Folder Include="Admin\Services\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
 

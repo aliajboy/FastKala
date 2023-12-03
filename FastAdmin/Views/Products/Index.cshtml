@@ -1,0 +1,61 @@
+﻿@using FastKala.Application.ViewModels.Products
+@model ProductListViewModel
+@{
+    ViewData["Title"] = "لیست محصولات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+    <a asp-controller="Products" asp-action="NewProduct" class="btn btn-primary">افزودن محصول جدید</a>
+</p>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped bg-white border b-rounded">
+            <thead>
+                <tr>
+                    <th>
+                        نام محصول
+                    </th>
+                    <th>
+                        قیمت
+                    </th>
+                    <th>
+                        موجودی
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            <strong class="product-name">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </strong><br>
+                            <div>
+                                <form method="post">
+                                    <a class="product-name" asp-action="EditProduct" asp-controller="Products" asp-route-id="@item.Id">ویرایش</a> |
+                                    <button type="submit" class="btn btn-link p-0 text-decoration-none product-name remove-product" asp-controller="Products" asp-action="RemoveProduct" asp-route-id="@item.Id">حذف</button>
+                                </form>
+                            </div>
+                        </td>
+                        <td>
+                            @if (item.SalePrice != null)
+                            {
+                                <del>@Html.DisplayFor(modelItem => item.Price) <span>تومان</span></del>
+                                <br> @Html.DisplayFor(modelItem => item.SalePrice) <span>تومان</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.Price) <br> @Html.DisplayFor(modelItem => item.SalePrice)
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockQuantity)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

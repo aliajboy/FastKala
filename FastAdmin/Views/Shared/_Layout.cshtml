@@ -18,16 +18,16 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
-    <link href="~/vendor/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="~/vendor//bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
     <link href="~/vendor/quill/quill.snow.css" rel="stylesheet">
     <link href="~/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="~/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="~/vendor/simple-datatables/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/local.css" rel="stylesheet">
 </head>
 
 <body>
@@ -36,9 +36,9 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a asp-page="/index" class="logo d-flex align-items-center">
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
                 <img src="~/img/logo.png" alt="">
-                <span class="d-none d-lg-block">NiceAdmin</span>
+                <span class="d-none d-lg-block">FastAdmin</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
@@ -266,29 +266,29 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link" asp-page="/admin/index">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-grid"></i>
                     <span>داشبورد</span>
                 </a>
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" asp-controller="Products" asp-action="Index">
                     <i class="bi bi-menu-button-wide"></i><span>محصولات</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp asp-page="/admin/products/index">
+                        <a asp-controller="Products" asp-action="Index">
                             <i class="bi bi-circle"></i><span>محصولات</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-page="/admin/products/create">
+                        <a asp-controller="Products" asp-action="NewProduct">
                             <i class="bi bi-circle"></i><span>افزودن محصول</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-page="/admin/productsattributes/index">
+                        <a >
                             <i class="bi bi-circle"></i><span>ویژگی ها</span>
                         </a>
                     </li>
@@ -497,16 +497,12 @@
 
     </aside><!-- End Sidebar-->
     <main dir="rtl" id="main" class="main">
-
         @RenderBody()
     </main>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-            &copy; Copyright <strong><span>AJBoy</span></strong>. All Rights Reserved
-        </div>
-        <div class="credits">
-            Designed by <a href="https://jebali.ir/">Ali Jebali</a>
+            &copy; Copyright <strong><a href="https://jebali.ir">AJBoy</a></strong>. All Rights Reserved
         </div>
     </footer><!-- End Footer -->
 
@@ -518,13 +514,12 @@
     <script src="~/vendor/chart.js/chart.min.js"></script>
     <script src="~/vendor/echarts/echarts.min.js"></script>
     <script src="~/vendor/quill/quill.min.js"></script>
-    <script src="~/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="~/vendor/tinymce/tinymce.min.js"></script>
-    <script src="~/vendor/php-email-form/validate.js"></script>
-    <script src="/js/vendor/jquery-3.2.1.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
 
     <!-- Template Main JS File -->
     <script src="~/js/main.js"></script>
+    <script src="~/js/local.js"></script>
     @RenderSection("Scripts", false)
 </body>
 

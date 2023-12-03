@@ -1,6 +1,9 @@
 using FastAdmin.Data;
+using FastKala.Application.Interfaces;
+using FastKala.Application.Services.Products;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,9 @@ var connectionString = builder.Configuration.GetConnectionString("SqlServer") ??
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Services
+builder.Services.AddTransient<IProductService>(x => new ProductService(connectionString));
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Models;
 
-public class Product
+public record Product
 {
     public int Id { get; set; }
     [DisplayName("نام کالا")]
@@ -36,10 +36,11 @@ public class Product
     // Relations
 
     [DisplayName("ویژگی های محصول")]
-    public List<ProductFeature>? ProductFeatures { get; set; } = new List<ProductFeature>();
+    public List<ProductFeature> ProductFeatures { get; set; } = new List<ProductFeature>();
 
     [DisplayName("نقاط قوت")]
     public List<ProductPros>? ProductPros { get; set; } = new List<ProductPros>();
+
     [DisplayName("نقاط ضعف")]
     public List<ProductCons>? ProductCons { get; set; } = new List<ProductCons>();
 }
