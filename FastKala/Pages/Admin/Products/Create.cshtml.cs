@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FastKala.Models;
+using FastKala.Domain.Models;
 using NuGet.Protocol;
 
 namespace FastKala.Pages.Admin.Products

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FastKala.Data;
-using FastKala.Models;
+using FastKala.Domain.Models;
 
 namespace FastKala.Pages.Admin.ProductsAttributes.Attributes
 {

@@ -1,5 +1,5 @@
-﻿using FastKala.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using FastKala.Domain.Models;
 
 namespace FastKala.Data;
 

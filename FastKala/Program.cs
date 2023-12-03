@@ -1,5 +1,5 @@
 using FastKala.Data;
-using FastKala.Models;
+using FastKala.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,5 @@
 using FastKala.Data;
-using FastKala.Models;
+using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
