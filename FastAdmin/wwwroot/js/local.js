@@ -2,56 +2,8 @@
 const removedItems = [];
 var prositemCount = 1;
 var consitemCount = 1;
-$('#cmdAdd1').click(function () { addNewFeature(); });
 $('#cmdAddpros1').click(function () { addNewPros(); });
 $('#cmdAddcons1').click(function () { addNewCons(); });
-
-function lastId() {
-    var idlist = [];
-    $("#features").find("div").each(function () {
-        var id = $(this).attr("id").substring(4, $(this).attr("id").length);
-        idlist.push(id);
-    });
-
-    idlist.sort(function (a, b) {
-        return a - b;
-    });
-
-    idlist.reverse();
-
-
-    return idlist[0];
-
-}
-
-function addNewFeature() {
-    // Add new line with text field and button
-    if (removedItems.length == 0) {
-        var newItem = ' <div id="item' + itemCount + '" class="input-group mb-2">';
-        newItem += '<input id="title' + itemCount + '" name="Product.ProductFeatures[' + itemCount + '].TitleName" placeholder="عنوان" class="form-control" type="text"/>';
-        newItem += '<input id="value' + itemCount + '" name="Product.ProductFeatures[' + itemCount + '].Value" placeholder="مقدار" class="form-control" type="text"/>';
-        newItem += '<input id="cmdAdd' + itemCount + '" type="button" class="btn btn-danger" value="حذف ویژگی"></input>';
-        newItem += "</div>";
-
-        $('#features').append(newItem);
-        var thisItem = itemCount;
-        $('#cmdAdd' + itemCount).click(function () { removeItem(thisItem); });
-        itemCount++;
-    }
-    else {
-        var id = removedItems[0];
-        var newItem = ' <div id="item' + id + '" class="input-group mb-2">';
-        newItem += '<input id="title' + id + '" name="Product.ProductFeatures[' + id + '].TitleName" placeholder="عنوان" class="form-control" type="text"/>';
-        newItem += '<input id="value' + id + '" name="Product.ProductFeatures[' + id + '].Value" placeholder="مقدار" class="form-control" type="text"/>';
-        newItem += '<input id="cmdAdd' + id + '" type="button" class="btn btn-danger" value="حذف ویژگی"></input>';
-        newItem += "</div>";
-
-        $('#features').append(newItem);
-        thisItem = id;
-        $('#cmdAdd' + id).click(function () { removeItem(thisItem); });
-        removedItems.splice(0, 1);
-    }
-}
 
 function addNewPros() {
     var thisItem = prositemCount;
@@ -70,9 +22,6 @@ function addNewPros() {
     $('#product-pros').append(newItem);
     $('#cmdAddpros' + prositemCount).click(function () { addNewPros(); });
 }
-
-// add new input on btn click
-
 function addNewCons() {
     var thisItem = consitemCount;
     // Change button to Remove button
@@ -89,11 +38,6 @@ function addNewCons() {
 
     $('#product-cons').append(newItem);
     $('#cmdAddcons' + consitemCount).click(function () { addNewCons(); });
-}
-
-function removeItem(i) {
-    $('#item' + i).remove();
-    removedItems.push(i);
 }
 function removePros(i) {
     $('#prositem' + i).remove();
@@ -121,5 +65,43 @@ $("#manage-stock-quantity").change(function () {
     }
     else {
         $("#stock-quantity-input").addClass("invisible");
+    }
+});
+
+// Add Product Feature
+function updateInputNames() {
+    // Select all the input fields within the container
+    var inputFields = document.querySelectorAll('.product-feature');
+
+    // Loop through each pair of input fields to update their name attributes
+    for (var i = 0; i < inputFields.length; i += 2) {
+        inputFields[i].name = 'Product.ProductFeatures[' + (i / 2) + '].TitleName'; // Update the name attribute for TitleName
+        inputFields[i + 1].name = 'Product.ProductFeatures[' + (i / 2) + '].Value'; // Update the name attribute for Value
+    }
+}
+
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.id == 'removeFeature') {
+        // Handle the click event for the remove button
+        var removeButton = event.target;
+        var parentRow = removeButton.parentElement; // Assuming the remove button is within a row element
+        parentRow.remove(); // Remove the corresponding row
+
+        // After removing the row, update the input names
+        updateInputNames();
+    }
+
+    if (event.target && event.target.id === 'cmdAdd1') {
+        // Handle the click event for the add button (assuming cmdAdd1 is the ID of the add button)
+        // Code to add new input fields
+        var container = document.getElementById('features'); // Replace with the actual ID of the container element
+        var newInputHtml = '<input type="text" class="form-control product-feature" name="Product.ProductFeatures[0].TitleName" placeholder="عنوان"><input type="text" class="form-control product-feature" name="Product.ProductFeatures[0].Value" placeholder="مقدار"><button id="removeFeature" class="btn btn-danger">حذف ویژگی</button>';
+        var newRow = document.createElement('div');
+        newRow.className = 'input-group mb-2';
+        newRow.innerHTML = newInputHtml;
+        container.appendChild(newRow);
+
+        // After adding the new input fields, update the input names
+        updateInputNames();
     }
 });
