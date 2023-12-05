@@ -9,6 +9,7 @@
     <div class="col-10">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <!--Product Name-->
             <div class="card p-3 my-2">
                 <div class="form-group">
                     <label asp-for="Product.Name" class="control-label"></label>
@@ -21,6 +22,7 @@
                     <span asp-validation-for="Product.EnglishName" class="text-danger"></span>
                 </div>
             </div>
+            <!--End Of Product Name-->
             <div class="form-group">
                 <textarea asp-for="Product.Description" class="tinymce-editor"></textarea>
                 <span asp-validation-for="Product.Description" class="text-danger"></span>
@@ -40,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> @* Product Features *@
             <div class="accordion my-2" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
@@ -69,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> @* Product Pros and Cons *@
             <div class="accordion my-2" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
@@ -130,12 +132,12 @@
                                                 <input asp-for="Product.StockQuantity" class="form-control" />
                                                 <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
                                             </div>
-                                            <div id="min-sale-quantity" class="col-6 d-none">
+                                            <div id="min-sale-quantity" class="col-6" style="display: none;">
                                                 <label asp-for="Product.MinimumSaleQuantity" class="control-label"></label>
                                                 <input asp-for="Product.MinimumSaleQuantity" class="form-control" />
                                                 <span asp-validation-for="Product.MinimumSaleQuantity" class="text-danger"></span>
                                             </div>
-                                            <div id="sale-quantity-step" class="col-6 d-none">
+                                            <div id="sale-quantity-step" class="col-6" style="display: none;">
                                                 <label asp-for="Product.SaleQuantityStep" class="control-label"></label>
                                                 <input asp-for="Product.SaleQuantityStep" class="form-control" />
                                                 <span asp-validation-for="Product.SaleQuantityStep" class="text-danger"></span>
@@ -151,7 +153,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> @* Product Informations *@
             <div class="form-group">
                 <input type="submit" value="انتشار" class="btn btn-primary" />
             </div>
@@ -165,7 +167,7 @@
             <p class="card-text"><a href="#" class="btn btn-primary">انتشار</a></p>
             <a href="#" class="card-link">ذخیره پیش نویس</a>
         </div>
-    </div>
+    </div> @* Side Bar *@
 </div>
 
 @section Scripts {
@@ -211,5 +213,25 @@
                 productConsIndex--; // Decrement index after removal
             });
         });
+        // Function to toggle the visibility of sale quantity inputs
+        function toggleSaleQuantityInputs(isVisible) {
+            $("#min-sale-quantity, #sale-quantity-step").toggle(isVisible);
+        }
+
+        // Function to toggle the visibility of stock quantity input
+        function toggleStockQuantityInput(isVisible) {
+            $("#stock-quantity-input").toggleClass("invisible", !isVisible);
+        }
+
+        // Event listener for the "manage-sale-quantity" checkbox
+        $("#manage-sale-quantity").change(function () {
+            toggleSaleQuantityInputs(this.checked);
+        });
+
+        // Event listener for the "manage-stock-quantity" checkbox
+        $("#manage-stock-quantity").change(function () {
+            toggleStockQuantityInput(this.checked);
+        });
+
     </script>
 }
