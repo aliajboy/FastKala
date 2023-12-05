@@ -36,7 +36,7 @@
                         <div class="accordion-body w-50">
                             <div id="features" class="form-group">
                             </div>
-                            <input id="cmdAdd1" class="btn btn-primary" type="button" value="افزودن ویژگی" />
+                            <input id="addFeatureButton" class="btn btn-primary" type="button" value="افزودن ویژگی" />
                         </div>
                     </div>
                 </div>
@@ -53,16 +53,16 @@
                             <div class="row">
                                 <div id="product-pros" class="form-group col-6">
                                     <label asp-for="Product.ProductPros" class="control-label"></label>
-                                    <div id="prositem1" class="input-group mb-2">
-                                        <input id="pros1" class="form-control" name="pros1" type="text" />
-                                        <input id="cmdAddpros1" class="btn btn-primary" type="button" value="+" />
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" name="Product.ProductPros[0].Text" type="text" />
+                                        <input id="addProductPros" class="btn btn-primary" type="button" value="+" />
                                     </div>
                                 </div>
                                 <div id="product-cons" class="form-group col-6">
                                     <label asp-for="Product.ProductCons" class="control-label"></label>
-                                    <div id="consitem1" class="input-group mb-2">
-                                        <input id="cons1" class="form-control" name="cons1" type="text" />
-                                        <input id="cmdAddcons1" class="btn btn-danger" type="button" value="+" />
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" name="Product.ProductCons[0].Text" type="text" />
+                                        <input id="addProductCons" class="btn btn-danger" type="button" value="+" />
                                     </div>
                                 </div>
                             </div>
@@ -170,4 +170,46 @@
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script>
+        $(document).ready(function () {
+            let productProsIndex = 1;
+            let productConsIndex = 1;
+
+            $('#addProductPros').click(function () {
+                const newInputField = `<div class="input-group mb-2">
+                    <input class="form-control" name="Product.ProductPros[${productProsIndex}].Text" type="text" />
+                    <button class="btn btn-primary remove-button" type="button">-</button>
+                </div>`;
+                $('#product-pros').append(newInputField);
+                productProsIndex++;
+            });
+
+            $('#product-pros').on('click', '.remove-button', function () {
+                $(this).parent().remove();
+                // Adjust indexes of remaining inputs
+                $('#product-pros .input-group').each(function (i) {
+                    $(this).find('input[type="text"]').attr('name', `Product.ProductPros[${i}].Text`);
+                });
+                productProsIndex--; // Decrement index after removal
+            });
+
+            $('#addProductCons').click(function () {
+                const newInputField = `<div class="input-group mb-2">
+                    <input class="form-control" name="Product.ProductCons[${productConsIndex}].Text" type="text" />
+                    <button class="btn btn-danger remove-button" type="button">-</button>
+                </div>`;
+                $('#product-cons').append(newInputField);
+                productConsIndex++;
+            });
+
+            $('#product-cons').on('click', '.remove-button', function () {
+                $(this).parent().remove();
+                // Adjust indexes of remaining inputs
+                $('#product-cons .input-group').each(function (i) {
+                    $(this).find('input[type="text"]').attr('name', `Product.ProductCons[${i}].Text`);
+                });
+                productConsIndex--; // Decrement index after removal
+            });
+        });
+    </script>
 }
