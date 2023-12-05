@@ -13,3 +13,7 @@ button.remove-product {
     button.remove-product:hover {
         color: red;
     }
+
+.accordion-button {
+    background-color: #e1e4eb;
+}
