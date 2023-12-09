@@ -2,6 +2,7 @@
 using FastKala.Application.Interfaces;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Enums;
 using FastKala.Domain.Models;
 using Microsoft.Data.SqlClient;
 
@@ -13,6 +14,56 @@ public class ProductService : IProductService
     {
         _connectionString = connectionString;
     }
+
+    public async Task<OperationResult> AddProduct(ProductViewModel product)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributes (Name,Link,Type) VALUES (@name,@link,@type)",
+                    new { name = attributeName, link = attributeLink, type = attributeType });
+                if (result == 1)
+                {
+                    return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "ویژگی محصول باموفقیت اضافه شد" };
+                }
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطا در دیتابیس" };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطای سیستمی" };
+        }
+    }
+
+    public async Task<ProductAtrributesListViewModel> GetAllProductAttributes()
+    {
+        ProductAtrributesListViewModel productAtrributesList = new ProductAtrributesListViewModel();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes SELECT * FROM ProductAttributeValues"))
+                {
+                    var attributes = await multi.ReadAsync<ProductAttribute>();
+                    var attributesValues = await multi.ReadAsync<ProductAttributeValues>();
+                    productAtrributesList.ProductAttributes = attributes.ToList();
+                    productAtrributesList.ProductAttributeValues = attributesValues.ToList();
+                }
+            }
+            return productAtrributesList;
+        }
+        catch
+        {
+            return productAtrributesList;
+        }
+    }
+
     public async Task<ProductListViewModel> GetAllProducts(int count = 20)
     {
         ProductListViewModel productList = new();
@@ -20,7 +71,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new {Count = count});
+                var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new { Count = count });
                 productList.TotalProductsCount = await connection.QuerySingleOrDefaultAsync<int>("SELECT COUNT(Id) FROM Products");
                 productList.Products = products.ToList();
             }
@@ -30,6 +81,11 @@ public class ProductService : IProductService
         {
             return productList;
         }
+    }
+
+    public Task<ProductAttributeViewModel> GetProductAttributeById(int id)
+    {
+        throw new NotImplementedException();
     }
 
     public Task<ProductViewModel> GetProductById(int id)

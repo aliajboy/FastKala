@@ -8,79 +8,87 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProductAttribute.Name" class="control-label"></label>
-                <input asp-for="ProductAttribute.Name" class="form-control" />
-                <span asp-validation-for="ProductAttribute.Name" class="text-danger"></span>
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ProductAttribute.Name" class="control-label"></label>
+                        <input asp-for="ProductAttribute.Name" class="form-control" />
+                        <span asp-validation-for="ProductAttribute.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductAttribute.Link" class="control-label"></label>
+                        <input asp-for="ProductAttribute.Link" class="form-control" />
+                        <span asp-validation-for="ProductAttribute.Link" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductAttribute.Type" class="control-label"></label>
+                        <select asp-for="ProductAttribute.Type" class="form-select" aria-label="Default select example">
+                            <option value="simple" selected>ساده</option>
+                            <option value="color">رنگ</option>
+                            <option value="select">انتخابی</option>
+                        </select>
+                    </div>
+                    <div class="form-group my-3">
+                        <input asp-page-handler="AddAttribute" type="submit" value="ساخت ویژگی" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="ProductAttribute.Link" class="control-label"></label>
-                <input asp-for="ProductAttribute.Link" class="form-control" />
-                <span asp-validation-for="ProductAttribute.Link" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductAttribute.Type" class="control-label"></label>
-                <select asp-for="ProductAttribute.Type" class="form-select" aria-label="Default select example">
-                    <option value="simple" selected>ساده</option>
-                    <option value="color">رنگ</option>
-                    <option value="select">انتخابی</option>
-                </select>
-            </div>
-            <div class="form-group my-3">
-                <input asp-page-handler="AddAttribute" type="submit" value="ساخت ویژگی" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
     <div class="col-md-8">
-        <table class="table table-striped bg-white border b-rounded">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductAttributes[0].Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductAttributes[0].Link)
-                    </th>
-                    <th>
-                        پیکربندی
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model.ProductAttributes != null)
-                {
-                    foreach (var item in Model.ProductAttributes)
-                    {
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped bg-white border b-rounded">
+                    <thead>
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                                <br>
-                                <form method="post" class="d-inline">
-                                    <a asp-page="./Edit" asp-route-id="@item.Id">ویرایش</a> |
-                                    <button type="submit" class="btn p-0 text-decoration-none remove-product" asp-route-id="@item.Id" asp-page-handler="Delete">حذف</button>
-                                </form>
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Link)
-                            </td>
-                            <td>
-                                @if (item.AttributeValues != null)
-                                {
-                                    foreach (var attrValue in item.AttributeValues)
-                                    {
-                                        @(attrValue.Name + ", ")
-                                    }
-                                }
-                                <br>
-                                <a asp-page="./attributes/index" asp-route-id="@item.Id">پیکربندی</a>
-                            </td>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Link)
+                            </th>
+                            <th>
+                                پیکربندی
+                            </th>
                         </tr>
-                    }
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        @if (Model.ProductAttributes != null)
+                        {
+                            foreach (var item in Model.ProductAttributes)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <br>
+                                        <form method="post" class="d-inline">
+                                            <a asp-page="./Edit" asp-route-id="@item.Id">ویرایش</a> |
+                                            <button type="submit" class="btn p-0 text-decoration-none remove-product" asp-route-id="@item.Id" asp-page-handler="Delete">حذف</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Link)
+                                    </td>
+                                    <td>
+                                        @if (item.AttributeValues != null)
+                                        {
+                                            foreach (var attrValue in item.AttributeValues)
+                                            {
+                                                @(attrValue.Name + ", ")
+                                            }
+                                        }
+                                        <br>
+                                        <a asp-page="./attributes/index" asp-route-id="@item.Id">پیکربندی</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

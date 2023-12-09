@@ -1,0 +1,84 @@
+﻿@model ProductAtrributesListViewModel
+@{
+    ViewData["Title"] = "ویژگی محصولات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" id="addAtrrForm">
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-name">نام ویژگی</label>
+                        <input class="form-control" id="attribute-name" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-link">لینک</label>
+                        <input class="form-control" id="attribute-link" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-type">نوع ویژگی</label>
+                        <select class="form-select" id="attribute-type" asp-items="@Html.GetEnumSelectList<FastKala.Domain.Enums.AttributeType>()">
+                        </select>
+                    </div>
+                    <div class="form-group my-3">
+                        <input id="addNewAttribute" type="button" value="ساخت ویژگی" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped bg-white border b-rounded">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Link)
+                            </th>
+                            <th>
+                                پیکربندی
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-data">
+                        <partial name="_ProductAttributePartial" model="Model"/>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('addNewAttribute').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            submitForm(); // Call the function to submit the form via AJAX
+        });
+
+        function submitForm() {
+            var attributeName = $('#attribute-name').val();
+            var attributeLink = $('#attribute-link').val();
+            var attributeType = $('#attribute-type').val();
+
+            $.ajax({
+                url: '/Products/AddNewAttribute', // Replace '/your-server-side-script' with the actual URL of your server-side script
+                method: 'POST',
+                data: { attributeName: attributeName, attributeLink: attributeLink, attributeType: attributeType },
+                success: function (partial) {
+                    $('#table-data').html(partial);
+                }
+            });
+        }
+    </script>
+}

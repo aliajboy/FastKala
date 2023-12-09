@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using FastKala.Domain.Enums;
+using System.ComponentModel;
 
 namespace FastKala.Domain.Models;
 
@@ -10,7 +11,7 @@ public class ProductAttribute
     [DisplayName("لینک")]
     public string? Link { get; set; }
     [DisplayName("نوع ویژگی")]
-    public string? Type { get; set; }
+    public AttributeType Type { get; set; }
 
     // Relations
     public List<ProductAttributeValues> AttributeValues { get; set; } = new List<ProductAttributeValues>();

@@ -1,26 +1,4 @@
-﻿// display Manage Product Quantity Inputs
-//$("#manage-sale-quantity").change(function () {
-//    if (this.checked) {
-//        $("#min-sale-quantity").removeClass("d-none");
-//        $("#sale-quantity-step").removeClass("d-none");
-//    }
-//    else {
-//        $("#min-sale-quantity").addClass("d-none");
-//        $("#sale-quantity-step").addClass("d-none");
-//    }
-//});
-
-//// display Manage Product Stock Inputs
-//$("#manage-stock-quantity").change(function () {
-//    if (this.checked) {
-//        $("#stock-quantity-input").removeClass("invisible");
-//    }
-//    else {
-//        $("#stock-quantity-input").addClass("invisible");
-//    }
-//});
-
-// Add Product Feature
+﻿// Add Product Feature
 function updateFeaturesInputNames() {
     // Select all the input fields within the container
     var inputFields = document.querySelectorAll('.product-feature');

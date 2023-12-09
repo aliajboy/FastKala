@@ -1,0 +1,28 @@
+﻿@model ProductAtrributesListViewModel
+@foreach (var item in Model.ProductAttributes)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+            <br>
+            <form method="post" class="d-inline">
+                <a>ویرایش</a> |
+                <button type="submit" class="btn p-0 text-decoration-none remove-product">حذف</button>
+            </form>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Link)
+        </td>
+        <td>
+            @if (item.AttributeValues != null)
+            {
+                foreach (var attrValue in item.AttributeValues)
+                {
+                    @(attrValue.Name + ", ")
+                }
+            }
+            <br>
+            <a>پیکربندی</a>
+        </td>
+    </tr>
+}
