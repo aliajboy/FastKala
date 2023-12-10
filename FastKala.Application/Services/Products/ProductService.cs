@@ -17,7 +17,48 @@ public class ProductService : IProductService
 
     public async Task<OperationResult> AddProduct(ProductViewModel product)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products ([Name],[Description],[Price],[SalePrice],[StockQuantity],[Sku],[ManageSaleQuantity],[ManageStockQuantity],[MinimumSaleQuantity],[SaleQuantityStep],[Weight],[EnglishName]) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName)", new
+                {
+                    name = product.Product.Name,
+                    description = product.Product.Description,
+                    price = product.Product.Price,
+                    salePrice = product.Product.SalePrice,
+                    stockQuantity = product.Product.StockQuantity,
+                    sku = product.Product.Sku,
+                    manageSaleQuantity = product.Product.ManageSaleQuantity,
+                    manageStockQuantity = product.Product.ManageStockQuantity,
+                    minimumSaleQuantity = product.Product.MinimumSaleQuantity,
+                    saleQuantity = product.Product.SaleQuantityStep,
+                    weight = product.Product.Weight,
+                    englishName = product.Product.EnglishName
+                });
+
+                foreach (var item in product.Product.ProductFeatures)
+                {
+                    await connection.ExecuteAsync("INSERT INTO ProductFeature ([TitleName],[Value],[ProductId]) VALUES (@titleName,@value,@productId)",
+                    new { titleName = item.TitleName, value = item.Value, productId = insertedId });
+                }
+
+                if (product.Product.ProductProsCons != null)
+                {
+                    foreach (var item in product.Product.ProductProsCons)
+                    {
+                        await connection.ExecuteAsync("INSERT INTO [dbo].[ProductProsCons] ([Text],[IsPros],[ProductId]) VALUES (@text,@isPros,@productId)",
+                        new { text = item.Text, isPros = item.IsPros, productId = insertedId });
+                    }
+                }
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
+        }
+        catch (Exception ex)
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = ex.Message };
+        }
     }
 
     public async Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType)
