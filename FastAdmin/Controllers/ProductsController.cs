@@ -1,6 +1,6 @@
 ﻿using FastKala.Application.Interfaces;
+using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -46,12 +46,19 @@ public class ProductsController : Controller
         return PartialView("_ProductAttributePartial", await _productService.GetAllProductAttributes());
     }
 
+    [HttpPost]
+    public async Task<OperationResult> RemoveAttribute(int id)
+    {
+        return new OperationResult();
+    }
+
     public IActionResult EditProduct()
     {
         return View();
     }
 
-    public IActionResult RemoveProduct()
+    [HttpPost]
+    public async Task<IActionResult> RemoveProduct()
     {
         return View();
     }

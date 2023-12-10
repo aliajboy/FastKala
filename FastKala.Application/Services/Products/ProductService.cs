@@ -97,13 +97,27 @@ public class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    public Task<OperationResult> RemoveProductById(int id)
+    public async Task<OperationResult> RemoveProductById(int id)
     {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
+        int res;
+        try
         {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Delete From Products where Id = @ID", new { ID = id });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
+            }
 
+
+            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "محصولی حذف نشد یا بیش از یک محصول حذف شده است" };
         }
-        throw new NotImplementedException();
+        catch (Exception ex)
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = ex.Message };
+        }
     }
 
     public Task<OperationResult> UpdateProduct(ProductViewModel product)
