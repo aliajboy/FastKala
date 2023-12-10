@@ -124,9 +124,22 @@ public class ProductService : IProductService
         }
     }
 
-    public Task<ProductAttributeViewModel> GetProductAttributeById(int id)
+    public async Task<ProductAttributeViewModel> GetProductAttributeById(int id)
     {
-        throw new NotImplementedException();
+        ProductAttributeViewModel productAtrribute = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                productAtrribute.ProductAttribute = await connection.QuerySingleAsync<ProductAttribute>("SELECT * FROM ProductAttributes Where Id = @ID",
+                    new { ID = id });
+            }
+            return productAtrribute;
+        }
+        catch
+        {
+            return productAtrribute;
+        }
     }
 
     public Task<ProductViewModel> GetProductById(int id)
