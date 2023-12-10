@@ -142,13 +142,26 @@ public class ProductService : IProductService
         }
     }
 
-    public Task<ProductViewModel> GetProductById(int id)
+    public async Task<ProductViewModel> GetProductById(int id)
     {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
+        ProductViewModel product = new();
+        try
         {
-
+            using (SqlConnection connection = new(_connectionString))
+            {
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new {ID = id}))
+                {
+                     product.Product = await multi.ReadSingleAsync<Product>();
+                     product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
+                     product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
+                }
+            }
+            return product;
         }
-        throw new NotImplementedException();
+        catch
+        {
+            return product;
+        }
     }
 
     public async Task<OperationResult> RemoveProductById(int id)
