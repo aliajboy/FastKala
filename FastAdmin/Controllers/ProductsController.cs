@@ -1,6 +1,7 @@
 ﻿using FastKala.Application.Interfaces;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -31,7 +32,7 @@ public class ProductsController : Controller
     [HttpPost]
     public async Task<IActionResult> NewProduct(ProductViewModel productView)
     {
-        if (!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             return View(productView);
         }
@@ -95,6 +96,17 @@ public class ProductsController : Controller
             return View();
         }
 
-        return PartialView("_ProductAttributeValuePartial",await _productService.GetProductAttributeById(Id));
+        return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(Id));
+    }
+
+    [HttpGet]
+    public async Task<AttributeValuesResponse> GetAttributeValues(int attributeId, string search)
+    {
+        var res = await _productService.GetAttributeValuesById(attributeId, search);
+
+        var data = new AttributeValuesResponse();
+        data.results = res;
+
+        return data;
     }
 }

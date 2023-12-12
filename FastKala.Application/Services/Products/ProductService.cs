@@ -176,6 +176,24 @@ public class ProductService : IProductService
         }
     }
 
+    public async Task<List<ProductAttributeValues>> GetAttributeValuesById(int id, string content)
+    {
+        List<ProductAttributeValues> productAtrribute = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                var values = await connection.QueryAsync<ProductAttributeValues>("Select * From ProductAttributeValues where ProductAttributeId = @Id and Name Like N'%" + content + "%'", new { Id = id });
+                productAtrribute = values.ToList();
+            }
+            return productAtrribute;
+        }
+        catch
+        {
+            return productAtrribute;
+        }
+    }
+
     public async Task<ProductViewModel> GetProductById(int id)
     {
         ProductViewModel product = new();
