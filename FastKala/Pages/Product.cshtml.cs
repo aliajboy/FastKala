@@ -1,3 +1,4 @@
+﻿using FastKala.Application.Interfaces;
 using FastKala.Data;
 using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,24 +10,24 @@ namespace FastKala.Pages;
 public class ProductModel : PageModel
 {
     private readonly FsContext _context;
-    public ProductModel(FsContext context)
+    private readonly IProductService _productService;
+    public ProductModel(FsContext context, IProductService productService)
     {
         _context = context;
+        _productService = productService;
     }
-    [BindProperty]
-    public Product Product { get; set; } = default!;
-    public async Task<IActionResult> OnGetAsync(int? id)
+
+    public Product Product { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int id)
     {
-        if (id == null || _context.Products == null)
+        var product = await _productService.GetProductById(id);
+        if (product.Product.Name == "پیش فرض")
         {
             return NotFound();
         }
-        var product = await _context.Products.Include(x => x.ProductFeatures).Include(y => y.ProductPros).Include(e => e.ProductCons).FirstAsync(x => x.Id == id);
-        if (product == null)
-        {
-            return NotFound();
-        }
-        Product = product;
+        Product = product.Product;
+
         return Page();
     }
 }

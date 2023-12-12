@@ -39,5 +39,5 @@ public record Product
     public List<ProductFeature> ProductFeatures { get; set; } = new List<ProductFeature>();
 
     [DisplayName("نقاط قوت و ضعف")]
-    public List<ProductProsCons>? ProductProsCons { get; set; }
+    public List<ProductProsCons> ProductProsCons { get; set; } = new();
 }

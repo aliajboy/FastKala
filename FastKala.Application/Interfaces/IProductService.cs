@@ -9,7 +9,8 @@ public interface IProductService
     Task<OperationResult> UpdateProduct(ProductViewModel product);
     Task<OperationResult> RemoveProductById(int id);
     Task<ProductAtrributesListViewModel> GetAllProductAttributes();
-    Task<ProductAttributeViewModel> GetProductAttributeById(int id);
+    Task<ProductAttributeValueViewModel> GetProductAttributeById(int id);
     Task<OperationResult> AddProduct(ProductViewModel product);
     Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType);
+    Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId);
 }

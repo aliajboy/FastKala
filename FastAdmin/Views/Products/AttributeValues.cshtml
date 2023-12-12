@@ -1,0 +1,64 @@
+﻿@model ProductAttributeValueViewModel
+@{
+    ViewData["Title"] = Model.Attribute.Name + " ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" asp-for="Attribute.Id"/>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="AttributeValue.Name" class="control-label">نام</label>
+                        <input asp-for="AttributeValue.Name" class="form-control" />
+                        <span asp-validation-for="AttributeValue.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AttributeValue.value" class="control-label">مقدار</label>
+                        <input asp-for="AttributeValue.value" class="form-control" />
+                        <span asp-validation-for="AttributeValue.value" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-3">
+                        <input type="button" value="افزودن" id="addNewAttributeValue" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <partial name="_ProductAttributeValuePartial" model="Model" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('addNewAttributeValue').addEventListener('click', function (event) {
+            event.preventDefault(); 
+            submitForm(); 
+        });
+
+        function submitForm() {
+            var attributeName = $('#AttributeValue_Name').val();
+            var attributeValue = $('#AttributeValue_value').val();
+            var attributeId = $('#Attribute_Id').val();
+
+            $.ajax({
+                url: '/Products/AddAttributeValue',
+                method: 'POST',
+                data: { ValueName: attributeName, ValueLink: attributeValue, id: attributeId },
+                success: function (partial) {
+                    $('#table-data').html(partial);
+                }
+            });
+        }
+    </script>
+}

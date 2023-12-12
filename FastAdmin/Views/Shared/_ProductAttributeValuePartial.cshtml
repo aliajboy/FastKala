@@ -1,0 +1,37 @@
+﻿@model ProductAttributeValueViewModel
+
+<table class="table table-striped bg-white border b-rounded" id="table-data">
+    <thead>
+        <tr>
+            <th>
+                نام
+            </th>
+            <th>
+                مقدار
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AttributeValues.Count > 0)
+        {
+            foreach (var item in Model.AttributeValues)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.value)
+                    </td>
+                    <td>
+                        <form method="post">
+                            <a>ویرایش</a> |
+                            <button type="button" class="btn p-0 text-decoration-none remove-product">حذف</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -20,10 +20,10 @@ public class ProductAttribute
 public class ProductAttributeValues
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? value { get; set; }
 
     // Relations
-    public ProductAttribute? ProductAttribute { get; set; }
+    public ProductAttribute ProductAttribute { get; set; } = new();
     public int ProductAttributeId { get; set; }
 }

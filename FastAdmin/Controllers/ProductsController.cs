@@ -31,7 +31,19 @@ public class ProductsController : Controller
     [HttpPost]
     public async Task<IActionResult> NewProduct(ProductViewModel productView)
     {
-        return View();
+        if (!ModelState.IsValid) 
+        {
+            return View(productView);
+        }
+
+        var res = await _productService.AddProduct(productView);
+
+        if (res.OperationStatus == FastKala.Domain.Enums.OperationStatus.Success)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View(productView);
     }
 
     public async Task<IActionResult> Attributes()
@@ -61,5 +73,28 @@ public class ProductsController : Controller
     public async Task<IActionResult> RemoveProduct()
     {
         return View();
+    }
+
+    public async Task<IActionResult> AttributeValues(int id)
+    {
+        return View(await _productService.GetProductAttributeById(id));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddAttributeValue(string ValueName, string ValueLink, int Id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var res = await _productService.AddAttributeValue(ValueName, ValueLink, Id);
+
+        if (res.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        {
+            return View();
+        }
+
+        return PartialView("_ProductAttributeValuePartial",await _productService.GetProductAttributeById(Id));
     }
 }

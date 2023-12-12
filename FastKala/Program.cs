@@ -1,14 +1,21 @@
+﻿using FastKala.Application.Interfaces;
+using FastKala.Application.Services.Products;
 using FastKala.Data;
-using FastKala.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<FsContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+string connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("ارتباط با پایگاه داده برقرار نشد");
+builder.Services.AddDbContext<FsContext>(option => option.UseSqlServer(connectionString));
+// Services
+builder.Services.AddTransient<IProductService>(x => new ProductService(connectionString));
+
+// Features
 builder.Services.AddRazorPages();
 builder.Services.AddResponseCompression(option => option.EnableForHttps = true);
 builder.Services.AddResponseCaching();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -15,6 +15,27 @@ public class ProductService : IProductService
         _connectionString = connectionString;
     }
 
+    public async Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues ([Name],[value],[ProductAttributeId]) VALUES (@name,@value,@productAttributeId)",
+                    new { name = attributeValueName, value = attributeValeLink, productAttributeId = attributeId });
+                if (result == 1)
+                {
+                    return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "ویژگی محصول باموفقیت اضافه شد" };
+                }
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "خطا در دیتابیس" };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطای سیستمی" };
+        }
+    }
+
     public async Task<OperationResult> AddProduct(ProductViewModel product)
     {
         try
@@ -41,6 +62,16 @@ public class ProductService : IProductService
                 {
                     await connection.ExecuteAsync("INSERT INTO ProductFeature ([TitleName],[Value],[ProductId]) VALUES (@titleName,@value,@productId)",
                     new { titleName = item.TitleName, value = item.Value, productId = insertedId });
+                }
+
+                foreach (var item in product.ProductPros)
+                {
+                    product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Pros, ProductId = insertedId });
+                }
+
+                foreach (var item in product.ProductCons)
+                {
+                    product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
                 }
 
                 if (product.Product.ProductProsCons != null)
@@ -124,15 +155,18 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ProductAttributeViewModel> GetProductAttributeById(int id)
+    public async Task<ProductAttributeValueViewModel> GetProductAttributeById(int id)
     {
-        ProductAttributeViewModel productAtrribute = new();
+        ProductAttributeValueViewModel productAtrribute = new();
         try
         {
             using (SqlConnection connection = new(_connectionString))
             {
-                productAtrribute.ProductAttribute = await connection.QuerySingleAsync<ProductAttribute>("SELECT * FROM ProductAttributes Where Id = @ID",
-                    new { ID = id });
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes Where Id = @ID SELECT * From ProductAttributeValues where ProductAttributeId = @ID", new { ID = id }))
+                {
+                    productAtrribute.Attribute = await multi.ReadSingleAsync<ProductAttribute>();
+                    productAtrribute.AttributeValues = multi.ReadAsync<ProductAttributeValues>().Result.ToList();
+                }
             }
             return productAtrribute;
         }
@@ -149,11 +183,11 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new(_connectionString))
             {
-                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new {ID = id}))
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new { ID = id }))
                 {
-                     product.Product = await multi.ReadSingleAsync<Product>();
-                     product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
-                     product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
+                    product.Product = await multi.ReadSingleAsync<Product>();
+                    product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
+                    product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
                 }
             }
             return product;

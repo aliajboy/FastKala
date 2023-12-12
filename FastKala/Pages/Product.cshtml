@@ -531,47 +531,44 @@
                                     </div>
                                 </div>
                             </section>
-                            @if (Model.Product.ProductPros.Count != 0 || Model.Product.ProductCons.Count != 0)
-                            {
-                                <section class="content-expert-stats">
-                                    <div class="content-expert-evaluation">
-                                        @if (Model.Product.ProductPros.Count >= 1)
-                                        {
-                                            <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
-                                                <div class="positive">
-                                                    <span class="plus">نقاط قوت</span>
-                                                    <ul>
-                                                        @foreach (var item in Model.Product.ProductPros)
-                                                        {
-                                                            <li>
-                                                                <i class="fa fa-plus-circle"></i>
-                                                                @item.Text
-                                                            </li>
-                                                        }
-                                                    </ul>
-                                                </div>
+                            <section class="content-expert-stats">
+                                <div class="content-expert-evaluation">
+                                    @if (Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).ToList().Count >= 1)
+                                    {
+                                        <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                            <div class="positive">
+                                                <span class="plus">نقاط قوت</span>
+                                                <ul>
+                                                    @foreach (var item in Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).ToList())
+                                                    {
+                                                        <li>
+                                                            <i class="fa fa-plus-circle"></i>
+                                                            @item.Text
+                                                        </li>
+                                                    }
+                                                </ul>
                                             </div>
-                                        }
-                                        @if (Model.Product.ProductCons.Count >= 1)
-                                        {
-                                            <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
-                                                <div class="negative">
-                                                    <span class="neg">نقاط ضعف</span>
-                                                    <ul>
-                                                        @foreach (var item in Model.Product.ProductCons)
-                                                        {
-                                                            <li>
-                                                                <i class="fa fa-minus-circle"></i>
-                                                                @item.Text
-                                                            </li>
-                                                        }
-                                                    </ul>
-                                                </div>
+                                        </div>
+                                    }
+                                    @if (Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).ToList().Count >= 1)
+                                    {
+                                        <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                            <div class="negative">
+                                                <span class="neg">نقاط ضعف</span>
+                                                <ul>
+                                                    @foreach (var item in Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).ToList())
+                                                    {
+                                                        <li>
+                                                            <i class="fa fa-minus-circle"></i>
+                                                            @item.Text
+                                                        </li>
+                                                    }
+                                                </ul>
                                             </div>
-                                        }
-                                    </div>
-                                </section>
-                            }
+                                        </div>
+                                    }
+                                </div>
+                            </section>
                         </div>
                         <div class="tab-pane fade" id="Specifications" role="tabpanel"
                              aria-labelledby="Specifications-tab">

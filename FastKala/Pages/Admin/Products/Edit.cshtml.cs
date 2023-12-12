@@ -23,13 +23,6 @@ namespace FastKala.Pages.Admin.Products
             {
                 return NotFound();
             }
-
-            var product =  await _context.Products.Include(x=>x.ProductPros).Include(x=>x.ProductCons).Include(x=>x.ProductFeatures).FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            Product = product;
             return Page();
         }
 
