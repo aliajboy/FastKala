@@ -29,3 +29,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+.footer-spacer{
+    min-height:100px;
+}

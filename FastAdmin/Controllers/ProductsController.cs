@@ -1,7 +1,6 @@
 ﻿using FastKala.Application.Interfaces;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -12,6 +11,7 @@ public class ProductsController : Controller
     {
         _productService = productService;
     }
+
     public async Task<IActionResult> Index()
     {
         var products = await _productService.GetAllProducts();

@@ -4,7 +4,7 @@ namespace FastAdmin.Utilities;
 
 public static class HtmlHelperExtensions
 {
-    public static string ActiveClass(this IHtmlHelper htmlHelper, string? controllers = null, string? actions = null, string cssClass = "active")
+    public static string ActiveClass(this IHtmlHelper htmlHelper, string? controllers = null, string? actions = null, string cssClassActive = "active", string cssClassNotActive = "")
     {
         var currentController = htmlHelper?.ViewContext.RouteData.Values["controller"] as string;
         var currentAction = htmlHelper?.ViewContext.RouteData.Values["action"] as string;
@@ -13,7 +13,7 @@ public static class HtmlHelperExtensions
         var acceptedActions = (actions ?? currentAction ?? "").Split(',');
 
         return acceptedControllers.Contains(currentController) && acceptedActions.Contains(currentAction)
-            ? cssClass
-            : "";
+            ? cssClassActive
+            : cssClassNotActive;
     }
 }
