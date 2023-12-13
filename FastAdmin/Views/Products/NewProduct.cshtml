@@ -157,9 +157,9 @@
                                             </div>
                                         </div>
                                     </div> @* ویژگی های محصول *@
-                                    <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab" >...</div>
-                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab" >...</div>
-                                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab" >...</div>
+                                    <div class="tab-pane fade" id="v-pills-disabled" role="tabpanel" aria-labelledby="v-pills-disabled-tab">...</div>
+                                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+                                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
                                 </div>
                             </div>
                         </div>
@@ -212,9 +212,9 @@
 
             $('#addProductPros').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                    <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
-                                                    <button class="btn btn-primary remove-button" type="button">-</button>
-                                                </div>`;
+                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
+                                                            <button class="btn btn-primary remove-button" type="button">-</button>
+                                                        </div>`;
                 $('#product-pros').append(newInputField);
                 productProsIndex++;
             });
@@ -230,9 +230,9 @@
 
             $('#addProductCons').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                    <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
-                                                    <button class="btn btn-danger remove-button" type="button">-</button>
-                                                </div>`;
+                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
+                                                            <button class="btn btn-danger remove-button" type="button">-</button>
+                                                        </div>`;
                 $('#product-cons').append(newInputField);
                 productConsIndex++;
             });
@@ -246,79 +246,5 @@
                 productConsIndex--; // Decrement index after removal
             });
         });
-
-        // Get the select element
-        var selectElement = document.getElementById('select-attribute'); // Replace 'yourSelectElementId' with the actual id of your select element
-
-        // Add onchange event listener
-        selectElement.onchange = function () {
-            // Disable the select element
-            $("#select-attribute option:selected").attr('disabled', 'disabled');
-
-            // Get the value of the selected option
-            var selectedValue = selectElement.value;
-
-            // Create the div element with the alert and select elements
-            var divElement = document.createElement('div');
-            divElement.className = 'alert alert-secondary alert-dismissible fade show py-2';
-            divElement.role = 'alert';
-            divElement.id = 'attribute-' + selectedValue;
-
-            var attrName = document.createElement('span');
-            attrName.innerHTML = $("#select-attribute option:selected").text();
-
-            var selectElementInsideDiv = document.createElement('select');
-            selectElementInsideDiv.className = 'form-select';
-            selectElementInsideDiv.setAttribute('aria-label', 'انتخاب ویژگی');
-            selectElementInsideDiv.setAttribute('multiple', 'multiple');
-            selectElementInsideDiv.id = 'select-attribute-' + selectedValue;
-
-            var option2 = document.createElement('option');
-            option2.value = '1';
-            option2.appendChild(document.createTextNode('One'));
-            selectElementInsideDiv.appendChild(option2);
-
-            var option3 = document.createElement('option');
-            option3.value = '2';
-            option3.appendChild(document.createTextNode('Two'));
-            selectElementInsideDiv.appendChild(option3);
-
-            var option4 = document.createElement('option');
-            option4.value = '3';
-            option4.appendChild(document.createTextNode('Three'));
-            selectElementInsideDiv.appendChild(option4);
-
-            var closeButton = document.createElement('button');
-            closeButton.type = 'button';
-            closeButton.className = 'btn-close';
-            closeButton.setAttribute('data-bs-dismiss', 'alert');
-            closeButton.setAttribute('aria-label', 'Close');
-
-            divElement.appendChild(attrName);
-            divElement.appendChild(selectElementInsideDiv);
-            divElement.appendChild(closeButton);
-
-            // Add the div element to the document
-            document.getElementById('v-pills-features').appendChild(divElement);
-
-            $('#select-attribute-' + selectedValue).select2({
-                ajax: {
-                    url: '/Products/GetAttributeValues',
-                    method: 'GET',
-                    data: function (params) {
-                        var query = {
-                            search: params.term,
-                            attributeId: selectedValue
-                        }
-                        return query;
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.name
-                        };
-                    }
-                }
-            });
-        };
     </script>
 }
