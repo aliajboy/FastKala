@@ -1,6 +1,5 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Models;
 
 namespace FastKala.Application.Interfaces;
 public interface IProductService
@@ -14,5 +13,5 @@ public interface IProductService
     Task<OperationResult> AddProduct(ProductViewModel product);
     Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType);
     Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId);
-    Task<List<ProductAttributeValues>> GetAttributeValuesById(int id, string content);
+    Task<AttributeValuesResponse> GetAttributeValuesByIdAjax(int id, string content);
 }

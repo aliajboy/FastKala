@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using FastKala.Domain.Enums;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Models;
@@ -32,6 +33,8 @@ public record Product
     public int? SaleQuantityStep { get; set; }
     [DisplayName("وزن")]
     public int? Weight { get; set; }
+    [DisplayName("وضعیت انتشار")]
+    public ProductStatus Status { get; set; }
 
     // Relations
 
@@ -40,4 +43,6 @@ public record Product
 
     [DisplayName("نقاط قوت و ضعف")]
     public List<ProductProsCons> ProductProsCons { get; set; } = new();
+
+    public List<ProductAttributeRelation> Attributes { get; set; } = new();
 }

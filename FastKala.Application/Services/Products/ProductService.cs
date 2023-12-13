@@ -42,6 +42,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
+                // Add Product
                 int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products ([Name],[Description],[Price],[SalePrice],[StockQuantity],[Sku],[ManageSaleQuantity],[ManageStockQuantity],[MinimumSaleQuantity],[SaleQuantityStep],[Weight],[EnglishName]) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName)", new
                 {
                     name = product.Product.Name,
@@ -58,6 +59,7 @@ public class ProductService : IProductService
                     englishName = product.Product.EnglishName
                 });
 
+                // Add Product Features
                 foreach (var item in product.Product.ProductFeatures)
                 {
                     await connection.ExecuteAsync("INSERT INTO ProductFeature ([TitleName],[Value],[ProductId]) VALUES (@titleName,@value,@productId)",
@@ -66,12 +68,18 @@ public class ProductService : IProductService
 
                 foreach (var item in product.ProductPros)
                 {
-                    product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Pros, ProductId = insertedId });
+                    if (product.ProductPros != null)
+                    {
+                        product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Pros, ProductId = insertedId });
+                    }
                 }
 
                 foreach (var item in product.ProductCons)
                 {
-                    product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
+                    if (product.ProductCons != null)
+                    {
+                        product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
+                    }
                 }
 
                 if (product.Product.ProductProsCons != null)
@@ -82,6 +90,16 @@ public class ProductService : IProductService
                         new { text = item.Text, isPros = item.IsPros, productId = insertedId });
                     }
                 }
+
+                if (product.Product.Attributes.Count > 0)
+                {
+                    foreach (var item in product.Product.Attributes)
+                    {
+                        await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations ([ProductId],[AttributeValueId]) VALUES (@productId,@attributeValueId)",
+                        new { productId = insertedId, attributeValueId = item.AttributeValueId });
+                    }
+                }
+
             }
 
             return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
@@ -176,7 +194,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<List<ProductAttributeValues>> GetAttributeValuesById(int id, string content)
+    public async Task<AttributeValuesResponse> GetAttributeValuesByIdAjax(int id, string content)
     {
         List<ProductAttributeValues> productAtrribute = new();
         try
@@ -186,11 +204,11 @@ public class ProductService : IProductService
                 var values = await connection.QueryAsync<ProductAttributeValues>("Select * From ProductAttributeValues where ProductAttributeId = @Id and Name Like N'%" + content + "%'", new { Id = id });
                 productAtrribute = values.ToList();
             }
-            return productAtrribute;
+            return new AttributeValuesResponse() { results = productAtrribute };
         }
         catch
         {
-            return productAtrribute;
+            return new AttributeValuesResponse();
         }
     }
 

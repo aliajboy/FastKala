@@ -19,11 +19,13 @@ public class ProductsController : Controller
     }
 
     [HttpGet]
-    public IActionResult NewProduct(int? id)
+    public async Task<IActionResult> NewProduct(int? id)
     {
         if (id == null)
         {
-            return View();
+            var attr = await _productService.GetAllProductAttributes();
+            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Product = new() { Name = "" } };
+            return View(model);
         }
 
         return View();
@@ -102,11 +104,8 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<AttributeValuesResponse> GetAttributeValues(int attributeId, string search)
     {
-        var res = await _productService.GetAttributeValuesById(attributeId, search);
+        var res = await _productService.GetAttributeValuesByIdAjax(attributeId, search);
 
-        var data = new AttributeValuesResponse();
-        data.results = res;
-
-        return data;
+        return res;
     }
 }

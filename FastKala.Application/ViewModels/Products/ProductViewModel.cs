@@ -7,4 +7,5 @@ public class ProductViewModel
 
     public List<string> ProductPros { get; set; } = new();
     public List<string> ProductCons { get; set; } = new();
+    public List<ProductAttribute> ProductAttributes { get; set; } = new();
 }
