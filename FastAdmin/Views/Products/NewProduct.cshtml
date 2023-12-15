@@ -15,7 +15,7 @@
                 <input asp-for="Product.Name" class="form-control" />
                 <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <label asp-for="Product.EnglishName" class="form-label"></label>
                 <input asp-for="Product.EnglishName" class="form-control" />
                 <span asp-validation-for="Product.EnglishName" class="text-danger"></span>
@@ -168,15 +168,98 @@
             </div>
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted mb-3">وضعیت محصول : @Model.Product.Status.ToDisplay()</h6>
-                <div class="mb-2">
-                    <button class="btn btn-outline-secondary">ذخیره پیش نویس</button>
-                    <button class="btn btn-outline-danger">حذف</button>
+                <div class="mb-2 d-flex">
+                    @if (Model.Product.Status != FastKala.Domain.Enums.ProductStatus.New)
+                    {
+                        <button class="btn btn-outline-secondary flex-fill me-1">ذخیره پیش نویس</button>
+                        <button class="btn btn-outline-danger flex-fill ms-1">حذف</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-secondary flex-fill">ذخیره پیش نویس</button>
+                    }
                 </div>
                 <input type="submit" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" />
             </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                دسته‌بندی محصول
+            </div>
+            <div class="card-body">
+                <ul class="border border-2 rounded-3 p-3">
+                    <li class="list-group-item mb-1">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched">
+                        <label class="form-check-label" for="firstCheckboxStretched">موبایل</label>
+                        <ul>
+                            <li class="list-group-item mb-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched">
+                                <label class="form-check-label" for="firstCheckboxStretched">موبایل</label>
+                            </li>
+                            <li class="list-group-item mb-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckboxStretched">
+                                <label class="form-check-label" for="secondCheckboxStretched">ماسک</label>
+                            </li>
+                            <li class="list-group-item mb-1">
+                                <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched">
+                                <label class="form-check-label" for="thirdCheckboxStretched">دستکش</label>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item mb-1">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckboxStretched">
+                        <label class="form-check-label" for="secondCheckboxStretched">ماسک</label>
+                    </li>
+                    <li class="list-group-item mb-1">
+                        <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched">
+                        <label class="form-check-label" for="thirdCheckboxStretched">دستکش</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                برچسب ها
+            </div>
+            <div class="card-body">
+                <input class="form-control" type="text"/>
+                <a href="#" class="card-link">
+                    افزودن برچسب جدید
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                تصویر اصلی
+            </div>
+            <div class="card-body">
+                <div class="border rounded-3" style="aspect-ratio : 1 / 1;"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                گالری محصول
+            </div>
+            <div class="card-body">
+                <div class="row gx-1">
+                    <div class="col-4">
+                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;"></div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;"></div>
+                    </div>
+                    <div class="col-4">
+                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div> @* Side Bar *@
 </form>
+
+@section tinymce {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+}
 
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />

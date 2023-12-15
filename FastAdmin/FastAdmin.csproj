@@ -23,4 +23,8 @@
     <ProjectReference Include="..\FastKala.Domain\FastKala.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
 </Project>
