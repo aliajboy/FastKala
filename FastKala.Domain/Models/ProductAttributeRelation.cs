@@ -1,5 +1,5 @@
 ﻿namespace FastKala.Domain.Models;
-public class ProductAttributeRelation
+public record ProductAttributeRelation
 {
     public int Id { get; set; }
     public int ProductId { get; set; }

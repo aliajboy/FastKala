@@ -1,6 +1,6 @@
 ﻿namespace FastKala.Domain.Models;
 
-public class ProductFeature
+public record ProductFeature
 {
     public int Id { get; set; }
     public required string TitleName { get; set; }

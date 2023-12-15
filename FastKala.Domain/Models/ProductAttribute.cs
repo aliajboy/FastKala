@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FastKala.Domain.Models;
 
-public class ProductAttribute
+public record ProductAttribute
 {
     public int Id { get; set; }
     [DisplayName("نام ویژگی")]
@@ -17,7 +17,7 @@ public class ProductAttribute
     public List<ProductAttributeValues> AttributeValues { get; set; } = new List<ProductAttributeValues>();
 }
 
-public class ProductAttributeValues
+public record ProductAttributeValues
 {
     public int Id { get; set; }
     public required string Name { get; set; }

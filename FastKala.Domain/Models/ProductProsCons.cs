@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Models;
 
-public class ProductProsCons
+public record ProductProsCons
 {
     public int Id { get; set; }
     [Required]

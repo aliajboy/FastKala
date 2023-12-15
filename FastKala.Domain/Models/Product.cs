@@ -35,6 +35,8 @@ public record Product
     public int? Weight { get; set; }
     [DisplayName("وضعیت انتشار")]
     public ProductStatus Status { get; set; }
+    [DisplayName("تصویر اصلی")]
+    public string? MainImage { get; set; }
 
     // Relations
 
