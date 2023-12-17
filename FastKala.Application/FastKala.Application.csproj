@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FastKala.Domain\FastKala.Domain.csproj" />
+	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

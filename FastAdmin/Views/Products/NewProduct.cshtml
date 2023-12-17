@@ -110,7 +110,7 @@
                                         <hr class="mt-3" style="color:#a1a1a1;" />
                                         <div class="col-6">
                                             <label asp-for="Product.Price" class="form-label"></label>
-                                            <input asp-for="Product.Price" class="form-control" />
+                                            <input asp-for="Product.Price" class="form-control" value=""/>
                                             <span asp-validation-for="Product.Price" class="text-danger"></span>
                                         </div>
                                         <div class="col-6">
@@ -179,7 +179,7 @@
                         <button class="btn btn-outline-secondary flex-fill">ذخیره پیش نویس</button>
                     }
                 </div>
-                <input type="submit" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" />
+                <input type="submit" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" asp-action="NewProduct" asp-controller="Products"/>
             </div>
         </div>
         <div class="card">

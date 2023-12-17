@@ -43,7 +43,7 @@ public class ProductService : IProductService
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 // Add Product
-                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products ([Name],[Description],[Price],[SalePrice],[StockQuantity],[Sku],[ManageSaleQuantity],[ManageStockQuantity],[MinimumSaleQuantity],[SaleQuantityStep],[Weight],[EnglishName]) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName)", new
+                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products ([Name],[Description],[Price],[SalePrice],[StockQuantity],[Sku],[ManageSaleQuantity],[ManageStockQuantity],[MinimumSaleQuantity],[SaleQuantityStep],[Weight],[EnglishName],[Status],[MainImage]) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName,@status,@mainImage)", new
                 {
                     name = product.Product.Name,
                     description = product.Product.Description,
@@ -56,7 +56,9 @@ public class ProductService : IProductService
                     minimumSaleQuantity = product.Product.MinimumSaleQuantity,
                     saleQuantity = product.Product.SaleQuantityStep,
                     weight = product.Product.Weight,
-                    englishName = product.Product.EnglishName
+                    englishName = product.Product.EnglishName,
+                    status = product.Product.Status,
+                    mainImage = product.Product.MainImage
                 });
 
                 // Add Product Features
@@ -68,7 +70,7 @@ public class ProductService : IProductService
 
                 foreach (var item in product.ProductPros)
                 {
-                    if (product.ProductPros != null)
+                    if (product.ProductPros.FirstOrDefault() != null)
                     {
                         product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Pros, ProductId = insertedId });
                     }
@@ -76,7 +78,7 @@ public class ProductService : IProductService
 
                 foreach (var item in product.ProductCons)
                 {
-                    if (product.ProductCons != null)
+                    if (product.ProductCons.FirstOrDefault() != null)
                     {
                         product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
                     }
@@ -263,6 +265,11 @@ public class ProductService : IProductService
         {
 
         }
+        throw new NotImplementedException();
+    }
+
+    public Task<OperationResult> RemoveAttributeById(int id)
+    {
         throw new NotImplementedException();
     }
 }

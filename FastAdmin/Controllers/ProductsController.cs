@@ -73,9 +73,10 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RemoveProduct()
+    public async Task<IActionResult> RemoveProduct(int id)
     {
-        return View();
+        await _productService.RemoveProductById(id);
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> AttributeValues(int id)
