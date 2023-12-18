@@ -1,5 +1,4 @@
 ﻿using FastKala.Application.Interfaces;
-using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -110,5 +109,10 @@ public class ProductsController : Controller
         var res = await _productService.GetAttributeValuesByIdAjax(attributeId, search);
 
         return res;
+    }
+
+    public async Task<IActionResult> Categories()
+    {
+        return View();
     }
 }

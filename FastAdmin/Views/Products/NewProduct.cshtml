@@ -429,7 +429,7 @@
         $("#addproductform").submit(function (eventObj) {
             let attributeSelects = $('.select2-hidden-accessible').map(function () { return this.id; });
             for (var i = 0; i < attributeSelects.length; i++) {
-                let items = $('#' + i).select2('data');
+                let items = $('#' + attributeSelects[i]).select2('data');
                 for (let x = 0; x < items.length; x++)
                     $("<input />").attr("type", "hidden")
                         .attr("name", "Product.Attributes[" + x + "].AttributeValueId")

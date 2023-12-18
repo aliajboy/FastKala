@@ -47,4 +47,6 @@ public record Product
     public List<ProductProsCons> ProductProsCons { get; set; } = new();
 
     public List<ProductAttributeRelation> Attributes { get; set; } = new();
+
+    public List<ProductCategory> Categories { get; set; } = new();
 }
