@@ -7,7 +7,7 @@
             <br>
             <form method="post" class="d-inline">
                 <a>ویرایش</a> |
-                <button type="submit" class="btn p-0 text-decoration-none remove-product">حذف</button>
+                <button asp-controller="Products" asp-action="RemoveAttribute" asp-route-id="@item.Id" type="submit" class="btn p-0 text-decoration-none remove-product">حذف</button>
             </form>
         </td>
         <td>
@@ -22,7 +22,7 @@
                 }
             }
             <br>
-            <a>پیکربندی</a>
+            <a asp-action="AttributeValues" asp-controller="Products" asp-route-id="@item.Id">پیکربندی</a>
         </td>
     </tr>
 }

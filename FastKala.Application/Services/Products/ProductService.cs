@@ -268,8 +268,24 @@ public class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    public Task<OperationResult> RemoveAttributeById(int id)
+    public async Task<OperationResult> RemoveAttributeById(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            int res = 0;
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: System.Data.CommandType.StoredProcedure);
+            }
+            if (res >= 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
     }
 }

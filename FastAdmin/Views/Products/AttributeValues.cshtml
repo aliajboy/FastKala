@@ -57,6 +57,8 @@
                 data: { ValueName: attributeName, ValueLink: attributeValue, id: attributeId },
                 success: function (partial) {
                     $('#table-data').html(partial);
+                    $('#AttributeValue_Name').val('');
+                    $('#AttributeValue_value').val('');
                 }
             });
         }

@@ -179,7 +179,7 @@
                         <button class="btn btn-outline-secondary flex-fill">ذخیره پیش نویس</button>
                     }
                 </div>
-                <input type="submit" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" asp-action="NewProduct" asp-controller="Products"/>
+                <input type="submit" id="addproductform" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" asp-action="NewProduct" asp-controller="Products" />
             </div>
         </div>
         <div class="card">
@@ -395,7 +395,6 @@
                     cache: true
                 },
                 placeholder: 'جستجو ' + $("#select-attribute option:selected").text(),
-                minimumInputLength: 1,
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection,
                 language: {

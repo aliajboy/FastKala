@@ -7,6 +7,7 @@ namespace FastAdmin.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+
     public ProductsController(IProductService productService)
     {
         _productService = productService;
@@ -62,9 +63,10 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    public async Task<OperationResult> RemoveAttribute(int id)
+    public async Task<IActionResult> RemoveAttribute(int id)
     {
-        return new OperationResult();
+        var result = await _productService.RemoveAttributeById(id);
+        return RedirectToAction(nameof(Attributes));
     }
 
     public IActionResult EditProduct()
