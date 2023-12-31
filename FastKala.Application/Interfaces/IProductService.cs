@@ -18,4 +18,5 @@ public interface IProductService
     Task<ProductAttributeValueViewModel> GetAttributeValue(int attributeId);
     Task<OperationResult> UpdateAttributeValue(int id, string name, string value);
     Task<OperationResult> RemoveAttributeValue(int id);
+    Task<OperationResult> UpdateAttribute(int id, string name, string link, byte type);
 }

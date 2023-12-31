@@ -6,7 +6,7 @@
             @Html.DisplayFor(modelItem => item.Name)
             <br>
             <form method="post" class="d-inline">
-                <a>ویرایش</a> |
+                <a href="#" onclick="changeEditAttribute(this.id,@item.Id)" id="editAttributeButton">ویرایش</a> |
                 <button asp-controller="Products" asp-action="RemoveAttribute" asp-route-id="@item.Id" type="submit" class="btn p-0 text-decoration-none remove-product">حذف</button>
             </form>
         </td>
@@ -14,11 +14,18 @@
             @Html.DisplayFor(modelItem => item.Link)
         </td>
         <td>
-            @if (item.AttributeValues != null)
+            @if (Model.ProductAttributeValues.Count > 0)
             {
-                foreach (var attrValue in item.AttributeValues)
+                foreach (var attrValue in Model.ProductAttributeValues.Where(x=>x.ProductAttributeId == item.Id))
                 {
-                    @(attrValue.Name + ", ")
+                    if (attrValue != Model.ProductAttributeValues.Where(x => x.ProductAttributeId == item.Id).Last())
+                    {
+                        @(attrValue.Name + ", ")
+                    }
+                    else
+                    {
+                        @(attrValue.Name)
+                    }
                 }
             }
             <br>

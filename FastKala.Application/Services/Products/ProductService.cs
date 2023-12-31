@@ -375,4 +375,33 @@ public class ProductService : IProductService
             return new OperationResult() { OperationStatus = OperationStatus.Exception };
         }
     }
+
+    public async Task<OperationResult> UpdateAttribute(int id, string name, string link, byte type)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Update ProductAttributes SET Name = @name, Link = @link, Type = @type Where Id = @ID",
+                    new
+                    {
+                        id = id,
+                        name = name,
+                        link = link,
+                        type = type
+                    });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
 }
