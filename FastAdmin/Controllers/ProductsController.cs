@@ -2,6 +2,7 @@
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace FastAdmin.Controllers;
 public class ProductsController : Controller
@@ -13,6 +14,7 @@ public class ProductsController : Controller
         _productService = productService;
     }
 
+    // Products ---------------------------------------
     public async Task<IActionResult> Index()
     {
         var products = await _productService.GetAllProducts();
@@ -62,6 +64,8 @@ public class ProductsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // Attributes --------------------------------------
+
     public async Task<IActionResult> Attributes()
     {
         return View(await _productService.GetAllProductAttributes());
@@ -81,6 +85,7 @@ public class ProductsController : Controller
         return RedirectToAction(nameof(Attributes));
     }
 
+    // Atribute Values ----------------------------------
 
     public async Task<IActionResult> AttributeValues(int id)
     {
@@ -121,7 +126,6 @@ public class ProductsController : Controller
         return res;
     }
 
-
     [HttpPost]
     public async Task<IActionResult> UpdateAttributeValue(int id, int attributeId, string name, string value)
     {
@@ -133,6 +137,19 @@ public class ProductsController : Controller
 
         return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(attributeId));
     }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveAttributeValue(int attributeValueId, int attributeId)
+    {
+        var result = await _productService.RemoveAttributeValue(attributeValueId);
+        if (result.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        {
+            return View();
+        }
+        return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(attributeId));
+    }
+
+    // Product Categoriess -------------------------------------
 
     public async Task<IActionResult> Categories()
     {

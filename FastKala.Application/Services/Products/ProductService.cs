@@ -354,4 +354,25 @@ public class ProductService : IProductService
             return new OperationResult() { OperationStatus = OperationStatus.Exception };
         }
     }
+
+    public async Task<OperationResult> RemoveAttributeValue(int id)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Delete From ProductAttributeValues where Id = @ID", new { ID = id });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
 }

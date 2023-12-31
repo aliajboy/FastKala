@@ -44,8 +44,8 @@
     }
     <script>
         document.getElementById('addNewAttributeValue').addEventListener('click', function (event) {
-            event.preventDefault(); 
-            submitForm(); 
+            event.preventDefault();
+            submitForm();
         });
 
         function submitForm() {
@@ -106,6 +106,19 @@
                 $('#addNewAttributeValue').val('افزودن');
                 $('#cancellEditAttributeValue').addClass('d-none');
             }
+        }
+
+        function removeAttributeValue(valueId) {
+            $.ajax({
+                url: '/Products/RemoveAttributeValue',
+                method: 'POST',
+                data: {
+                    attributeValueId: valueId, attributeId: $('#Attribute_Id').val()
+                },
+                success: function (partial) {
+                    $('#table-data').html(partial);
+                }
+            });
         }
     </script>
 }
