@@ -37,6 +37,8 @@ public record Product
     public ProductStatus Status { get; set; }
     [DisplayName("تصویر اصلی")]
     public string? MainImage { get; set; }
+    [DisplayName("دسته بندی اصلی")]
+    public int MainCategory { get; set; } = 1;
 
     // Relations
 

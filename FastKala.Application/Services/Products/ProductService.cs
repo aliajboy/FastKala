@@ -196,12 +196,6 @@ public class ProductService : IProductService
         }
     }
 
-    /// <summary>
-    /// Get Attribute Values by ProductAttributeId and Name Content
-    /// </summary>
-    /// <param name="id">ProductAttributeId</param>
-    /// <param name="content">search content for Name of Attribute Value</param>
-    /// <returns>List of Attribute Values that has Id of "id" and Their Names contains "content"</returns>
     public async Task<AttributeValuesResponse> GetAttributeValues(int id, string content)
     {
         List<ProductAttributeValues> productAtrribute = new();
@@ -220,11 +214,6 @@ public class ProductService : IProductService
         }
     }
 
-    /// <summary>
-    /// Get Attribute Value By its Id
-    /// </summary>
-    /// <param name="attributeId">Attribute Id</param>
-    /// <returns>Attribute Value Or Null if not existed in database</returns>
     public async Task<ProductAttributeValueViewModel> GetAttributeValue(int attributeId)
     {
         ProductAttributeValueViewModel attributeValue = new();
@@ -242,13 +231,6 @@ public class ProductService : IProductService
         }
     }
 
-    /// <summary>
-    /// Update Attribute Value
-    /// </summary>
-    /// <param name="id">Attribute Id</param>
-    /// <param name="name">Attribute Name</param>
-    /// <param name="value">Attribute Value</param>
-    /// <returns>Operation Result</returns>
     public async Task<OperationResult> UpdateAttributeValue(int id, string name, string value)
     {
         OperationResult result = new();
