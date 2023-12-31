@@ -52,6 +52,10 @@
                         </tr>
                     </thead>
                     <tbody id="table-data">
+                        @if (Model.Categories.Count > 0)
+                        {
+                            <partial name="~/Views/Products/_CategoriesPartial.cshtml" model="Model" />
+                        }
                     </tbody>
                 </table>
             </div>

@@ -164,6 +164,6 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Categories()
     {
-        return View();
+        return View(new ProductCategoriesViewModel());
     }
 }

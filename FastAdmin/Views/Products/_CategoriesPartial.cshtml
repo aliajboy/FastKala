@@ -1,0 +1,21 @@
+﻿@model ProductCategoriesViewModel
+
+@foreach (var item in Model.Categories)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+            <br>
+            <form method="post" class="d-inline">
+                <a href="#" onclick="changeEditAttribute(this.id,@item.Id)" id="editCategoryButton">ویرایش</a> |
+                <button asp-route-id="@item.Id" type="button" class="btn p-0 text-decoration-none remove-product">حذف</button>
+            </form>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Link)
+        </td>
+        <td>
+
+        </td>
+    </tr>
+}
