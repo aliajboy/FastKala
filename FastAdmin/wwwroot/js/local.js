@@ -35,4 +35,3 @@ document.addEventListener('click', function (event) {
         updateFeaturesInputNames();
     }
 });
-

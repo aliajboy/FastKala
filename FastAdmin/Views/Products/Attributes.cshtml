@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody id="table-data">
-                        <partial name="_ProductAttributePartial" model="Model" />
+                        <partial name="~/Views/Products/_ProductAttributePartial.cshtml" model="Model" />
                     </tbody>
                 </table>
             </div>
@@ -72,7 +72,7 @@
             var attributeType = $('#attribute-type').val();
 
             $.ajax({
-                url: '/Products/AddNewAttribute', // Replace '/your-server-side-script' with the actual URL of your server-side script
+                url: '/Products/AddNewAttribute',
                 method: 'POST',
                 data: { attributeName: attributeName, attributeLink: attributeLink, attributeType: attributeType },
                 success: function (partial) {

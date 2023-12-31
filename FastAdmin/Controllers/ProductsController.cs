@@ -1,4 +1,5 @@
 ﻿using FastKala.Application.Interfaces;
+using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,18 @@ public class ProductsController : Controller
         return View(productView);
     }
 
+    public IActionResult EditProduct()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveProduct(int id)
+    {
+        await _productService.RemoveProductById(id);
+        return RedirectToAction(nameof(Index));
+    }
+
     public async Task<IActionResult> Attributes()
     {
         return View(await _productService.GetAllProductAttributes());
@@ -68,17 +81,6 @@ public class ProductsController : Controller
         return RedirectToAction(nameof(Attributes));
     }
 
-    public IActionResult EditProduct()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> RemoveProduct(int id)
-    {
-        await _productService.RemoveProductById(id);
-        return RedirectToAction(nameof(Index));
-    }
 
     public async Task<IActionResult> AttributeValues(int id)
     {
@@ -106,9 +108,30 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<AttributeValuesResponse> GetAttributeValues(int attributeId, string search)
     {
-        var res = await _productService.GetAttributeValuesByIdAjax(attributeId, search);
+        var res = await _productService.GetAttributeValues(attributeId, search);
 
         return res;
+    }
+
+    [HttpGet]
+    public async Task<ProductAttributeValueViewModel> GetAttributeValue(int attributeId)
+    {
+        var res = await _productService.GetAttributeValue(attributeId);
+
+        return res;
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateAttributeValue(int id, int attributeId, string name, string value)
+    {
+        var res = await _productService.UpdateAttributeValue(id, name, value);
+        if (res.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        {
+            return View();
+        }
+
+        return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(attributeId));
     }
 
     public async Task<IActionResult> Categories()

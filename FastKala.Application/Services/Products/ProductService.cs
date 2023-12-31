@@ -196,7 +196,13 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<AttributeValuesResponse> GetAttributeValuesByIdAjax(int id, string content)
+    /// <summary>
+    /// Get Attribute Values by ProductAttributeId and Name Content
+    /// </summary>
+    /// <param name="id">ProductAttributeId</param>
+    /// <param name="content">search content for Name of Attribute Value</param>
+    /// <returns>List of Attribute Values that has Id of "id" and Their Names contains "content"</returns>
+    public async Task<AttributeValuesResponse> GetAttributeValues(int id, string content)
     {
         List<ProductAttributeValues> productAtrribute = new();
         try
@@ -211,6 +217,66 @@ public class ProductService : IProductService
         catch
         {
             return new AttributeValuesResponse();
+        }
+    }
+
+    /// <summary>
+    /// Get Attribute Value By its Id
+    /// </summary>
+    /// <param name="attributeId">Attribute Id</param>
+    /// <returns>Attribute Value Or Null if not existed in database</returns>
+    public async Task<ProductAttributeValueViewModel> GetAttributeValue(int attributeId)
+    {
+        ProductAttributeValueViewModel attributeValue = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                attributeValue.AttributeValue = await connection.QuerySingleOrDefaultAsync<ProductAttributeValues>("Select * From ProductAttributeValues where Id = @Id", new { Id = attributeId });
+            }
+            return attributeValue;
+        }
+        catch
+        {
+            return new ProductAttributeValueViewModel();
+        }
+    }
+
+    /// <summary>
+    /// Update Attribute Value
+    /// </summary>
+    /// <param name="id">Attribute Id</param>
+    /// <param name="name">Attribute Name</param>
+    /// <param name="value">Attribute Value</param>
+    /// <returns>Operation Result</returns>
+    public async Task<OperationResult> UpdateAttributeValue(int id, string name, string value)
+    {
+        OperationResult result = new();
+        try
+        {
+            int res = 0;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("UPDATE ProductAttributeValues SET Name = @name, value = @value WHERE Id = @id", new
+                {
+                    name = name,
+                    value = value,
+                    id = id
+                });
+            }
+            if (res == 1)
+            {
+                result.OperationStatus = OperationStatus.Success;
+                return result;
+            }
+
+            result.OperationStatus = OperationStatus.Fail;
+            return result;
+        }
+        catch
+        {
+            result.OperationStatus = OperationStatus.Exception;
+            return result;
         }
     }
 

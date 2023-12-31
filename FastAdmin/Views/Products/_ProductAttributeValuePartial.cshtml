@@ -25,10 +25,8 @@
                         @Html.DisplayFor(modelItem => item.value)
                     </td>
                     <td>
-                        <form method="post">
-                            <a>ویرایش</a> |
-                            <button type="button" class="btn p-0 text-decoration-none remove-product">حذف</button>
-                        </form>
+                        <a href="#" id="editAttributeValueButton" onclick="changeEditAttributeValue(this.id,@item.Id)">ویرایش</a> |
+                        <button type="button" class="btn p-0 text-decoration-none remove-product" id="removeAttributeValueButton">حذف</button>
                     </td>
                 </tr>
             }

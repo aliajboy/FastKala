@@ -1,5 +1,6 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using Microsoft.Data.SqlClient;
 
 namespace FastKala.Application.Interfaces;
 public interface IProductService
@@ -14,5 +15,7 @@ public interface IProductService
     Task<OperationResult> AddProduct(ProductViewModel product);
     Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType);
     Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId);
-    Task<AttributeValuesResponse> GetAttributeValuesByIdAjax(int id, string content);
+    Task<AttributeValuesResponse> GetAttributeValues(int id, string content);
+    Task<ProductAttributeValueViewModel> GetAttributeValue(int attributeId);
+    Task<OperationResult> UpdateAttributeValue(int id, string name, string value);
 }
