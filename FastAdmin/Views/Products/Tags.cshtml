@@ -1,6 +1,6 @@
 ﻿@model ProductTagsViewModel
 @{
-    ViewData["Title"] = "Tags";
+    ViewData["Title"] = "برچسب محصولات";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,7 @@
                 <form method="post">
                     <input type="hidden" id="tag-id" />
                     <div class="form-group mb-2">
-                        <label class="control-label" asp-for="ProductTag.Name">نام دسته‌بندی</label>
+                        <label class="control-label" asp-for="ProductTag.Name">نام برچسب</label>
                         <input class="form-control" asp-for="ProductTag.Name" />
                     </div>
                     <div class="form-group mb-2">
@@ -23,8 +23,8 @@
                         <textarea class="CategoryDescription" asp-for="ProductTag.Description" style="height:450px;"></textarea>
                     </div>
                     <div class="form-group my-3">
-                        <input id="addNewCategory" type="button" value="افزودن برچسب" class="btn btn-primary" />
-                        <input type="button" value="انصراف" id="cancellEditCategory" onclick="changeEditCategory(this.id)" class="btn btn-danger d-none" />
+                        <input id="addNewTag" type="button" value="افزودن برچسب" class="btn btn-primary" />
+                        <input type="button" value="انصراف" id="cancellEditTag" onclick="changeEditTag(this.id)" class="btn btn-danger d-none" />
                     </div>
                 </form>
             </div>
@@ -66,99 +66,71 @@
 @section Scripts {
 
     <script>
-
-        function loadParentCategories() {
-            $('#Category_ParentId').html('');
-            var opt = document.createElement('option');
-            opt.value = 0;
-            opt.innerHTML = 'دسته بندی اصلی';
-            $('#Category_ParentId').append(opt);
-            $.ajax({
-                url: '/Products/GetCategories',
-                method: 'Get',
-                success: function (data) {
-                    for (var i = 0; i < data.categories.length; i++) {
-                        var opt = document.createElement('option');
-                        opt.value = data.categories[i].id;
-                        opt.innerHTML = data.categories[i].name;
-                        $('#Category_ParentId').append(opt);
-                    }
-                }
-            });
-        }
-
-        document.getElementById('addNewCategory').addEventListener('click', function (event) {
+        document.getElementById('addNewTag').addEventListener('click', function (event) {
             event.preventDefault();
             submitForm();
         });
 
         function submitForm() {
             tinyMCE.triggerSave();
-            var categoryName = $('#Category_Name').val();
-            var categoryLink = $('#Category_Link').val();
-            var categoryDescription = $('#Category_Description').val();
-            var categoryParentId = $('#Category_ParentId').val();
-            if (document.getElementById('addNewCategory').value == 'افزودن دسته بندی') {
+            var tagName = $('#ProductTag_Name').val();
+            var tagLink = $('#ProductTag_Link').val();
+            var tagDescription = $('#ProductTag_Description').val();
+            if (document.getElementById('addNewTag').value == 'افزودن برچسب') {
                 $.ajax({
-                    url: '/Products/CreateCategory',
+                    url: '/Products/CreateTag',
                     method: 'POST',
-                    data: { name: categoryName, link: categoryLink, description: categoryDescription, parentId: categoryParentId },
+                    data: { name: tagName, link: tagLink, description: tagDescription },
                     success: function (partial) {
                         $('#table-data').html(partial);
-                        $('#Category_Name').val('');
-                        $('#Category_Link').val('');
-                        $('#Category_ParentId').val(0);
+                        $('#ProductTag_Name').val('');
+                        $('#ProductTag_Link').val('');
                         tinyMCE.activeEditor.setContent('');
                     }
                 });
-                loadParentCategories();
             }
-            else if (document.getElementById('addNewCategory').value == 'ویرایش دسته بندی') {
+            else if (document.getElementById('addNewTag').value == 'ویرایش برچسب') {
                 $.ajax({
-                    url: '/Products/UpdateCategory',
+                    url: '/Products/UpdateTag',
                     method: 'POST',
                     data: {
-                        id: $('#category-id').val(), name: categoryName, link: categoryLink, description: categoryDescription, parentId: categoryParentId
+                        id: $('#tag-id').val(), name: tagName, link: tagLink, description: tagDescription
                     },
                     success: function (partial) {
                         $('#table-data').html(partial);
-                        $('#Category_Name').val('');
-                        $('#Category_Link').val('');
+                        $('#ProductTag_Name').val('');
+                        $('#ProductTag_Link').val('');
                         tinyMCE.activeEditor.setContent('');
-                        $('#Category_ParentId').val('');
-                        $('#category-id').val('');
-                        $('#addNewCategory').val('افزودن ویژگی');
-                        $('#cancellEditCategory').addClass('d-none');
-                        loadParentCategories();
+                        $('#tag-id').val('');
+                        $('#addNewTag').val('افزودن برچسب');
+                        $('#cancellEditTag').addClass('d-none');
                     }
                 });
             }
         }
 
-        function changeEditCategory(id, itemId) {
-            if (id == 'editCategoryButton') {
+        function changeEditTag(id, itemId) {
+            if (id == 'editTagButton') {
                 $.ajax({
-                    url: '/Products/GetCategory',
+                    url: '/Products/GetTag',
                     method: 'POST',
-                    data: { categoryId: itemId },
+                    data: { tagId: itemId },
                     success: function (data) {
-                        $('#Category_Name').val(data.category.name);
-                        $('#Category_Link').val(data.category.link);
-                        tinymce.activeEditor.setContent(data.category.description);
-                        $('#Category_ParentId').val(data.category.parentId);
+                        $('#ProductTag_Name').val(data.productTag.name);
+                        $('#ProductTag_Link').val(data.productTag.link);
+                        tinymce.activeEditor.setContent(data.productTag.description);
                     }
                 });
-                $('#category-id').val(itemId);
-                $('#addNewCategory').val('ویرایش دسته بندی');
-                $('#cancellEditCategory').removeClass('d-none');
+                $('#tag-id').val(itemId);
+                $('#addNewTag').val('ویرایش برچسب');
+                $('#cancellEditTag').removeClass('d-none');
             }
-            else if (id == 'cancellEditCategory') {
-                $('#Category_Name').val('');
-                $('#Category_Link').val('');
+            else if (id == 'cancellEditTag') {
+                $('#ProductTag_Name').val('');
+                $('#ProductTag_Link').val('');
                 tinyMCE.activeEditor.setContent('');
-                $('#Category_ParentId').val(0);
-                $('#addNewCategory').val('افزودن دسته بندی');
-                $('#cancellEditCategory').addClass('d-none');
+                $('#addNewTag').val('افزودن برچسب');
+                $('#cancellEditTag').addClass('d-none');
             }
         }
     </script>

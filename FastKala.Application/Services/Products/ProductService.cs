@@ -537,7 +537,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<OperationResult> AddProductTag(string name, string link, string description)
+    public async Task<OperationResult> AddProductTag(string name, string link, string description = "")
     {
         try
         {
@@ -587,7 +587,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<OperationResult> UpdateProductTag(int id, string name, string link, string description)
+    public async Task<OperationResult> UpdateProductTag(int id, string name, string link, string description = "")
     {
         try
         {

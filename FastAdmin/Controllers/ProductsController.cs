@@ -253,14 +253,14 @@ public class ProductsController : Controller
     public async Task<PartialViewResult> CreateTag(string name, string link, string description)
     {
         await _productService.AddProductTag(name, link, description);
-        return PartialView("_CategoriesPartial", await _productService.GetProductTags());
+        return PartialView("_TagsPartial", await _productService.GetProductTags());
     }
 
     [HttpPost]
     public async Task<PartialViewResult> UpdateTag(int id, string name, string link, string description)
     {
         await _productService.UpdateProductTag(id, name, link, description);
-        return PartialView("_CategoriesPartial", await _productService.GetProductTags());
+        return PartialView("_TagsPartial", await _productService.GetProductTags());
     }
 
     [HttpPost]
