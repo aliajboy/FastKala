@@ -12,7 +12,8 @@ public class ProductsController : Controller
         _productService = productService;
     }
 
-    // Products ---------------------------------------
+    #region Products
+
     public async Task<IActionResult> Index()
     {
         var products = await _productService.GetAllProducts();
@@ -62,7 +63,9 @@ public class ProductsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // Attributes --------------------------------------
+    #endregion
+
+    #region Attributes
 
     public async Task<IActionResult> Attributes()
     {
@@ -96,7 +99,9 @@ public class ProductsController : Controller
         return PartialView("_ProductAttributePartial", await _productService.GetAllProductAttributes());
     }
 
-    // Atribute Values ----------------------------------
+    #endregion
+
+    #region Attribute Values
 
     public async Task<IActionResult> AttributeValues(int id)
     {
@@ -160,7 +165,9 @@ public class ProductsController : Controller
         return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(attributeId));
     }
 
-    // Product Categories -------------------------------------
+    #endregion
+
+    #region Categories
 
     public async Task<IActionResult> Categories()
     {
@@ -221,10 +228,47 @@ public class ProductsController : Controller
         return RedirectToAction(nameof(Categories));
     }
 
-    // Product Tags --------------------------------------------
+    #endregion
+
+    #region Tags
 
     public async Task<IActionResult> Tags()
     {
-        return View();
+        return View(await _productService.GetProductTags());
     }
+
+    [HttpGet]
+    public async Task<ProductTagsViewModel> GetTags()
+    {
+        return await _productService.GetProductTags();
+    }
+
+    [HttpPost]
+    public async Task<ProductTagsViewModel> GetTag(int tagId)
+    {
+        return await _productService.GetProductTags(tagId);
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> CreateTag(string name, string link, string description)
+    {
+        await _productService.AddProductTag(name, link, description);
+        return PartialView("_CategoriesPartial", await _productService.GetProductTags());
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> UpdateTag(int id, string name, string link, string description)
+    {
+        await _productService.UpdateProductTag(id, name, link, description);
+        return PartialView("_CategoriesPartial", await _productService.GetProductTags());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveTag(int id)
+    {
+        await _productService.RemoveProductTag(id);
+        return RedirectToAction(nameof(Tags));
+    }
+
+    #endregion
 }

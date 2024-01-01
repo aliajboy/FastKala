@@ -15,26 +15,7 @@ public class ProductService : IProductService
         _connectionString = connectionString;
     }
 
-    public async Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId)
-    {
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues ([Name],[value],[ProductAttributeId]) VALUES (@name,@value,@productAttributeId)",
-                    new { name = attributeValueName, value = attributeValeLink, productAttributeId = attributeId });
-                if (result == 1)
-                {
-                    return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "ویژگی محصول باموفقیت اضافه شد" };
-                }
-            }
-            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "خطا در دیتابیس" };
-        }
-        catch
-        {
-            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطای سیستمی" };
-        }
-    }
+    #region Product
 
     public async Task<OperationResult> AddProduct(ProductViewModel product)
     {
@@ -112,6 +93,86 @@ public class ProductService : IProductService
         }
     }
 
+    public async Task<ProductListViewModel> GetAllProducts(int count = 20)
+    {
+        ProductListViewModel productList = new();
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new { Count = count });
+                productList.TotalProductsCount = await connection.QuerySingleOrDefaultAsync<int>("SELECT COUNT(Id) FROM Products");
+                productList.Products = products.ToList();
+            }
+            return productList;
+        }
+        catch
+        {
+            return productList;
+        }
+    }
+
+    public async Task<ProductViewModel> GetProductById(int id)
+    {
+        ProductViewModel product = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new { ID = id }))
+                {
+                    product.Product = await multi.ReadSingleAsync<Product>();
+                    product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
+                    product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
+                }
+            }
+            return product;
+        }
+        catch
+        {
+            return product;
+        }
+    }
+
+    public async Task<OperationResult> RemoveProductById(int id)
+    {
+        int res;
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                await connection.ExecuteAsync("delete from ProductAttributeRelations where ProductId = @productId", new { productId = id });
+                res = await connection.ExecuteAsync("Delete From Products where Id = @ID", new { ID = id });
+                await connection.CloseAsync();
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
+            }
+
+
+            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "محصولی حذف نشد یا بیش از یک محصول حذف شده است" };
+        }
+        catch (Exception ex)
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = ex.Message };
+        }
+    }
+
+    public async Task<OperationResult> UpdateProduct(ProductViewModel product)
+    {
+        using (SqlConnection connection = new SqlConnection(_connectionString))
+        {
+
+        }
+        throw new NotImplementedException();
+    }
+
+    #endregion
+
+    #region Attributes
+
     public async Task<OperationResult> AddProductAttribute(string attributeName, string attributeLink, int attributeType)
     {
         try
@@ -156,25 +217,6 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ProductListViewModel> GetAllProducts(int count = 20)
-    {
-        ProductListViewModel productList = new();
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new { Count = count });
-                productList.TotalProductsCount = await connection.QuerySingleOrDefaultAsync<int>("SELECT COUNT(Id) FROM Products");
-                productList.Products = products.ToList();
-            }
-            return productList;
-        }
-        catch
-        {
-            return productList;
-        }
-    }
-
     public async Task<ProductAttributeValueViewModel> GetProductAttributeById(int id)
     {
         ProductAttributeValueViewModel productAtrribute = new();
@@ -193,6 +235,81 @@ public class ProductService : IProductService
         catch
         {
             return productAtrribute;
+        }
+    }
+
+    public async Task<OperationResult> RemoveAttributeById(int id)
+    {
+        try
+        {
+            int res = 0;
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: System.Data.CommandType.StoredProcedure);
+            }
+            if (res >= 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> UpdateAttribute(int id, string name, string link, byte type)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Update ProductAttributes SET Name = @name, Link = @link, Type = @type Where Id = @ID",
+                    new
+                    {
+                        id = id,
+                        name = name,
+                        link = link,
+                        type = type
+                    });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    #endregion
+
+    #region Attribute Values
+
+    public async Task<OperationResult> AddAttributeValue(string attributeValueName, string attributeValeLink, int attributeId)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues ([Name],[value],[ProductAttributeId]) VALUES (@name,@value,@productAttributeId)",
+                    new { name = attributeValueName, value = attributeValeLink, productAttributeId = attributeId });
+                if (result == 1)
+                {
+                    return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "ویژگی محصول باموفقیت اضافه شد" };
+                }
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "خطا در دیتابیس" };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطای سیستمی" };
         }
     }
 
@@ -262,84 +379,6 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ProductViewModel> GetProductById(int id)
-    {
-        ProductViewModel product = new();
-        try
-        {
-            using (SqlConnection connection = new(_connectionString))
-            {
-                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new { ID = id }))
-                {
-                    product.Product = await multi.ReadSingleAsync<Product>();
-                    product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
-                    product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
-                }
-            }
-            return product;
-        }
-        catch
-        {
-            return product;
-        }
-    }
-
-    public async Task<OperationResult> RemoveProductById(int id)
-    {
-        int res;
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                await connection.ExecuteAsync("delete from ProductAttributeRelations where ProductId = @productId", new { productId = id });
-                res = await connection.ExecuteAsync("Delete From Products where Id = @ID", new { ID = id });
-                await connection.CloseAsync();
-            }
-            if (res == 1)
-            {
-                return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
-            }
-
-
-            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "محصولی حذف نشد یا بیش از یک محصول حذف شده است" };
-        }
-        catch (Exception ex)
-        {
-            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = ex.Message };
-        }
-    }
-
-    public async Task<OperationResult> UpdateProduct(ProductViewModel product)
-    {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
-        {
-
-        }
-        throw new NotImplementedException();
-    }
-
-    public async Task<OperationResult> RemoveAttributeById(int id)
-    {
-        try
-        {
-            int res = 0;
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: System.Data.CommandType.StoredProcedure);
-            }
-            if (res >= 1)
-            {
-                return new OperationResult() { OperationStatus = OperationStatus.Success };
-            }
-            return new OperationResult() { OperationStatus = OperationStatus.Fail };
-        }
-        catch
-        {
-            return new OperationResult() { OperationStatus = OperationStatus.Exception };
-        }
-    }
-
     public async Task<OperationResult> RemoveAttributeValue(int id)
     {
         try
@@ -361,34 +400,9 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<OperationResult> UpdateAttribute(int id, string name, string link, byte type)
-    {
-        try
-        {
-            int res;
-            using (SqlConnection connection = new(_connectionString))
-            {
-                res = await connection.ExecuteAsync("Update ProductAttributes SET Name = @name, Link = @link, Type = @type Where Id = @ID",
-                    new
-                    {
-                        id = id,
-                        name = name,
-                        link = link,
-                        type = type
-                    });
-            }
-            if (res == 1)
-            {
-                return new OperationResult() { OperationStatus = OperationStatus.Success };
-            }
+    #endregion
 
-            return new OperationResult() { OperationStatus = OperationStatus.Fail };
-        }
-        catch
-        {
-            return new OperationResult() { OperationStatus = OperationStatus.Exception };
-        }
-    }
+    #region Categories
 
     public async Task<ProductCategoriesViewModel> GetProductCategories(int id = 0)
     {
@@ -399,12 +413,12 @@ public class ProductService : IProductService
             {
                 if (id == 0)
                 {
-                    var categories = await connection.QueryAsync<ProductCategory>("Select * From ProductCategory");
+                    var categories = await connection.QueryAsync<ProductCategory>("Select * From ProductCategories");
                     productCategories.Categories = categories.ToList();
                 }
                 else if (id > 0)
                 {
-                    productCategories.Category = await connection.QuerySingleOrDefaultAsync<ProductCategory>("Select TOP 1 * From ProductCategory where Id = @Id", new { Id = id });
+                    productCategories.Category = await connection.QuerySingleOrDefaultAsync<ProductCategory>("Select TOP 1 * From ProductCategories where Id = @Id", new { Id = id });
                 }
             }
             return productCategories;
@@ -422,7 +436,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = new(_connectionString))
             {
-                res = await connection.ExecuteAsync("INSERT INTO ProductCategory (Name,Link,Description,ParentId) VALUES (@name,@link,@description,@parentId)", new
+                res = await connection.ExecuteAsync("INSERT INTO ProductCategories (Name,Link,Description,ParentId) VALUES (@name,@link,@description,@parentId)", new
                 {
                     name = category.Category.Name,
                     link = category.Category.Link,
@@ -449,7 +463,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = new(_connectionString))
             {
-                res = await connection.ExecuteAsync("Delete From ProductCategory Where Id = @ID", new
+                res = await connection.ExecuteAsync("Delete From ProductCategories Where Id = @ID", new
                 {
                     ID = id
                 });
@@ -473,7 +487,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = new(_connectionString))
             {
-                res = await connection.ExecuteAsync("UPDATE ProductCategory SET Name = @name,Link = @link,Description = @description,ParentId = @parentId WHERE Id = @id", new
+                res = await connection.ExecuteAsync("UPDATE ProductCategories SET Name = @name,Link = @link,Description = @description,ParentId = @parentId WHERE Id = @id", new
                 {
                     id = category.Category.Id,
                     name = category.Category.Name,
@@ -493,4 +507,112 @@ public class ProductService : IProductService
             return new OperationResult() { OperationStatus = OperationStatus.Exception };
         }
     }
+
+    #endregion
+
+    #region Tags
+
+    public async Task<ProductTagsViewModel> GetProductTags(int id = 0)
+    {
+        ProductTagsViewModel productTags = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                if (id == 0)
+                {
+                    var tags = await connection.QueryAsync<ProductTag>("Select * From ProductTags");
+                    productTags.ProductTags = tags.ToList();
+                }
+                else if (id > 0)
+                {
+                    productTags.ProductTag = await connection.QuerySingleOrDefaultAsync<ProductTag>("Select TOP 1 * From ProductTags where Id = @Id", new { Id = id });
+                }
+            }
+            return productTags;
+        }
+        catch
+        {
+            return productTags;
+        }
+    }
+
+    public async Task<OperationResult> AddProductTag(string name, string link, string description)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("INSERT INTO ProductTags (Name,Link,Description) VALUES (@name,@link,@description)", new
+                {
+                    name = name,
+                    link = link,
+                    description = description
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> RemoveProductTag(int id)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Delete From ProductTags Where Id = @ID", new
+                {
+                    ID = id
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> UpdateProductTag(int id, string name, string link, string description)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("UPDATE ProductTags SET Name = @name,Link = @link,Description = @description WHERE Id = @id", new
+                {
+                    id = id,
+                    name = name,
+                    link = link,
+                    description = description
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    #endregion
 }
