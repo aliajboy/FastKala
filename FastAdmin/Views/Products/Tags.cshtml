@@ -4,5 +4,71 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Tags</h1>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" id="category-id" />
+                   @*  <div class="form-group mb-2">
+                        <label class="control-label" asp-for="Category.Name">نام دسته‌بندی</label>
+                        <input class="form-control" asp-for="Category.Name" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="control-label" asp-for="Category.Link">لینک</label>
+                        <input class="form-control" asp-for="Category.Link" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="control-label" asp-for="Category.ParentId">دسته‌بندی مادر</label>
+                        <select class="form-control" asp-for="Category.ParentId">
+                            <option value="0" selected>دسته بندی اصلی</option>
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" asp-for="Category.Description">توضیحات</label>
+                        <textarea class="CategoryDescription" asp-for="Category.Description" style="height:450px;"></textarea>
+                    </div> *@
+                    <div class="form-group my-3">
+                        <input id="addNewCategory" type="button" value="افزودن دسته بندی" class="btn btn-primary" />
+                        <input type="button" value="انصراف" id="cancellEditCategory" onclick="changeEditCategory(this.id)" class="btn btn-danger d-none" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped bg-white border b-rounded">
+                    <thead>
+                        <tr>
+                            <th>
+                                عکس
+                            </th>
+                            <th>
+                                نام دسته بندی
+                            </th>
+                            <th>
+                                لینک
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-data">
+                       @*  @if (Model.Categories.Count > 0)
+                        {
+                            <partial name="~/Views/Products/_CategoriesPartial.cshtml" model="Model" />
+                        } *@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section tinymce {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+}
