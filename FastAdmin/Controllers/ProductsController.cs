@@ -167,6 +167,12 @@ public class ProductsController : Controller
         return View(await _productService.GetProductCategories());
     }
 
+    [HttpGet]
+    public async Task<ProductCategoriesViewModel> GetCategories()
+    {
+        return await _productService.GetProductCategories();
+    }
+
     [HttpPost]
     public async Task<ProductCategoriesViewModel> GetCategory(int categoryId)
     {

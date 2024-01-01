@@ -22,6 +22,10 @@
                         <label class="control-label" asp-for="Category.ParentId">دسته‌بندی مادر</label>
                         <select class="form-control" asp-for="Category.ParentId">
                             <option value="0" selected>دسته بندی اصلی</option>
+                            @foreach (var item in Model.Categories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
                     <div class="form-group">
@@ -73,6 +77,26 @@
 
     <script>
 
+        function loadParentCategories() {
+            $('#Category_ParentId').html('');
+            var opt = document.createElement('option');
+            opt.value = 0;
+            opt.innerHTML = 'دسته بندی اصلی';
+            $('#Category_ParentId').append(opt);
+            $.ajax({
+                url: '/Products/GetCategories',
+                method: 'Get',
+                success: function (data) {
+                    for (var i = 0; i < data.categories.length; i++) {
+                        var opt = document.createElement('option');
+                        opt.value = data.categories[i].id;
+                        opt.innerHTML = data.categories[i].name;
+                        $('#Category_ParentId').append(opt);
+                    }
+                }
+            });
+        }
+
         document.getElementById('addNewCategory').addEventListener('click', function (event) {
             event.preventDefault();
             submitForm();
@@ -97,6 +121,7 @@
                         tinyMCE.activeEditor.setContent('');
                     }
                 });
+                loadParentCategories();
             }
             else if (document.getElementById('addNewCategory').value == 'ویرایش دسته بندی') {
                 $.ajax({
@@ -113,6 +138,7 @@
                         $('#category-id').val('');
                         $('#addNewCategory').val('افزودن ویژگی');
                         $('#cancellEditCategory').addClass('d-none');
+                        loadParentCategories();
                     }
                 });
             }
