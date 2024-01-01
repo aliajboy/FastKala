@@ -26,7 +26,8 @@ public class ProductsController : Controller
         if (id == null)
         {
             var attr = await _productService.GetAllProductAttributes();
-            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Product = new() { Name = "" } };
+            var categories = await _productService.GetProductCategories();
+            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Product = new() { Name = "", Categories = categories.Categories } };
             return View(model);
         }
 
