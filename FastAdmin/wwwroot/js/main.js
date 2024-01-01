@@ -211,6 +211,16 @@
         directionality: "rtl"
     });
 
+
+    tinymce.init({
+        selector: 'textarea.CategoryDescription',
+        height: 400,
+        promotion: false,
+        menubar: false,
+        plugins: 'preview importcss autolink autosave save directionality code visualblocks visualchars image link media table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+        directionality: "rtl"
+    });
+
     /**
      * Initiate Bootstrap validation check
      */

@@ -1,5 +1,5 @@
 ﻿namespace FastKala.Domain.Models;
-public class ProductCategory
+public record ProductCategory
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -40,4 +40,15 @@ public interface IProductService
     Task<OperationResult> UpdateAttributeValue(int id, string name, string value);
     Task<OperationResult> RemoveAttributeValue(int id);
     Task<OperationResult> UpdateAttribute(int id, string name, string link, byte type);
+
+    /// <summary>
+    /// Get Product Category if Id is Filled Or Get List of All Categories if Id is null or 0.
+    /// </summary>
+    /// <param name="id">Category Id</param>
+    /// <returns>List of All Categories if Id is NULL or 0.
+    /// Or returns a Category if Id is Filled.</returns>
+    Task<ProductCategoriesViewModel> GetProductCategories(int id = 0);
+    Task<OperationResult> AddProductCategory(ProductCategoriesViewModel category);
+    Task<OperationResult> RemoveProductCategory(int id);
+    Task<OperationResult> UpdateProductCategory(ProductCategoriesViewModel category);
 }

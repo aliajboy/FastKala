@@ -291,7 +291,10 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
+                await connection.OpenAsync();
+                await connection.ExecuteAsync("delete from ProductAttributeRelations where ProductId = @productId", new { productId = id });
                 res = await connection.ExecuteAsync("Delete From Products where Id = @ID", new { ID = id });
+                await connection.CloseAsync();
             }
             if (res == 1)
             {
@@ -307,7 +310,7 @@ public class ProductService : IProductService
         }
     }
 
-    public Task<OperationResult> UpdateProduct(ProductViewModel product)
+    public async Task<OperationResult> UpdateProduct(ProductViewModel product)
     {
         using (SqlConnection connection = new SqlConnection(_connectionString))
         {
@@ -379,6 +382,110 @@ public class ProductService : IProductService
                 return new OperationResult() { OperationStatus = OperationStatus.Success };
             }
 
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<ProductCategoriesViewModel> GetProductCategories(int id = 0)
+    {
+        ProductCategoriesViewModel productCategories = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                if (id == 0)
+                {
+                    var categories = await connection.QueryAsync<ProductCategory>("Select * From ProductCategory");
+                    productCategories.Categories = categories.ToList();
+                }
+                else if (id > 0)
+                {
+                    productCategories.Category = await connection.QuerySingleOrDefaultAsync<ProductCategory>("Select TOP 1 * From ProductCategory where Id = @Id", new { Id = id });
+                }
+            }
+            return productCategories;
+        }
+        catch
+        {
+            return productCategories;
+        }
+    }
+
+    public async Task<OperationResult> AddProductCategory(ProductCategoriesViewModel category)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("INSERT INTO ProductCategory (Name,Link,Description,ParentId) VALUES (@name,@link,@description,@parentId)", new
+                {
+                    name = category.Category.Name,
+                    link = category.Category.Link,
+                    description = category.Category.Description,
+                    parentId = category.Category.ParentId
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> RemoveProductCategory(int id)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Delete From ProductCategory Where Id = @ID", new
+                {
+                    ID = id
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> UpdateProductCategory(ProductCategoriesViewModel category)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("UPDATE ProductCategory SET Name = @name,Link = @link,Description = @description,ParentId = @parentId WHERE Id = @id", new
+                {
+                    id = category.Category.Id,
+                    name = category.Category.Name,
+                    link = category.Category.Link,
+                    description = category.Category.Description,
+                    parentId = category.Category.ParentId
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
             return new OperationResult() { OperationStatus = OperationStatus.Fail };
         }
         catch

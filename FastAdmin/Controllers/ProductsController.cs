@@ -160,10 +160,65 @@ public class ProductsController : Controller
         return PartialView("_ProductAttributeValuePartial", await _productService.GetProductAttributeById(attributeId));
     }
 
-    // Product Categoriess -------------------------------------
+    // Product Categories -------------------------------------
 
     public async Task<IActionResult> Categories()
     {
-        return View(new ProductCategoriesViewModel());
+        return View(await _productService.GetProductCategories());
+    }
+
+    [HttpPost]
+    public async Task<ProductCategoriesViewModel> GetCategory(int categoryId)
+    {
+        return await _productService.GetProductCategories(categoryId);
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> CreateCategory(string name, string link, string description, int parentId)
+    {
+        ProductCategoriesViewModel viewModel = new ProductCategoriesViewModel()
+        {
+            Category = new FastKala.Domain.Models.ProductCategory()
+            {
+                Name = name,
+                Link = link,
+                Description = description,
+                ParentId = parentId
+            }
+        };
+        await _productService.AddProductCategory(viewModel);
+        return PartialView("_CategoriesPartial", await _productService.GetProductCategories());
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> UpdateCategory(int id, string name, string link, string description, int parentId)
+    {
+        ProductCategoriesViewModel viewModel = new ProductCategoriesViewModel()
+        {
+            Category = new FastKala.Domain.Models.ProductCategory()
+            {
+                Id = id,
+                Name = name,
+                Link = link,
+                Description = description,
+                ParentId = parentId
+            }
+        };
+        await _productService.UpdateProductCategory(viewModel);
+        return PartialView("_CategoriesPartial", await _productService.GetProductCategories());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveCategory(int id)
+    {
+        await _productService.RemoveProductCategory(id);
+        return RedirectToAction(nameof(Categories));
+    }
+
+    // Product Tags --------------------------------------------
+
+    public async Task<IActionResult> Tags()
+    {
+        return View();
     }
 }
