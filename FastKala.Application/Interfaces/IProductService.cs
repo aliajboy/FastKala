@@ -75,4 +75,16 @@ public interface IProductService
     Task<OperationResult> UpdateProductTag(int id, string name, string link, string description);
 
     #endregion
+
+    #region Brands
+
+    Task<ProductBrandsViewModel> GetProductBrands(int id = 0);
+
+    Task<OperationResult> AddProductBrand(string name, string link, string description = "");
+
+    Task<OperationResult> RemoveProductBrand(int id);
+
+    Task<OperationResult> UpdateProductBrand(int id, string name, string link, string description = "");
+
+    #endregion
 }

@@ -537,7 +537,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<OperationResult> AddProductTag(string name, string link, string description = "")
+    public async Task<OperationResult> AddProductTag(string name, string link, string description)
     {
         try
         {
@@ -548,7 +548,7 @@ public class ProductService : IProductService
                 {
                     name = name,
                     link = link,
-                    description = description
+                    description = description ?? ""
                 });
             }
             if (res == 1)
@@ -587,7 +587,7 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<OperationResult> UpdateProductTag(int id, string name, string link, string description = "")
+    public async Task<OperationResult> UpdateProductTag(int id, string name, string link, string description)
     {
         try
         {
@@ -599,7 +599,114 @@ public class ProductService : IProductService
                     id = id,
                     name = name,
                     link = link,
-                    description = description
+                    description = description ?? ""
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    #endregion
+
+    #region Brands
+
+    public async Task<ProductBrandsViewModel> GetProductBrands(int id = 0)
+    {
+
+        ProductBrandsViewModel productBrands = new();
+        try
+        {
+            using (SqlConnection connection = new(_connectionString))
+            {
+                if (id == 0)
+                {
+                    var brands = await connection.QueryAsync<ProductBrand>("Select * From ProductBrands");
+                    productBrands.Brands = brands.ToList();
+                }
+                else if (id > 0)
+                {
+                    productBrands.Brand = await connection.QuerySingleOrDefaultAsync<ProductBrand>("Select TOP 1 * From ProductBrands where Id = @Id", new { Id = id });
+                }
+            }
+            return productBrands;
+        }
+        catch
+        {
+            return productBrands;
+        }
+    }
+
+    public async Task<OperationResult> AddProductBrand(string name, string link, string description)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("INSERT INTO ProductBrands (Name,Link,Description) VALUES (@name,@link,@description)", new
+                {
+                    name = name,
+                    link = link,
+                    description = description ?? ""
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> RemoveProductBrand(int id)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("Delete From roductBrands Where Id = @ID", new
+                {
+                    ID = id
+                });
+            }
+            if (res == 1)
+            {
+                return new OperationResult() { OperationStatus = OperationStatus.Success };
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> UpdateProductBrand(int id, string name, string link, string description)
+    {
+        try
+        {
+            int res;
+            using (SqlConnection connection = new(_connectionString))
+            {
+                res = await connection.ExecuteAsync("UPDATE ProductBrands SET Name = @name,Link = @link,Description = @description WHERE Id = @id", new
+                {
+                    id = id,
+                    name = name,
+                    link = link,
+                    description = description ?? ""
                 });
             }
             if (res == 1)

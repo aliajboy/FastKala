@@ -230,7 +230,13 @@
                 </span>
             </div>
             <div class="card-body">
-                <select class="form-control" id="brand-select" multiple></select>
+                <select class="form-control" asp-for="Product.BrandId">
+                    <option value="0" selected>انتخاب برند</option>
+                    @foreach (var item in Model.Brands)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
             </div>
         </div> @*Product brand*@
         <div class="card">
@@ -519,7 +525,7 @@
 
         $('#brand-select').select2({
             ajax: {
-                url: "/Products/GetTags",
+                url: "/Products/GetBrands",
                 method: 'Get',
                 processResults: function (data, params) {
 
@@ -557,6 +563,37 @@
                     return "نتیجه ای یافت نشد";
                 }
             }
+        });
+
+        $("#addproductform").submit(function (eventObj) {
+            let attributeSelects = $('.select2-hidden-accessible').map(function () { return this.id; });
+            for (var i = 0; i < attributeSelects.length; i++) {
+                let a = attributeSelects[i].split('-')[0];
+                switch (a) {
+                    case 'brand':
+                        a = "b";
+                        break;
+                    case 'tag':
+                        let tags = $('#' + attributeSelects[i]).select2('data');
+                        for (let x = 0; x < tags.length; x++) {
+                            $("<input />").attr("type", "hidden")
+                                .attr("name", "Product.Tags[" + x + "].TagId")
+                                .attr("value", tags[x].id)
+                                .appendTo("#addproductform");
+                        }
+                        break;
+                    case 'select':
+                        let items = $('#' + attributeSelects[i]).select2('data');
+                        for (let x = 0; x < items.length; x++) {
+                            $("<input />").attr("type", "hidden")
+                                .attr("name", "Product.Attributes[" + x + "].AttributeValueId")
+                                .attr("value", items[x].id)
+                                .appendTo("#addproductform");
+                        }
+                        break;
+                }
+            }
+            return true;
         });
     </script>
 }

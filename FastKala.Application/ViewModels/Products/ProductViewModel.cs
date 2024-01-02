@@ -10,5 +10,6 @@ public class ProductViewModel
     public List<string> ProductCons { get; set; } = new();
     public List<ProductAttribute> ProductAttributes { get; set; } = new();
     public List<ProductCategory> Categories { get; set; } = new();
+    public List<ProductBrand> Brands { get; set; } = new();
     public IFormFile? MainImage { get; set; }
 }

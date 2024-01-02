@@ -27,7 +27,8 @@ public class ProductsController : Controller
         {
             var attr = await _productService.GetAllProductAttributes();
             var categories = await _productService.GetProductCategories();
-            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Categories = categories.Categories, Product = new() { Name = "" } };
+            var brands = await _productService.GetProductBrands();
+            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Brands = brands.Brands, Categories = categories.Categories, Product = new() { Name = "" } };
             return View(model);
         }
 
@@ -268,6 +269,48 @@ public class ProductsController : Controller
     public async Task<IActionResult> RemoveTag(int id)
     {
         await _productService.RemoveProductTag(id);
+        return RedirectToAction(nameof(Tags));
+    }
+
+    #endregion
+
+    #region Brands
+
+    public async Task<IActionResult> Brands()
+    {
+        return View(await _productService.GetProductBrands());
+    }
+
+    [HttpGet]
+    public async Task<ProductBrandsViewModel> GetBrands()
+    {
+        return await _productService.GetProductBrands();
+    }
+
+    [HttpPost]
+    public async Task<ProductBrandsViewModel> GetBrand(int brandId)
+    {
+        return await _productService.GetProductBrands(brandId);
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> CreateBrand(string name, string link, string description)
+    {
+        await _productService.AddProductBrand(name, link, description);
+        return PartialView("_BrandsPartial", await _productService.GetProductBrands());
+    }
+
+    [HttpPost]
+    public async Task<PartialViewResult> UpdateBrand(int id, string name, string link, string description)
+    {
+        await _productService.UpdateProductBrand(id, name, link, description);
+        return PartialView("_BrandsPartial", await _productService.GetProductBrands());
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveBrand(int id)
+    {
+        await _productService.RemoveProductBrand(id);
         return RedirectToAction(nameof(Tags));
     }
 

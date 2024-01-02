@@ -14,7 +14,9 @@ public record Product
     [DisplayName("کد محصول")]
     public int? Sku { get; set; }
     [DisplayName("توضیحات")]
-    public string? Description { get; set; }
+    public string Description { get; set; } = "";
+    [DisplayName("برند")]
+    public int BrandId { get; set; }
     [DisplayName("قیمت")]
     [DisplayFormat(DataFormatString = "{0:N0}")]
     public int Price { get; set; }

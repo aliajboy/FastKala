@@ -35,35 +35,3 @@ document.addEventListener('click', function (event) {
         updateFeaturesInputNames();
     }
 });
-
-
-$("#addproductform").submit(function (eventObj) {
-    let attributeSelects = $('.select2-hidden-accessible').map(function () { return this.id; });
-    for (var i = 0; i < attributeSelects.length; i++) {
-        let a = attributeSelects[i].split('-')[0];
-        switch (a) {
-            case 'brand':
-                a = "b";
-                break;
-            case 'tag':
-                let tags = $('#' + attributeSelects[i]).select2('data');
-                for (let x = 0; x < tags.length; x++) {
-                    $("<input />").attr("type", "hidden")
-                        .attr("name", "Product.Tags[" + x + "].TagId")
-                        .attr("value", tags[x].id)
-                        .appendTo("#addproductform");
-                }
-                break;
-            case 'select':
-                let items = $('#' + attributeSelects[i]).select2('data');
-                for (let x = 0; x < items.length; x++) {
-                    $("<input />").attr("type", "hidden")
-                        .attr("name", "Product.Attributes[" + x + "].AttributeValueId")
-                        .attr("value", items[x].id)
-                        .appendTo("#addproductform");
-                }
-                break;
-        }
-    }
-    return true;
-});
