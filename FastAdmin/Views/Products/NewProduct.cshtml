@@ -187,24 +187,28 @@
                 دسته‌بندی محصول
             </div>
             <div class="card-body">
+                <input asp-for="Product.MainCategory" type="hidden"/>
                 <ul class="border border-2 rounded-3 p-3">
                     @foreach (var item in Model.Product.Categories.Where(x => x.ParentId == 0))
                     {
                         <li class="list-group-item mb-1">
-                            <input class="form-check-input me-1" type="checkbox" value="@item.Id" id="@item.Link">
-                            <label class="form-check-label" for="@item.Link">@item.Name</label>
+                            <input class="form-check-input me-1" type="checkbox" value="@item.Id" id="category-@item.Link" onchange="toggleDisplayLink(this)">
+                            <label class="form-check-label" for="category-@item.Link">@item.Name</label>
+                            <a href="#" class="float-end d-none" id="link-@item.Id" onclick="updateMainCategory(@item.Id)"><small>دسته‌بندی اصلی</small></a>
                             <ul>
                                 @foreach (var cat2 in Model.Product.Categories.Where(y => y.ParentId == item.Id))
                                 {
                                     <li class="list-group-item mb-1">
-                                        <input class="form-check-input me-1" type="checkbox" value="@cat2.Id" id="@cat2.Link">
-                                        <label class="form-check-label" for="@cat2.Link">@cat2.Name</label>
+                                        <input class="form-check-input me-1" type="checkbox" value="@cat2.Id" id="category-@cat2.Link" onchange="toggleDisplayLink(this)">
+                                        <label class="form-check-label" for="category-@cat2.Link">@cat2.Name</label>
+                                        <a href="#" class="float-end d-none" id="link-@cat2.Id" onclick="updateMainCategory(@cat2.Id)"><small>دسته‌بندی اصلی</small></a>
                                         <ul>
                                             @foreach (var cat3 in Model.Product.Categories.Where(y => y.ParentId == cat2.Id))
                                             {
                                                 <li class="list-group-item mb-1">
-                                                    <input class="form-check-input me-1" type="checkbox" value="@cat3.Id" id="@cat3.Link">
-                                                    <label class="form-check-label" for="@cat3.Link">@cat3.Name</label>
+                                                    <input class="form-check-input me-1" type="checkbox" value="@cat3.Id" id="category-@cat3.Link" onchange="toggleDisplayLink(this)">
+                                                    <label class="form-check-label" for="category-@cat3.Link">@cat3.Name</label>
+                                                    <a href="#" class="float-end d-none" id="link-@cat3.Id" onclick="updateMainCategory(@cat3.Id)"><small>دسته‌بندی اصلی</small></a>
                                                 </li>
                                             }
                                         </ul>
@@ -263,6 +267,32 @@
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <script>
+        let prevBoldedLink;
+
+        function toggleDisplayLink(checkbox) {
+            var checkboxValue = checkbox.value;
+            var linkId = "link-" + checkboxValue;
+            var link = document.getElementById(linkId);
+
+            if (checkbox.checked) {
+                link.classList.remove("d-none");
+            } else {
+                link.classList.add("d-none");
+            }
+        }
+
+        function updateMainCategory(categoryId) {
+            document.getElementById("Product_MainCategory").value = categoryId;
+
+            if (prevBoldedLink) {
+                prevBoldedLink.style.fontWeight = 'normal';
+            }
+            var link = document.getElementById("link-" + categoryId);
+            link.style.fontWeight = 'bold';
+            link.style.fontSize = '18px';
+            prevBoldedLink = link;
+        }
+
         // Function to toggle the visibility of sale quantity inputs
         function toggleSaleQuantityInputs(isVisible) {
             $("#min-sale-quantity, #sale-quantity-step").toggle(isVisible);
@@ -290,9 +320,9 @@
 
             $('#addProductPros').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
-                                                                                                                            <button class="btn btn-primary remove-button" type="button">-</button>
-                                                                                                                        </div>`;
+                                                                                                                                    <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
+                                                                                                                                    <button class="btn btn-primary remove-button" type="button">-</button>
+                                                                                                                                </div>`;
                 $('#product-pros').append(newInputField);
                 productProsIndex++;
             });
@@ -308,9 +338,9 @@
 
             $('#addProductCons').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
-                                                                                                                            <button class="btn btn-danger remove-button" type="button">-</button>
-                                                                                                                        </div>`;
+                                                                                                                                    <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
+                                                                                                                                    <button class="btn btn-danger remove-button" type="button">-</button>
+                                                                                                                                </div>`;
                 $('#product-cons').append(newInputField);
                 productConsIndex++;
             });
