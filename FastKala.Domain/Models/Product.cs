@@ -50,5 +50,7 @@ public record Product
 
     public List<ProductAttributeRelation> Attributes { get; set; } = new();
 
-    public List<ProductCategory> Categories { get; set; } = new();
+    public List<ProductCategoryRelation> Categories { get; set; } = new();
+
+    public List<ProductTagRelation> Tags { get; set; } = new();
 }

@@ -27,7 +27,7 @@ public class ProductsController : Controller
         {
             var attr = await _productService.GetAllProductAttributes();
             var categories = await _productService.GetProductCategories();
-            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Product = new() { Name = "", Categories = categories.Categories } };
+            ProductViewModel model = new ProductViewModel() { ProductAttributes = attr.ProductAttributes, Categories = categories.Categories, Product = new() { Name = "" } };
             return View(model);
         }
 
