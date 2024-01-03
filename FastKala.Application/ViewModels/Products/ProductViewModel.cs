@@ -12,4 +12,5 @@ public class ProductViewModel
     public List<ProductCategory> Categories { get; set; } = new();
     public List<ProductBrand> Brands { get; set; } = new();
     public IFormFile? MainImage { get; set; }
+    public List<IFormFile>? GalleryImages { get; set; }
 }
