@@ -38,19 +38,27 @@ public class UploadService : IUploadService
         }
     }
 
-    public async Task<OperationResult> UploadSingleImages(IFormFile file, string path)
+    public async Task<OperationResult> UploadSingleImages(IFormFile file, string path, ImageSize sizeLimit)
     {
         try
         {
             if (file != null)
             {
-                if (file.Length > 1024000)
+                if (file.Length > (long)sizeLimit)
                 {
-                    return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = "حجم فایل بیشتر از 1 مگابایت می‌باشد." };
+                    return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };
                 }
-                var fileName = Path.GetRandomFileName();
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                DirectoryInfo directory = new DirectoryInfo(path);
                 FileInfo fileInfo = new FileInfo(file.FileName);
                 string fileNameWithPath = Path.Combine(path, fileName + fileInfo.Extension);
+                if (directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count > 1)
+                {
+                    if (File.Exists(fileNameWithPath))
+                    {
+                        fileNameWithPath = Path.Combine(path, fileName + $"-({directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count + 1})" + fileInfo.Extension);
+                    }
+                }
                 if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg")
                 {
                     using (var stream = File.Create(fileNameWithPath))
@@ -85,7 +93,7 @@ public class UploadService : IUploadService
 
     public string GetImageUrl(ImageType typeFolder)
     {
-        string path = $"http://192.168.1.83:3090/Uploads/{typeFolder.ToString()}";
+        string path = $"/Uploads/{typeFolder.ToString()}";
         return path;
     }
 }

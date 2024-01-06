@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form class="row" method="post" id="addproductform">
+<form class="row" method="post" id="addproductform" enctype="multipart/form-data">
     <div class="col-9">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <!--Product Name-->
@@ -161,7 +161,7 @@
             </div>
         </div> @* Product Informations *@
     </div>
-    <div class=" col-3 mt-2 h-25">
+    <div class="col-3 mt-2 h-25">
         <div class="card">
             <div class="card-header">
                 وضعیت انتشار محصول
@@ -259,7 +259,7 @@
             <div class="card-body">
                 <div class="d-flex border rounded-3 align-items-center justify-content-center" style="aspect-ratio : 1 / 1;">
                     <label asp-for="MainImage" style="cursor:pointer">
-                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100" id="productMainImage"/>
+                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100" id="productMainImage" />
                     </label>
                     <input type="file" class="form-control d-none" accept="image/png, image/jpeg, image/jpg" onchange="showImage(this,'productMainImage')" asp-for="MainImage" />
                 </div>
@@ -276,12 +276,14 @@
                             <img src="~/Uploads/gallery.jpg" alt="gallery test" class="w-100" />
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;"></div>
-                    </div>
-                    <div class="col-4">
-                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;"></div>
-                    </div>
+                </div>
+                <div class="mt-2">
+                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file" asp-for="GalleryImages" id="upload" class="account-file-input visually-hidden" accept="image/png, image/jpeg, image/jpg" multiple>
+                    </label>
+                    <input type="file" class="btn btn-primary" accept="image/png, image/jpeg, image/jpg" asp-for="GalleryImages" multiple />
                 </div>
             </div>
         </div> @*Images*@
@@ -386,9 +388,9 @@
 
             $('#addProductPros').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
-                                                                                                                                            <button class="btn btn-primary remove-button" type="button">-</button>
-                                                                                                                                        </div>`;
+                                                                                                                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
+                                                                                                                                                            <button class="btn btn-primary remove-button" type="button">-</button>
+                                                                                                                                                        </div>`;
                 $('#product-pros').append(newInputField);
                 productProsIndex++;
             });
@@ -404,9 +406,9 @@
 
             $('#addProductCons').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
-                                                                                                                                            <button class="btn btn-danger remove-button" type="button">-</button>
-                                                                                                                                        </div>`;
+                                                                                                                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
+                                                                                                                                                            <button class="btn btn-danger remove-button" type="button">-</button>
+                                                                                                                                                        </div>`;
                 $('#product-cons').append(newInputField);
                 productConsIndex++;
             });

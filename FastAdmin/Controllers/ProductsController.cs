@@ -6,10 +6,12 @@ namespace FastAdmin.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+    private readonly IUploadService _uploadService;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService, IUploadService uploadService)
     {
         _productService = productService;
+        _uploadService = uploadService;
     }
 
     #region Products
@@ -43,6 +45,7 @@ public class ProductsController : Controller
             return View(productView);
         }
 
+        await _uploadService.UploadSingleImages(productView.MainImage, _uploadService.GetImagePath(FastKala.Application.ViewModels.Global.ImageType.ProductImages), FastKala.Application.ViewModels.Global.ImageSize.TwoMegabyte);
         var res = await _productService.AddProduct(productView);
 
         if (res.OperationStatus == FastKala.Domain.Enums.OperationStatus.Success)
