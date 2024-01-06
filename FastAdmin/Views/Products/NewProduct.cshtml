@@ -259,7 +259,7 @@
             <div class="card-body">
                 <div class="d-flex border rounded-3 align-items-center justify-content-center" style="aspect-ratio : 1 / 1;">
                     <label asp-for="MainImage" style="cursor:pointer">
-                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100" id="productMainImage" />
+                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100 p-1" id="productMainImage" />
                     </label>
                     <input type="file" class="form-control d-none" accept="image/png, image/jpeg, image/jpg" onchange="showImage(this,'productMainImage')" asp-for="MainImage" />
                 </div>
@@ -270,20 +270,14 @@
                 گالری محصول
             </div>
             <div class="card-body">
-                <div class="row gx-1">
-                    <div class="col-4">
-                        <div class="border rounded-3 col-12" style="aspect-ratio : 1 / 1;">
-                            <img src="~/Uploads/gallery.jpg" alt="gallery test" class="w-100" />
-                        </div>
-                    </div>
+                <div class="row gx-1" id="gallery-images">
                 </div>
                 <div class="mt-2">
-                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                        <span class="d-none d-sm-block">Upload new photo</span>
+                    <label for="upload" class="btn btn-primary me-2 mb-4">
+                        <span class="d-none d-sm-block">بارگذاری عکس گالری</span>
                         <i class="bx bx-upload d-block d-sm-none"></i>
-                        <input type="file" asp-for="GalleryImages" id="upload" class="account-file-input visually-hidden" accept="image/png, image/jpeg, image/jpg" multiple>
+                        <input type="file" asp-for="GalleryImages" id="upload" class="account-file-input visually-hidden" onchange="showImageGallery(this)" accept="image/png, image/jpeg, image/jpg" multiple>
                     </label>
-                    <input type="file" class="btn btn-primary" accept="image/png, image/jpeg, image/jpg" asp-for="GalleryImages" multiple />
                 </div>
             </div>
         </div> @*Images*@
@@ -657,5 +651,27 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        function showImageGallery(input) {
+            if (input.files.length > 0) {
+                for (var i = 0; i < input.files.length; i++) {
+                    var newImageColumn = document.createElement('div');
+                    newImageColumn.className = 'col-4';
+                    document.getElementById('gallery-images').appendChild(newImageColumn);
+
+                    var newImage = document.createElement('div');
+                    newImage.className = 'border rounded-3 col-12';
+                    newImage.style.aspectRatio = '1 / 1';
+                    newImageColumn.appendChild(newImage);
+
+                    var innerImage = document.createElement('img');
+                    innerImage.className = 'w-100';
+                    innerImage.src = URL.createObjectURL(input.files[i]);
+
+                    newImage.appendChild(innerImage);
+                }
+            }
+        }
+
     </script>
 }
