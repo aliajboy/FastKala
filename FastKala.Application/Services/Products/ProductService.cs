@@ -5,6 +5,7 @@ using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;
 using FastKala.Domain.Models;
 using Microsoft.Data.SqlClient;
+using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Products;
 public class ProductService : IProductService
@@ -23,8 +24,10 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
+                await connection.OpenAsync();
+
                 // Add Product
-                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products ([Name],[Description],[Price],[SalePrice],[StockQuantity],[Sku],[ManageSaleQuantity],[ManageStockQuantity],[MinimumSaleQuantity],[SaleQuantityStep],[Weight],[EnglishName],[Status],[MainImage]) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName,@status,@mainImage)", new
+                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products (Name,Description,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,Status,MainImage) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName,@status,@mainImage)", new
                 {
                     name = product.Product.Name,
                     description = product.Product.Description,
@@ -45,8 +48,9 @@ public class ProductService : IProductService
                 // Add Product Features
                 foreach (var item in product.Product.ProductFeatures)
                 {
-                    await connection.ExecuteAsync("INSERT INTO ProductFeature (TitleName,Value,ProductId) VALUES (@titleName,@value,@productId)",
-                    new { titleName = item.TitleName, value = item.Value, productId = insertedId });
+                    connection.BulkInsert<ProductFeature>(product.Product.ProductFeatures);
+                    //await connection.ExecuteAsync("INSERT INTO ProductFeature (TitleName,Value,ProductId) VALUES (@titleName,@value,@productId)",
+                    //new { titleName = item.TitleName, value = item.Value, productId = insertedId });
                 }
 
                 foreach (var item in product.ProductPros)
@@ -67,16 +71,19 @@ public class ProductService : IProductService
 
                 foreach (var item in product.Product.ProductProsCons)
                 {
-                    await connection.ExecuteAsync("INSERT INTO ProductProsCons (Text,IsPros,ProductId) VALUES (@text,@isPros,@productId)",
-                    new { text = item.Text, isPros = item.IsPros, productId = insertedId });
+                    connection.BulkInsert<ProductProsCons>(product.Product.ProductProsCons);
+                    //await connection.ExecuteAsync("INSERT INTO ProductProsCons (Text,IsPros,ProductId) VALUES (@text,@isPros,@productId)",
+                    //new { text = item.Text, isPros = item.IsPros, productId = insertedId });
                 }
 
                 foreach (var item in product.Product.Attributes)
                 {
-                    await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations (ProductId,AttributeValueId) VALUES (@productId,@attributeValueId)",
-                    new { productId = insertedId, attributeValueId = item.AttributeValueId });
+                    connection.BulkInsert<ProductAttributeRelation>(product.Product.Attributes);
+                    //await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations (ProductId,AttributeValueId) VALUES (@productId,@attributeValueId)",
+                    //new { productId = insertedId, attributeValueId = item.AttributeValueId });
                 }
 
+                await connection.CloseAsync();
             }
 
             return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
@@ -292,7 +299,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues ([Name],[value],[ProductAttributeId]) VALUES (@name,@value,@productAttributeId)",
+                var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues (Name,value,ProductAttributeId) VALUES (@name,@value,@productAttributeId)",
                     new { name = attributeValueName, value = attributeValeLink, productAttributeId = attributeId });
                 if (result == 1)
                 {

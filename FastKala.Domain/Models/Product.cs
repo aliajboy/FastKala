@@ -41,6 +41,8 @@ public record Product
     public string? MainImage { get; set; }
     [DisplayName("دسته بندی اصلی")]
     public int MainCategory { get; set; } = 1;
+    [DisplayName("دسته بندی اصلی")]
+    public DateTime LastChangeTime { get; set; } = DateTime.Now;
 
     // Relations
 
