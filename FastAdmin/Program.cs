@@ -14,6 +14,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Services
 builder.Services.AddTransient<IProductService>(x => new ProductService(connectionString));
+builder.Services.AddTransient<IUploadService, UploadService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
