@@ -45,7 +45,7 @@ public class ProductService : IProductService
                 // Add Product Features
                 foreach (var item in product.Product.ProductFeatures)
                 {
-                    await connection.ExecuteAsync("INSERT INTO ProductFeature ([TitleName],[Value],[ProductId]) VALUES (@titleName,@value,@productId)",
+                    await connection.ExecuteAsync("INSERT INTO ProductFeature (TitleName,Value,ProductId) VALUES (@titleName,@value,@productId)",
                     new { titleName = item.TitleName, value = item.Value, productId = insertedId });
                 }
 
@@ -65,22 +65,16 @@ public class ProductService : IProductService
                     }
                 }
 
-                if (product.Product.ProductProsCons != null)
+                foreach (var item in product.Product.ProductProsCons)
                 {
-                    foreach (var item in product.Product.ProductProsCons)
-                    {
-                        await connection.ExecuteAsync("INSERT INTO [dbo].[ProductProsCons] ([Text],[IsPros],[ProductId]) VALUES (@text,@isPros,@productId)",
-                        new { text = item.Text, isPros = item.IsPros, productId = insertedId });
-                    }
+                    await connection.ExecuteAsync("INSERT INTO ProductProsCons (Text,IsPros,ProductId) VALUES (@text,@isPros,@productId)",
+                    new { text = item.Text, isPros = item.IsPros, productId = insertedId });
                 }
 
-                if (product.Product.Attributes.Count > 0)
+                foreach (var item in product.Product.Attributes)
                 {
-                    foreach (var item in product.Product.Attributes)
-                    {
-                        await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations ([ProductId],[AttributeValueId]) VALUES (@productId,@attributeValueId)",
-                        new { productId = insertedId, attributeValueId = item.AttributeValueId });
-                    }
+                    await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations (ProductId,AttributeValueId) VALUES (@productId,@attributeValueId)",
+                    new { productId = insertedId, attributeValueId = item.AttributeValueId });
                 }
 
             }

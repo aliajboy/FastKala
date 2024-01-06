@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 namespace FastKala.Application.Interfaces;
 public interface IUploadService
 {
-    Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, string path);
+    Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, string path, ImageSize sizeLimit);
 
     /// <summary>
     /// Upload Single File to Server Specified Folder

@@ -5,19 +5,28 @@ using Microsoft.AspNetCore.Http;
 namespace FastKala.Application.Services.Products;
 public class UploadService : IUploadService
 {
-    public async Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, string path)
+    public async Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, string path, ImageSize sizeLimit)
     {
         try
         {
-            if (files.Any(x => x.Length > 1024000))
+            if (files.Any(x => x.Length > (long)sizeLimit))
             {
-                return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = "حجم فایل بیشتر از 2 مگابایت می‌باشد." };
+                return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };
             }
+
             foreach (IFormFile file in files)
             {
-                var fileName = Path.GetRandomFileName();
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                DirectoryInfo directory = new DirectoryInfo(path);
                 FileInfo fileInfo = new FileInfo(file.FileName);
                 string fileNameWithPath = Path.Combine(path, fileName + fileInfo.Extension);
+                if (directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count > 1)
+                {
+                    if (File.Exists(fileNameWithPath))
+                    {
+                        fileNameWithPath = Path.Combine(path, fileName + $"-({directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count + 1})" + fileInfo.Extension);
+                    }
+                }
                 if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg")
                 {
                     using (var stream = File.Create(fileNameWithPath))
