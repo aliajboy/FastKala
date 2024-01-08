@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FastKala.Application.Data;
 using FastKala.Application.Interfaces;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
@@ -10,10 +11,12 @@ using Z.Dapper.Plus;
 namespace FastKala.Application.Services.Products;
 public class ProductService : IProductService
 {
-    private readonly string _connectionString;
-    public ProductService(string connectionString)
+    private readonly DapperContext _context;
+    private readonly IUploadService _uploadService;
+    public ProductService(IUploadService uploadService, DapperContext context)
     {
-        _connectionString = connectionString;
+        _uploadService = uploadService;
+        _context = context;
     }
 
     #region Product
@@ -22,15 +25,18 @@ public class ProductService : IProductService
     {
         try
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 await connection.OpenAsync();
 
                 // Add Product
-                int insertedId = await connection.QuerySingleAsync<int>("INSERT INTO Products (Name,Description,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,Status,MainImage) output INSERTED.Id VALUES (@name,@description,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantity,@weight,@englishName,@status,@mainImage)", new
+                int insertedId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Name,Status,Description,BrandId,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,MainImage,LastChangeTime) OUTPUT Inserted.ID VALUES  (@name,@status,@description,@brandId,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantityStep,@weight,@englishName,@mainImage,@lastChangeTime)", new
                 {
                     name = product.Product.Name,
+                    status = product.Product.Status,
                     description = product.Product.Description,
+                    brandId = product.Product.BrandId,
                     price = product.Product.Price,
                     salePrice = product.Product.SalePrice,
                     stockQuantity = product.Product.StockQuantity,
@@ -38,21 +44,18 @@ public class ProductService : IProductService
                     manageSaleQuantity = product.Product.ManageSaleQuantity,
                     manageStockQuantity = product.Product.ManageStockQuantity,
                     minimumSaleQuantity = product.Product.MinimumSaleQuantity,
-                    saleQuantity = product.Product.SaleQuantityStep,
+                    saleQuantityStep = product.Product.SaleQuantityStep,
                     weight = product.Product.Weight,
                     englishName = product.Product.EnglishName,
-                    status = product.Product.Status,
-                    mainImage = product.Product.MainImage
+                    mainImage = product.Product.MainImage,
+                    lastChangeTime = DateTime.Now
                 });
 
                 // Add Product Features
                 foreach (var item in product.Product.ProductFeatures)
                 {
-                    connection.BulkInsert<ProductFeature>(product.Product.ProductFeatures);
-                    //await connection.ExecuteAsync("INSERT INTO ProductFeature (TitleName,Value,ProductId) VALUES (@titleName,@value,@productId)",
-                    //new { titleName = item.TitleName, value = item.Value, productId = insertedId });
+                    item.ProductId = insertedId;
                 }
-
                 foreach (var item in product.ProductPros)
                 {
                     if (product.ProductPros.FirstOrDefault() != null)
@@ -60,7 +63,6 @@ public class ProductService : IProductService
                         product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Pros, ProductId = insertedId });
                     }
                 }
-
                 foreach (var item in product.ProductCons)
                 {
                     if (product.ProductCons.FirstOrDefault() != null)
@@ -68,20 +70,25 @@ public class ProductService : IProductService
                         product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
                     }
                 }
-
-                foreach (var item in product.Product.ProductProsCons)
-                {
-                    connection.BulkInsert<ProductProsCons>(product.Product.ProductProsCons);
-                    //await connection.ExecuteAsync("INSERT INTO ProductProsCons (Text,IsPros,ProductId) VALUES (@text,@isPros,@productId)",
-                    //new { text = item.Text, isPros = item.IsPros, productId = insertedId });
-                }
-
                 foreach (var item in product.Product.Attributes)
                 {
-                    connection.BulkInsert<ProductAttributeRelation>(product.Product.Attributes);
-                    //await connection.ExecuteAsync("INSERT INTO ProductAttributeRelations (ProductId,AttributeValueId) VALUES (@productId,@attributeValueId)",
-                    //new { productId = insertedId, attributeValueId = item.AttributeValueId });
+                    item.ProductId = insertedId;
                 }
+                foreach (var item in product.Product.Categories)
+                {
+                    item.ProductId = insertedId;
+                }
+                foreach (var item in product.Product.Tags)
+                {
+                    item.ProductId = insertedId;
+                }
+
+
+                connection.BulkInsert<ProductTagRelation>(product.Product.Tags);
+                connection.BulkInsert<ProductCategoryRelation>(product.Product.Categories);
+                connection.BulkInsert<ProductFeature>(product.Product.ProductFeatures);
+                connection.BulkInsert<ProductProsCons>(product.Product.ProductProsCons);
+                connection.BulkInsert<ProductAttributeRelation>(product.Product.Attributes);
 
                 await connection.CloseAsync();
             }
@@ -99,7 +106,7 @@ public class ProductService : IProductService
         ProductListViewModel productList = new();
         try
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new { Count = count });
                 productList.TotalProductsCount = await connection.QuerySingleOrDefaultAsync<int>("SELECT COUNT(Id) FROM Products");
@@ -118,7 +125,7 @@ public class ProductService : IProductService
         ProductViewModel product = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new { ID = id }))
                 {
@@ -137,23 +144,17 @@ public class ProductService : IProductService
 
     public async Task<OperationResult> RemoveProductById(int id)
     {
-        int res;
         try
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
-                await connection.OpenAsync();
-                await connection.ExecuteAsync("delete from ProductAttributeRelations where ProductId = @productId", new { productId = id });
-                res = await connection.ExecuteAsync("Delete From Products where Id = @ID", new { ID = id });
-                await connection.CloseAsync();
-            }
-            if (res == 1)
-            {
-                return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
+                await connection.ExecuteAsync(
+                    "RemoveProduct",
+                    new { productId = id },
+                    commandType: System.Data.CommandType.StoredProcedure);
             }
 
-
-            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "محصولی حذف نشد یا بیش از یک محصول حذف شده است" };
+            return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
         }
         catch (Exception ex)
         {
@@ -163,7 +164,7 @@ public class ProductService : IProductService
 
     public async Task<OperationResult> UpdateProduct(ProductViewModel product)
     {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
+        using (SqlConnection connection = _context.CreateConnection())
         {
 
         }
@@ -178,7 +179,7 @@ public class ProductService : IProductService
     {
         try
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 var result = await connection.ExecuteAsync("INSERT INTO ProductAttributes (Name,Link,Type) VALUES (@name,@link,@type)",
                     new { name = attributeName, link = attributeLink, type = attributeType });
@@ -200,7 +201,7 @@ public class ProductService : IProductService
         ProductAtrributesListViewModel productAtrributesList = new ProductAtrributesListViewModel();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes SELECT * FROM ProductAttributeValues"))
                 {
@@ -223,7 +224,7 @@ public class ProductService : IProductService
         ProductAttributeValueViewModel productAtrribute = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes Where Id = @ID SELECT * From ProductAttributeValues where ProductAttributeId = @ID", new { ID = id }))
                 {
@@ -244,7 +245,7 @@ public class ProductService : IProductService
         try
         {
             int res = 0;
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: System.Data.CommandType.StoredProcedure);
             }
@@ -265,7 +266,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("Update ProductAttributes SET Name = @name, Link = @link, Type = @type Where Id = @ID",
                     new
@@ -297,7 +298,7 @@ public class ProductService : IProductService
     {
         try
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 var result = await connection.ExecuteAsync("INSERT INTO ProductAttributeValues (Name,value,ProductAttributeId) VALUES (@name,@value,@productAttributeId)",
                     new { name = attributeValueName, value = attributeValeLink, productAttributeId = attributeId });
@@ -319,7 +320,7 @@ public class ProductService : IProductService
         List<ProductAttributeValues> productAtrribute = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 var values = await connection.QueryAsync<ProductAttributeValues>("Select * From ProductAttributeValues where ProductAttributeId = @Id and Name Like N'%" + content + "%'", new { Id = id });
                 productAtrribute = values.ToList();
@@ -337,7 +338,7 @@ public class ProductService : IProductService
         ProductAttributeValueViewModel attributeValue = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 attributeValue.AttributeValue = await connection.QuerySingleOrDefaultAsync<ProductAttributeValues>("Select * From ProductAttributeValues where Id = @Id", new { Id = attributeId });
             }
@@ -355,7 +356,7 @@ public class ProductService : IProductService
         try
         {
             int res = 0;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("UPDATE ProductAttributeValues SET Name = @name, value = @value WHERE Id = @id", new
                 {
@@ -385,7 +386,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("Delete From ProductAttributeValues where Id = @ID", new { ID = id });
             }
@@ -410,7 +411,7 @@ public class ProductService : IProductService
         ProductCategoriesViewModel productCategories = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 if (id == 0)
                 {
@@ -435,7 +436,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("INSERT INTO ProductCategories (Name,Link,Description,ParentId) VALUES (@name,@link,@description,@parentId)", new
                 {
@@ -462,7 +463,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("Delete From ProductCategories Where Id = @ID", new
                 {
@@ -486,7 +487,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("UPDATE ProductCategories SET Name = @name,Link = @link,Description = @description,ParentId = @parentId WHERE Id = @id", new
                 {
@@ -518,7 +519,7 @@ public class ProductService : IProductService
         ProductTagsViewModel productTags = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 if (id == 0)
                 {
@@ -543,7 +544,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("INSERT INTO ProductTags (Name,Link,Description) VALUES (@name,@link,@description)", new
                 {
@@ -569,7 +570,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("Delete From ProductTags Where Id = @ID", new
                 {
@@ -593,7 +594,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("UPDATE ProductTags SET Name = @name,Link = @link,Description = @description WHERE Id = @id", new
                 {
@@ -625,7 +626,7 @@ public class ProductService : IProductService
         ProductBrandsViewModel productBrands = new();
         try
         {
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 if (id == 0)
                 {
@@ -650,7 +651,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("INSERT INTO ProductBrands (Name,Link,Description) VALUES (@name,@link,@description)", new
                 {
@@ -676,7 +677,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("Delete From roductBrands Where Id = @ID", new
                 {
@@ -700,7 +701,7 @@ public class ProductService : IProductService
         try
         {
             int res;
-            using (SqlConnection connection = new(_connectionString))
+            using (SqlConnection connection = _context.CreateConnection())
             {
                 res = await connection.ExecuteAsync("UPDATE ProductBrands SET Name = @name,Link = @link,Description = @description WHERE Id = @id", new
                 {

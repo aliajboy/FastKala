@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("ارتباط با پایگاه داده برقرار نشد");
 builder.Services.AddDbContext<FsContext>(option => option.UseSqlServer(connectionString));
 // Services
-builder.Services.AddTransient<IProductService>(x => new ProductService(connectionString));
+builder.Services.AddTransient<IProductService, ProductService>();
 
 // Features
 builder.Services.AddRazorPages();

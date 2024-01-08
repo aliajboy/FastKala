@@ -231,7 +231,6 @@
             </div>
             <div class="card-body">
                 <select class="form-control" asp-for="Product.BrandId">
-                    <option value="0" selected>انتخاب برند</option>
                     @foreach (var item in Model.Brands)
                     {
                         <option value="@item.Id">@item.Name</option>
