@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 namespace FastKala.Application.Services.Products;
 public class UploadService : IUploadService
 {
-    public async Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, string path, ImageSize sizeLimit)
+    public async Task<OperationResult> UploadMultipleImages(IList<IFormFile> files, ImageType type, ImageSize sizeLimit)
     {
         try
         {
@@ -13,6 +13,7 @@ public class UploadService : IUploadService
             {
                 return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };
             }
+            string path = GetImagePath(type);
 
             foreach (IFormFile file in files)
             {
@@ -47,12 +48,13 @@ public class UploadService : IUploadService
         }
     }
 
-    public async Task<OperationResult> UploadSingleImages(IFormFile file, string path, ImageSize sizeLimit)
+    public async Task<OperationResult> UploadSingleImages(IFormFile file, ImageType type, ImageSize sizeLimit)
     {
         try
         {
             if (file != null)
             {
+                string path = GetImagePath(type);
                 if (file.Length > (long)sizeLimit)
                 {
                     return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };

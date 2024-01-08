@@ -25,6 +25,17 @@ public class ProductService : IProductService
     {
         try
         {
+            string mainImageURL = "";
+
+            #region MainImage
+
+            if (product.MainImage != null)
+            {
+                var result = await _uploadService.UploadSingleImages(product.MainImage, ImageType.ProductImages, ImageSize.TwoMegabyte);
+                mainImageURL = result.Message;
+            }
+
+            #endregion
 
             using (SqlConnection connection = _context.CreateConnection())
             {
@@ -47,7 +58,7 @@ public class ProductService : IProductService
                     saleQuantityStep = product.Product.SaleQuantityStep,
                     weight = product.Product.Weight,
                     englishName = product.Product.EnglishName,
-                    mainImage = product.Product.MainImage,
+                    mainImage = mainImageURL,
                     lastChangeTime = DateTime.Now
                 });
 

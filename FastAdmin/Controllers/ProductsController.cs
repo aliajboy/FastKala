@@ -45,7 +45,6 @@ public class ProductsController : Controller
             return View(productView);
         }
 
-        var mainImage = await _uploadService.UploadSingleImages(productView.MainImage, _uploadService.GetImagePath(FastKala.Application.ViewModels.Global.ImageType.ProductImages), FastKala.Application.ViewModels.Global.ImageSize.TwoMegabyte);
         var res = await _productService.AddProduct(productView);
 
         if (res.OperationStatus == FastKala.Domain.Enums.OperationStatus.Success)
