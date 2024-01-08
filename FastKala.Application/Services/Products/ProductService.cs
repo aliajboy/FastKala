@@ -26,16 +26,11 @@ public class ProductService : IProductService
         try
         {
             string mainImageURL = "";
-
-            #region MainImage
-
             if (product.MainImage != null)
             {
                 var result = await _uploadService.UploadSingleImages(product.MainImage, ImageType.ProductImages, ImageSize.TwoMegabyte);
                 mainImageURL = result.Message;
             }
-
-            #endregion
 
             using (SqlConnection connection = _context.CreateConnection())
             {
