@@ -6,6 +6,8 @@ using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;
 using FastKala.Domain.Models;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Runtime.InteropServices;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Products;
@@ -29,7 +31,7 @@ public class ProductService : IProductService
             if (product.MainImage != null)
             {
                 var result = await _uploadService.UploadSingleImages(product.MainImage, ImageType.ProductImages, ImageSize.TwoMegabyte);
-                mainImageURL = result.Message;
+                mainImageURL = result.Message ?? "";
             }
 
             using (SqlConnection connection = _context.CreateConnection())
@@ -56,6 +58,12 @@ public class ProductService : IProductService
                     mainImage = mainImageURL,
                     lastChangeTime = DateTime.Now
                 });
+
+                List<ProductImage> galleryImages = new();
+                if (product.GalleryImages?.Count > 0)
+                {
+                    galleryImages = await _uploadService.UploadMultipleImages(product.GalleryImages, ImageType.ProductImages, ImageSize.TwoMegabyte, insertedId);
+                }
 
                 // Add Product Features
                 foreach (var item in product.Product.ProductFeatures)
@@ -90,6 +98,7 @@ public class ProductService : IProductService
                 }
 
 
+                connection.BulkInsert<ProductImage>(galleryImages);
                 connection.BulkInsert<ProductTagRelation>(product.Product.Tags);
                 connection.BulkInsert<ProductCategoryRelation>(product.Product.Categories);
                 connection.BulkInsert<ProductFeature>(product.Product.ProductFeatures);
@@ -154,10 +163,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                await connection.ExecuteAsync(
-                    "RemoveProduct",
-                    new { productId = id },
-                    commandType: System.Data.CommandType.StoredProcedure);
+                await connection.ExecuteAsync("RemoveProduct", new { productId = id }, commandType: CommandType.StoredProcedure);
             }
 
             return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "محصول با موفقیت حذف شد" };
