@@ -6092,7 +6092,7 @@ button.close {
 }
 
 .carousel-indicators-ul .active {
-  background-color: #00dcff !important;
+  background-color: #651fff !important;
   color: #fff !important;
   transition: all 300ms ease;
 }

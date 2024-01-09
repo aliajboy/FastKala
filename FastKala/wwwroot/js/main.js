@@ -494,15 +494,15 @@ $(document).ready(function (e) {
     //    quantity-selector-------------------
 
     // Page Loader----------------------------
-     //var preloader = $('.P-loader');
-     //$(window).on("load", function () {
-     //    var preloaderFadeOutTime = 500;
-     //    function hidePreloader() {
-     //        preloader.fadeOut(preloaderFadeOutTime);
-     //    }
-     //    hidePreloader();
-     //});
-    //$(".P-loader").fadeOut(2000,"swing");
+    // var preloader = $('.P-loader');
+    // $(window).on("load", function () {
+    //     var preloaderFadeOutTime = 500;
+    //     function hidePreloader() {
+    //         preloader.fadeOut(preloaderFadeOutTime);
+    //     }
+    //     hidePreloader();
+    // });
+    $(".P-loader").fadeOut(2000,"swing");
     // Page Loader----------------------------
 
     // scroll_progress-------------------------

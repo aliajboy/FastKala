@@ -1,19 +1,15 @@
 ﻿using FastKala.Application.Interfaces;
-using FastKala.Data;
 using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace FastKala.Pages;
 
 public class ProductModel : PageModel
 {
-    private readonly FsContext _context;
     private readonly IProductService _productService;
-    public ProductModel(FsContext context, IProductService productService)
+    public ProductModel(IProductService productService)
     {
-        _context = context;
         _productService = productService;
     }
 

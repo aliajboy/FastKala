@@ -1,15 +1,11 @@
 ﻿using FastKala.Application.Data;
 using FastKala.Application.Interfaces;
 using FastKala.Application.Services.Products;
-using FastKala.Data;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<DapperContext>();
-string connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("ارتباط با پایگاه داده برقرار نشد");
-builder.Services.AddDbContext<FsContext>(option => option.UseSqlServer(connectionString));
 // Services
 builder.Services.AddTransient<IUploadService, UploadService>();
 builder.Services.AddTransient<IProductService, ProductService>();
