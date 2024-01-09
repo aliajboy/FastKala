@@ -7,7 +7,6 @@ using FastKala.Domain.Enums;
 using FastKala.Domain.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Runtime.InteropServices;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Products;
