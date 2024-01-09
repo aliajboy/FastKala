@@ -22,8 +22,9 @@ public record ProductAttributeValues
     public int Id { get; set; }
     public required string Name { get; set; }
     public string? value { get; set; }
+    public int ProductAttributeId { get; set; }
 
     // Relations
     public ProductAttribute ProductAttribute { get; set; } = new();
-    public int ProductAttributeId { get; set; }
+    public List<Product> Product { get; set; } = new();
 }

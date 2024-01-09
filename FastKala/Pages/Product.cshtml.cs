@@ -1,4 +1,5 @@
 ﻿using FastKala.Application.Interfaces;
+using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,16 +14,24 @@ public class ProductModel : PageModel
         _productService = productService;
     }
 
-    public Product Product { get; set; }
+    public ProductViewModel ProductView { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int id)
     {
-        var product = await _productService.GetProductById(id);
-        if (product.Product.Name == "پیش فرض")
+        ProductView = await _productService.GetProductById(id);
+        ProductView.MainCategory = ProductView.Categories.First(x => x.Id == ProductView.Product.MainCategoryId);
+        ProductView.CategoryOrder.Add(ProductView.MainCategory);
+        int parentId = ProductView.MainCategory.ParentId;
+        while (parentId != 0)
+        {
+            var pCategory = ProductView.Categories.First(x => x.Id == parentId);
+            ProductView.CategoryOrder.Add(pCategory);
+            parentId = pCategory.ParentId;
+        }
+        if (ProductView.Product.Name == "پیش فرض" || ProductView.Product.Status != Domain.Enums.ProductStatus.Published)
         {
             return NotFound();
         }
-        Product = product.Product;
 
         return Page();
     }

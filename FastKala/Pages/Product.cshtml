@@ -1,9 +1,10 @@
 ﻿@page
 @model FastKala.Pages.ProductModel
 @{
-    ViewData["Title"] = Model.Product.Name;
+    ViewData["Title"] = Model.ProductView.Product.Name;
 }
 <!-- arshive-product----------------------->
+
 <div class="container-main">
     <div class="d-block">
         <div class="page-content page-row">
@@ -12,11 +13,13 @@
                     <i class="mdi mdi-home"></i>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a asp-page="/index">خانه</a></li>
-                            <li class="breadcrumb-item"><a href="#">کالای دیجیتال</a></li>
-                            <li class="breadcrumb-item"><a href="#">موبایل</a></li>
+                            <li class="breadcrumb-item"><a asp-page="Index">خانه</a></li>
+                            @foreach (var item in Model.ProductView.CategoryOrder)
+                            {
+                                <li class="breadcrumb-item"><a href="#">@item.Name</a></li>
+                            }
                             <li class="breadcrumb-item active" aria-current="page">
-                                @Model.Product.Name
+                                @Model.ProductView.Product.Name
                             </li>
                         </ol>
                     </nav>
@@ -168,7 +171,7 @@
                                                                         <label for="remember"
                                                                                class="remember-me mr-0">
                                                                             سیستم پیام شخصی
-                                                                            دیجی اسمارت
+                                                                            کالامارکت
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -200,8 +203,8 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
                                                                     <div id="custom-events">
-                                                                        <a href="/images/page-single-product/product-img/product-img-note10.jpg">
-                                                                            <img src="/images/page-single-product/product-img/product-img-note10.jpg" />
+                                                                        <a href="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png">
+                                                                            <img src="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png" />
                                                                         </a>
                                                                         <a href="/images/page-single-product/product-img/product-img-note10-big-1.jpg">
                                                                             <img src="/images/page-single-product/product-img/product-img-note10-big-1.jpg" />
@@ -295,18 +298,23 @@
                                     </div>
                                 </div>
                         </div>
+                        </section>
                     </div>
                     <div class="col-lg-7 col-xs-12 pl mt-5 d-block">
                         <section class="product-info">
                             <div class="product-headline">
                                 <h1 class="product-title">
-                                    @Model.Product.Name
+                                    @Model.ProductView.Product.Name
                                 </h1>
+                                <div class="product-guaranteed text-success">
+                                    12
+                                    <span>فروش موفق</span>
+                                </div>
                             </div>
                             <div class="product-attributes">
                                 <div class="product-config">
                                     <span class="product-title-en">
-                                        @Model.Product.EnglishName
+                                        @Model.ProductView.Product.EnglishName
                                     </span>
                                     <div class="product-rate">
                                         <i class="fa fa-star active"></i>
@@ -322,23 +330,35 @@
                                     <ul>
                                         <li>
                                             <span>
-                                                <i class="fa fa-archive"></i> دسته:
+                                                <i class="fa fa-archive"></i> دسته‌بندی ها:
                                             </span>
-                                            <a href="#" class="product-link product-cat-title">کالای دیجیتال</a>
-                                            ,
-                                            <a href="#" class="product-link product-cat-title">موبایل</a>
+                                            @foreach (var item in Model.ProductView.Categories)
+                                            {
+                                                <a href="#" class="product-link product-cat-title">@item.Name</a>
+                                                if (item != Model.ProductView.Categories.Last())
+                                                {
+                                                    @Html.Raw(",")
+                                                }
+                                            }
                                         </li>
                                         <li>
                                             <span>
-                                                <i class="fa fa-tags"></i> برچسب:
+                                                <i class="fa fa-tags"></i> برچسب ها:
                                             </span>
-                                            <a href="#" class="product-link product-tag-title">سامسونگ</a>
+                                            @foreach (var item in Model.ProductView.Tags)
+                                            {
+                                                <a href="#" class="product-link product-tag-title">@item.Name</a>
+                                                if (item != Model.ProductView.Tags.Last())
+                                                {
+                                                    <text>,</text>
+                                                }
+                                            }
                                         </li>
                                         <li>
                                             <span>
                                                 برند:
                                             </span>
-                                            <a href="#" class="product-link product-tag-title">سامسونگ</a>
+                                            <a href="#" class="product-link product-tag-title">@Model.ProductView.Brand.Name</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -377,10 +397,10 @@
                                     </div>
                                     <div class="product-params pt-3">
                                         <ul data-title="ویژگی‌های محصول">
-                                            @foreach (var item in Model.Product.ProductFeatures)
+                                            @foreach (var item in Model.ProductView.Product.ProductFeatures)
                                             {
                                                 <li>
-                                                    <span>@item.TitleName :</span>
+                                                    <span>@item.TitleName: </span>
                                                     <span>@item.Value</span>
                                                 </li>
                                             }
@@ -399,19 +419,15 @@
                                 <div class="col=lg-6 col-md-6 col-xs-12 pr">
                                     <div class="product-seller-info">
                                         <div class="seller-info-changable">
-                                            <div class="product-seller-row vendor">
-                                                <span class="title"> فروشنده:</span>
-                                                <a href="#" class="product-name">دیجی اسمارت</a>
-                                            </div>
                                             <div class="product-seller-row guarantee">
                                                 <span class="title"> گارانتی:</span>
-                                                <a href="#" class="product-name">۱۸ ماهه دیجی اسمارت</a>
+                                                <a href="#" class="product-name">۱۸ ماهه کالامارکت</a>
                                             </div>
                                             <div class="product-seller-row price">
                                                 <span class="title"> قیمت:</span>
                                                 <a href="#" class="product-name">
                                                     <span class="amount">
-                                                        @Model.Product.Price.ToString("N0")
+                                                        @Model.ProductView.Product.Price.ToString("N0")
                                                         <span>تومان</span>
                                                     </span>
                                                 </a>
@@ -527,19 +543,29 @@
                             <section class="content-expert-summary">
                                 <div class="mask pm-3">
                                     <div class="mask-text">
-                                        @Html.Raw(Model.Product.Description)
+                                        @Html.Raw(Model.ProductView.Product.Description)
+
+                                        <img src="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png" />
                                     </div>
+                                    @if (Model.ProductView.Product.Description?.Length > 1600)
+                                    {
+                                        <a href="#" class="mask-handler">
+                                            <span class="show-more">+ ادامه مطلب</span>
+                                            <span class="show-less">- بستن</span>
+                                        </a>
+                                        <div class="shadow-box"></div>
+                                    }
                                 </div>
                             </section>
                             <section class="content-expert-stats">
                                 <div class="content-expert-evaluation">
-                                    @if (Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).ToList().Count >= 1)
-                                    {
-                                        <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                    <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).Count() > 0)
+                                        {
                                             <div class="positive">
                                                 <span class="plus">نقاط قوت</span>
                                                 <ul>
-                                                    @foreach (var item in Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).ToList())
+                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros))
                                                     {
                                                         <li>
                                                             <i class="fa fa-plus-circle"></i>
@@ -548,15 +574,15 @@
                                                     }
                                                 </ul>
                                             </div>
-                                        </div>
-                                    }
-                                    @if (Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).ToList().Count >= 1)
-                                    {
-                                        <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                        }
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
+                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).Count() > 0)
+                                        {
                                             <div class="negative">
-                                                <span class="neg">نقاط ضعف</span>
+                                                <span class="neg">نقاط قوت</span>
                                                 <ul>
-                                                    @foreach (var item in Model.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).ToList())
+                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons))
                                                     {
                                                         <li>
                                                             <i class="fa fa-minus-circle"></i>
@@ -565,8 +591,8 @@
                                                     }
                                                 </ul>
                                             </div>
-                                        </div>
-                                    }
+                                        }
+                                    </div>
                                 </div>
                             </section>
                         </div>
@@ -575,172 +601,33 @@
                             <article>
                                 <h2 class="params-headline">
                                     مشخصات فنی
-                                    <span>Samsung Galaxy Note 10 Dual SIM 256GB Mobile Phone</span>
+                                    <span>@Model.ProductView.Product.EnglishName</span>
                                 </h2>
                                 <section>
                                     <ul class="params-list">
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">ابعاد</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    7.9 × 71.8 × 151 میلی‌متر
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">توضیحات سیم کارت</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    سایز نانو (8.8 × 12.3 میلی‌متر)
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">وزن</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    168 گرم
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">ساختار بدنه</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    فلز و شیشه (محافظ گوریلا گلس روی قاب پشتی و جلویی + قاب فولادی)
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </section>
-                                <section>
-                                    <ul class="params-list">
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">تراشه</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    Exynos 9825 (7 nm) Chipset
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">نوع پردازنده</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    64 بیت
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">فرکانس پردازنده‌ی مرکزی</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    2.73, 2.4 و 1.9 گیگاهرتز
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </section>
-                                <section>
-                                    <ul class="params-list">
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">حافظه داخلی</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    256 گیگابایت
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">مقدار RAM</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    8 گیگابایت
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">پشتیبانی از کارت حافظه جانبی</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    ندارد
-                                                </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">حداکثر ظرفیت کارت حافظه</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">
-                                                    1 ترابایت
-                                                </span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </section>
-                                <section>
-                                    <ul class="params-list">
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">صفحه نمایش رنگی</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block"> بله </span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">صفحه نمایش لمسی</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">بله</span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">فناوری</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">Dynamic AMOLED</span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">بازه‌ی اندازه صفحه نمایش</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">6.0 اینچ و بزرگتر</span>
-                                            </div>
-                                        </li>
-                                        <li class="params-list-item">
-                                            <div class="params-list-key">
-                                                <span class="block">اندازه</span>
-                                            </div>
-                                            <div class="params-list-value">
-                                                <span class="block">6.3 اینچ</span>
-                                            </div>
-                                        </li>
+                                        @foreach (var item in Model.ProductView.ProductAttributes)
+                                        {
+                                            <li class="params-list-item">
+                                                <div class="params-list-key">
+                                                    <span class="block">@item.Name</span>
+                                                </div>
+                                                <div class="params-list-value">
+                                                    <span class="block">
+                                                        @foreach (var attrValue in item.AttributeValues)
+                                                        {
+                                                            if (attrValue != item.AttributeValues.Last())
+                                                            {
+                                                                @(attrValue.Name + ", ")
+                                                            }
+                                                            else
+                                                            {
+                                                                @attrValue.Name
+                                                            }
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        }
                                     </ul>
                                 </section>
                             </article>
@@ -750,7 +637,7 @@
                             <div class="comments">
                                 <h2 class="params-headline">
                                     امتیاز کاربران به
-                                    <span>Samsung Galaxy Note 10 Dual SIM 256GB Mobile Phone</span>
+                                    <span>@Model.ProductView.Product.Name</span>
                                 </h2>
                                 <div class="comments-summary">
                                     <div class="col-lg-6 col-md-6 col-xs-12 pr">
@@ -904,13 +791,13 @@
                                                 <div class="col-lg-3 pr">
                                                     <section>
                                                         <div class="comments-user-shopping">
-                                                            جلال بهرامی راد
+                                                            اشکان
                                                             <div class="cell-date">
                                                                 در تاریخ ۱۹ فروردین ۱۳۹۹
                                                             </div>
-                                                            <div class="message-light">
-                                                                <i class="fa fa-thumbs-o-up"></i>خرید این محصول را
-                                                                توصیه می‌کنم
+                                                            <div class="message-red">
+                                                                <i class="fa fa-thumbs-o-down"></i>خرید این محصول را
+                                                                توصیه نمی‌کنم
                                                             </div>
                                                         </div>
                                                     </section>
@@ -1178,5 +1065,4 @@
         </div>
     </div>
 </div>
-    </div>
 <!-- arshive-product----------------------->

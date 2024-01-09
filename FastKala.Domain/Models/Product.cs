@@ -40,7 +40,7 @@ public record Product
     [DisplayName("تصویر اصلی")]
     public string? MainImage { get; set; }
     [DisplayName("دسته بندی اصلی")]
-    public int MainCategory { get; set; } = 1;
+    public int MainCategoryId { get; set; } = 1;
     [DisplayName("دسته بندی اصلی")]
     public DateTime LastChangeTime { get; set; } = DateTime.Now;
 
@@ -51,10 +51,11 @@ public record Product
 
     [DisplayName("نقاط قوت و ضعف")]
     public List<ProductProsCons> ProductProsCons { get; set; } = new();
+    public List<ProductAttributeValues> AttributeValues { get; set; } = new();
 
-    public List<ProductAttributeRelation> Attributes { get; set; } = new();
+    public List<ProductAttributeRelation> AttributesRelations { get; set; } = new();
 
-    public List<ProductCategoryRelation> Categories { get; set; } = new();
+    public List<ProductCategoryRelation> CategoriesRelations { get; set; } = new();
 
-    public List<ProductTagRelation> Tags { get; set; } = new();
+    public List<ProductTagRelation> TagsRelations { get; set; } = new();
 }

@@ -83,26 +83,26 @@ public class ProductService : IProductService
                         product.Product.ProductProsCons.Add(new ProductProsCons() { Text = item, IsPros = ProsConsType.Cons, ProductId = insertedId });
                     }
                 }
-                foreach (var item in product.Product.Attributes)
+                foreach (var item in product.Product.AttributesRelations)
                 {
                     item.ProductId = insertedId;
                 }
-                foreach (var item in product.Product.Categories)
+                foreach (var item in product.Product.CategoriesRelations)
                 {
                     item.ProductId = insertedId;
                 }
-                foreach (var item in product.Product.Tags)
+                foreach (var item in product.Product.TagsRelations)
                 {
                     item.ProductId = insertedId;
                 }
 
 
                 connection.BulkInsert<ProductImage>(galleryImages);
-                connection.BulkInsert<ProductTagRelation>(product.Product.Tags);
-                connection.BulkInsert<ProductCategoryRelation>(product.Product.Categories);
+                connection.BulkInsert<ProductTagRelation>(product.Product.TagsRelations);
+                connection.BulkInsert<ProductCategoryRelation>(product.Product.CategoriesRelations);
                 connection.BulkInsert<ProductFeature>(product.Product.ProductFeatures);
                 connection.BulkInsert<ProductProsCons>(product.Product.ProductProsCons);
-                connection.BulkInsert<ProductAttributeRelation>(product.Product.Attributes);
+                connection.BulkInsert<ProductAttributeRelation>(product.Product.AttributesRelations);
 
                 await connection.CloseAsync();
             }
@@ -141,12 +141,33 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT * FROM ProductFeature Where ProductId = @ID SELECT * FROM ProductProsCons Where ProductId = @ID", new { ID = id }))
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT TitleName, Value FROM ProductFeature Where ProductId = @ID SELECT Text,IsPros FROM ProductProsCons Where ProductId = @ID SELECT ProductId,AttributeValueId FROM ProductAttributeRelations Where ProductId = @ID SELECT ProductId,CategoryId FROM ProductCategoryRelations Where ProductId = @ID SELECT ProductId,TagId FROM ProductTagRelations Where ProductId = @ID SELECT ProductId,ImageName FROM ProductImages Where ProductId = @ID SELECT * FROM ProductCategories where Id in (select CategoryId from ProductCategoryRelations where ProductId = @ID) Select Name,Link from ProductTags where Id in (Select TagId from ProductTagRelations where ProductId = @ID)", new { ID = id }))
                 {
                     product.Product = await multi.ReadSingleAsync<Product>();
                     product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
                     product.Product.ProductProsCons = multi.ReadAsync<ProductProsCons>().Result.ToList();
+                    product.Product.AttributesRelations = multi.ReadAsync<ProductAttributeRelation>().Result.ToList();
+                    product.Product.CategoriesRelations = multi.ReadAsync<ProductCategoryRelation>().Result.ToList();
+                    product.Product.TagsRelations = multi.ReadAsync<ProductTagRelation>().Result.ToList();
+                    product.ProductImages = multi.ReadAsync<ProductImage>().Result.ToList();
+                    product.Categories = multi.ReadAsync<ProductCategory>().Result.ToList();
+                    product.Tags = multi.ReadAsync<ProductTag>().Result.ToList();
                 }
+                product.Brand = await connection.QuerySingleAsync<ProductBrand>("SELECT Name ,Link FROM ProductBrands where Id = @brandId", new { brandId = product.Product.BrandId });
+                string sql = "select * from productattributes pa inner join productattributevalues pav on pav.ProductattributeId = pa.Id ";
+
+                var attributeResult = await connection.QueryAsync<ProductAttribute, ProductAttributeValues, ProductAttribute>(sql, (attributes, attributevalues) =>
+                {
+                    attributes.AttributeValues.Add(attributevalues);
+                    return attributes;
+                }, splitOn: "Id");
+
+                product.ProductAttributes = attributeResult.GroupBy(p => p.Id).Select(g =>
+                {
+                    var productAttribute = g.First();
+                    productAttribute.AttributeValues = g.Select(p => p.AttributeValues.Single()).ToList();
+                    return productAttribute;
+                }).ToList();
             }
             return product;
         }
