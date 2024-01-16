@@ -250,8 +250,8 @@
                                         <div class="gallery-img">
                                             <a href="#">
                                                 <img class="zoom-img" id="img-product-zoom"
-                                                     src="/images/page-single-product/product-img/product-img-note10.jpg"
-                                                     data-zoom-image="/images/page-single-product/product-img/product-img-note10.jpg"
+                                                     src="@_uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages,Model.ProductView.Product.MainImage)"
+                                                     data-zoom-image="@_uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages, Model.ProductView.Product.MainImage)"
                                                      width="411" />
                                                 <div id="gallery_01f" style="width:420px;float:right;">
                                             </a>
