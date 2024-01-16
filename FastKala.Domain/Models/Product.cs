@@ -43,6 +43,8 @@ public record Product
     public int MainCategoryId { get; set; } = 1;
     [DisplayName("دسته بندی اصلی")]
     public DateTime LastChangeTime { get; set; } = DateTime.Now;
+    [DisplayName("امتیاز محصول")]
+    public byte Rate { get; set; } = 0;
 
     // Relations
 

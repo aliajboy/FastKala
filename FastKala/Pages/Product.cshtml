@@ -254,11 +254,17 @@
                                         @Model.ProductView.Product.EnglishName
                                     </span>
                                     <div class="product-rate">
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
-                                        <i class="fa fa-star active"></i>
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= Model.ProductView.Product.Rate)
+                                            {
+                                                <i class="fa fa-star active"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-star"></i>
+                                            }
+                                        }
                                     </div>
                                 </div>
                             </div>

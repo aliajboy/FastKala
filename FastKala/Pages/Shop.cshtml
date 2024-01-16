@@ -1,5 +1,7 @@
 ﻿@page
+@using FastKala.Application.Interfaces.Global
 @model FastKala.Pages.ShopModel
+@inject IUploadService _uploadService
 @{
     ViewData["Title"] = "فروشگاه";
 }
@@ -245,13 +247,19 @@
                                                     <div class="thumb">
                                                         <a asp-page="Product" asp-route-id="@item.Id" class="d-block">
                                                             <div class="product-rate">
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star active"></i>
-                                                                <i class="fa fa-star"></i>
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    if (i <= item.Rate)
+                                                                    {
+                                                                        <i class="fa fa-star active"></i>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="fa fa-star"></i>
+                                                                    }
+                                                                }
                                                             </div>
-                                                            <img src="/images/slider-product/btt.jpg">
+                                                            <img src="@_uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages,item.MainImage)">
                                                         </a>
                                                     </div>
                                                     <div class="title">
