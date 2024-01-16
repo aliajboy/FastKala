@@ -78,7 +78,7 @@
             var tagDescription = $('#ProductTag_Description').val();
             if (document.getElementById('addNewTag').value == 'افزودن برچسب') {
                 $.ajax({
-                    url: '/Products/CreateTag',
+                    url: '/Admin/Products/CreateTag',
                     method: 'POST',
                     data: { name: tagName, link: tagLink, description: tagDescription },
                     success: function (partial) {
@@ -91,7 +91,7 @@
             }
             else if (document.getElementById('addNewTag').value == 'ویرایش برچسب') {
                 $.ajax({
-                    url: '/Products/UpdateTag',
+                    url: '/Admin/Products/UpdateTag',
                     method: 'POST',
                     data: {
                         id: $('#tag-id').val(), name: tagName, link: tagLink, description: tagDescription
@@ -112,7 +112,7 @@
         function changeEditTag(id, itemId) {
             if (id == 'editTagButton') {
                 $.ajax({
-                    url: '/Products/GetTag',
+                    url: '/Admin/Products/GetTag',
                     method: 'POST',
                     data: { tagId: itemId },
                     success: function (data) {

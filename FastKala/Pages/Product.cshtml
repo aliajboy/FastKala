@@ -2,13 +2,14 @@
 @model FastKala.Pages.ProductModel
 @{
     ViewData["Title"] = Model.ProductView.Product.Name;
+    bool attributes = Model.ProductView.ProductAttributes.Any();
 }
 <!-- arshive-product----------------------->
 
 <div class="container-main">
     <div class="d-block">
         <div class="page-content page-row">
-            <div class="main-row">
+            <div class="main-row pt-2">
                 <div id="breadcrumb">
                     <i class="mdi mdi-home"></i>
                     <nav aria-label="breadcrumb">
@@ -203,8 +204,8 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
                                                                     <div id="custom-events">
-                                                                        <a href="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png">
-                                                                            <img src="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png" />
+                                                                        <a href="/images/page-single-product/product-img/product-img-note10.jpg">
+                                                                            <img src="/images/page-single-product/product-img/product-img-note10.jpg" />
                                                                         </a>
                                                                         <a href="/images/page-single-product/product-img/product-img-note10-big-1.jpg">
                                                                             <img src="/images/page-single-product/product-img/product-img-note10-big-1.jpg" />
@@ -306,10 +307,6 @@
                                 <h1 class="product-title">
                                     @Model.ProductView.Product.Name
                                 </h1>
-                                <div class="product-guaranteed text-success">
-                                    12
-                                    <span>فروش موفق</span>
-                                </div>
                             </div>
                             <div class="product-attributes">
                                 <div class="product-config">
@@ -328,38 +325,47 @@
                             <div class="product-config-wrapper">
                                 <div class="product-directory">
                                     <ul>
-                                        <li>
-                                            <span>
-                                                <i class="fa fa-archive"></i> دسته‌بندی ها:
-                                            </span>
-                                            @foreach (var item in Model.ProductView.Categories)
-                                            {
-                                                <a href="#" class="product-link product-cat-title">@item.Name</a>
-                                                if (item != Model.ProductView.Categories.Last())
+                                        @if (Model.ProductView.Categories.Any())
+                                        {
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-archive"></i> دسته‌بندی ها:
+                                                </span>
+                                                @foreach (var item in Model.ProductView.Categories)
                                                 {
-                                                    @Html.Raw(",")
+                                                    <a href="#" class="product-link product-cat-title">@item.Name</a>
+                                                    if (item != Model.ProductView.Categories.Last())
+                                                    {
+                                                        @Html.Raw(",")
+                                                    }
                                                 }
-                                            }
-                                        </li>
-                                        <li>
-                                            <span>
-                                                <i class="fa fa-tags"></i> برچسب ها:
-                                            </span>
-                                            @foreach (var item in Model.ProductView.Tags)
-                                            {
-                                                <a href="#" class="product-link product-tag-title">@item.Name</a>
-                                                if (item != Model.ProductView.Tags.Last())
+                                            </li>
+                                        }
+                                        @if (Model.ProductView.Tags.Any())
+                                        {
+                                            <li>
+                                                <span>
+                                                    <i class="fa fa-tags"></i> برچسب ها:
+                                                </span>
+                                                @foreach (var item in Model.ProductView.Tags)
                                                 {
-                                                    <text>,</text>
+                                                    <a href="#" class="product-link product-tag-title">@item.Name</a>
+                                                    if (item != Model.ProductView.Tags.Last())
+                                                    {
+                                                        <text>,</text>
+                                                    }
                                                 }
-                                            }
-                                        </li>
-                                        <li>
-                                            <span>
-                                                برند:
-                                            </span>
-                                            <a href="#" class="product-link product-tag-title">@Model.ProductView.Brand.Name</a>
-                                        </li>
+                                            </li>
+                                        }
+                                        @if (Model.ProductView.Brand != null)
+                                        {
+                                            <li>
+                                                <span>
+                                                    برند:
+                                                </span>
+                                                <a href="#" class="product-link product-tag-title">@Model.ProductView.Brand.Name</a>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                                 <div class="col=lg-6 col-md-6 col-xs-12 pr">
@@ -510,26 +516,21 @@
                             نقد و بررسی
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="Specifications-tab" data-toggle="tab" href="#Specifications"
-                           role="tab" aria-controls="Specifications" aria-selected="false">
-                            <i class="mdi mdi-format-list-checks"></i>
-                            مشخصات
-                        </a>
-                    </li>
+                    @if (attributes)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" id="Specifications-tab" data-toggle="tab" href="#Specifications"
+                               role="tab" aria-controls="Specifications" aria-selected="false">
+                                <i class="mdi mdi-format-list-checks"></i>
+                                مشخصات
+                            </a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a class="nav-link" id="User-comments-tab" data-toggle="tab" href="#User-comments"
                            role="tab" aria-controls="User-comments" aria-selected="false">
                             <i class="mdi mdi-comment-text-multiple-outline"></i>
                             نظرات کاربران
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="question-and-answer-tab" data-toggle="tab"
-                           href="#question-and-answer" role="tab" aria-controls="question-and-answer"
-                           aria-selected="false">
-                            <i class="mdi mdi-comment-question-outline"></i>
-                            پرسش و پاسخ
                         </a>
                     </li>
                 </ul>
@@ -543,8 +544,6 @@
                                 <div class="mask pm-3">
                                     <div class="mask-text">
                                         @Html.Raw(Model.ProductView.Product.Description)
-
-                                        <img src="H:/WebApps/FastKala/FastAdmin/wwwroot/Uploads/Productimages/1702101990324qr9gogpg.png" />
                                     </div>
                                     @if (Model.ProductView.Product.Description?.Length > 1600)
                                     {
@@ -595,42 +594,45 @@
                                 </div>
                             </section>
                         </div>
-                        <div class="tab-pane fade" id="Specifications" role="tabpanel"
-                             aria-labelledby="Specifications-tab">
-                            <article>
-                                <h2 class="params-headline">
-                                    مشخصات فنی
-                                    <span>@Model.ProductView.Product.EnglishName</span>
-                                </h2>
-                                <section>
-                                    <ul class="params-list">
-                                        @foreach (var item in Model.ProductView.ProductAttributes)
-                                        {
-                                            <li class="params-list-item">
-                                                <div class="params-list-key">
-                                                    <span class="block">@item.Name</span>
-                                                </div>
-                                                <div class="params-list-value">
-                                                    <span class="block">
-                                                        @foreach (var attrValue in item.AttributeValues)
-                                                        {
-                                                            if (attrValue != item.AttributeValues.Last())
+                        @if (attributes)
+                        {
+                            <div class="tab-pane fade" id="Specifications" role="tabpanel"
+                                 aria-labelledby="Specifications-tab">
+                                <article>
+                                    <h2 class="params-headline">
+                                        مشخصات فنی
+                                        <span>@Model.ProductView.Product.EnglishName</span>
+                                    </h2>
+                                    <section>
+                                        <ul class="params-list">
+                                            @foreach (var item in Model.ProductView.ProductAttributes)
+                                            {
+                                                <li class="params-list-item">
+                                                    <div class="params-list-key">
+                                                        <span class="block">@item.Name</span>
+                                                    </div>
+                                                    <div class="params-list-value">
+                                                        <span class="block">
+                                                            @foreach (var attrValue in item.AttributeValues)
                                                             {
-                                                                @(attrValue.Name + " , ")
+                                                                if (attrValue != item.AttributeValues.Last())
+                                                                {
+                                                                    @(attrValue.Name + " , ")
+                                                                }
+                                                                else
+                                                                {
+                                                                    @attrValue.Name
+                                                                }
                                                             }
-                                                            else
-                                                            {
-                                                                @attrValue.Name
-                                                            }
-                                                        }
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        }
-                                    </ul>
-                                </section>
-                            </article>
-                        </div>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </section>
+                                </article>
+                            </div>
+                        }
                         <div class="tab-pane fade" id="User-comments" role="tabpanel"
                              aria-labelledby="User-comments-tab">
                             <div class="comments">
@@ -867,190 +869,6 @@
                                                             </div>
                                                         </ul>
                                                     </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="question-and-answer" role="tabpanel"
-                             aria-labelledby="question-and-answer-tab">
-                            <div class="faq">
-                                <h2 class="params-headline">
-                                    پرسش و پاسخ
-                                    <span>پرسش خود را در مورد محصول مطرح نمایید</span>
-                                </h2>
-                                <form action="#" class="form-faq">
-                                    <div class="form-faq-row mt-4">
-                                        <div class="form-faq-col">
-                                            <div class="ui-textarea">
-                                                <textarea name="qa" title="متن سوال"
-                                                          class="ui-textarea-field"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-faq-row mt-4">
-                                        <div class="form-faq-col form-faq-col-submit">
-                                            <button class="btn-tertiary btn btn-secondary" type="submit">
-                                                ثبت
-                                                پرسش
-                                            </button>
-                                            <div class="form-faq-col-agreement d-inline-block mr-5">
-                                                <div class="form-auth-row">
-                                                    <label for="#" class="ui-checkbox mt-1">
-                                                        <input type="checkbox" value="1" name="login" id="remember">
-                                                        <span class="ui-checkbox-check"></span>
-                                                    </label>
-                                                    <label for="remember" class="remember-me mr-0">
-                                                        اولین پاسخی که به
-                                                        پرسش من داده شد، از طریق ایمیل به من اطلاع دهید.
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div id="product-questions-list">
-                                    <div class="questions-list">
-                                        <ul class="faq-list">
-                                            <li class="is-question">
-                                                <div class="section">
-                                                    <div class="faq-header">
-                                                        <span class="icon-faq">?</span>
-                                                        <p class="h5">
-                                                            پرسش :
-                                                            <span>جلال</span>
-                                                        </p>
-                                                    </div>
-                                                    <p>
-                                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                                                        با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                                                        و مجله در ستون و سطرآنچنان که لازم است
-                                                    </p>
-                                                    <div class="faq-date">
-                                                        <em>۱۴ فروردین ۱۳۹۹</em>
-                                                    </div>
-                                                    <a href="#" class="js-add-answer-btn">
-                                                        به این پرسش پاسخ
-                                                        دهید
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="questions-list answer-questions">
-                                        <ul class="faq-list">
-                                            <li class="is-question">
-                                                <div class="section">
-                                                    <div class="faq-header">
-                                                        <span class="icon-faq">
-                                                            <i class="mdi mdi-storefront"></i>
-                                                        </span>
-                                                        <p class="h5">
-                                                            پاسخ فروشنده :
-                                                            <span>حسن</span>
-                                                        </p>
-                                                    </div>
-                                                    <p>
-                                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                                                        با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                                                        و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                                                        تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                                                        کاربردی می باشد.
-                                                    </p>
-                                                    <div class="faq-date">
-                                                        <em>۱۴ فروردین ۱۳۹۹</em>
-                                                    </div>
-                                                    <a href="#" class="js-add-answer-btn">
-                                                        به این پرسش پاسخ
-                                                        دهید
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="questions-list">
-                                        <ul class="faq-list">
-                                            <li class="is-question">
-                                                <div class="section">
-                                                    <div class="faq-header">
-                                                        <span class="icon-faq">?</span>
-                                                        <p class="h5">
-                                                            پرسش :
-                                                            <span>اشکان</span>
-                                                        </p>
-                                                    </div>
-                                                    <p>
-                                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                                                        با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                                                        و مجله در ستون و سطرآنچنان که لازم است
-                                                    </p>
-                                                    <div class="faq-date">
-                                                        <em>۱۴ فروردین ۱۳۹۹</em>
-                                                    </div>
-                                                    <a href="#" class="js-add-answer-btn">
-                                                        به این پرسش پاسخ
-                                                        دهید
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="questions-list answer-questions">
-                                        <ul class="faq-list">
-                                            <li class="is-question">
-                                                <div class="section">
-                                                    <div class="faq-header">
-                                                        <span class="icon-faq">
-                                                            <i class="mdi mdi-storefront"></i>
-                                                        </span>
-                                                        <p class="h5">
-                                                            پاسخ فروشنده :
-                                                            <span>جواد</span>
-                                                        </p>
-                                                    </div>
-                                                    <p>
-                                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                                                        با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                                                        و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی
-                                                        تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای
-                                                        کاربردی می باشد.
-                                                    </p>
-                                                    <div class="faq-date">
-                                                        <em>۱۴ فروردین ۱۳۹۹</em>
-                                                    </div>
-                                                    <a href="#" class="js-add-answer-btn">
-                                                        به این پرسش پاسخ
-                                                        دهید
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="questions-list">
-                                        <ul class="faq-list">
-                                            <li class="is-question">
-                                                <div class="section">
-                                                    <div class="faq-header">
-                                                        <span class="icon-faq">?</span>
-                                                        <p class="h5">
-                                                            پرسش :
-                                                            <span>رضا</span>
-                                                        </p>
-                                                    </div>
-                                                    <p>
-                                                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و
-                                                        با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه
-                                                        و مجله در ستون و سطرآنچنان که لازم است
-                                                    </p>
-                                                    <div class="faq-date">
-                                                        <em>۱۴ فروردین ۱۳۹۹</em>
-                                                    </div>
-                                                    <a href="#" class="js-add-answer-btn">
-                                                        به این پرسش پاسخ
-                                                        دهید
-                                                    </a>
                                                 </div>
                                             </li>
                                         </ul>

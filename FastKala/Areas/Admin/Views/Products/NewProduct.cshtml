@@ -179,7 +179,7 @@
                         <button class="btn btn-outline-secondary flex-fill">ذخیره پیش نویس</button>
                     }
                 </div>
-                <input type="submit" id="addproductform" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" asp-action="NewProduct" asp-controller="Products" />
+                <input type="submit" id="addproductform" value="منتشر کردن" class="btn btn-primary mb-2 d-block w-100" asp-area="Admin" asp-action="NewProduct" asp-controller="Products" />
             </div>
         </div> @*Product Publish*@
         <div class="card">
@@ -192,9 +192,19 @@
                     @foreach (var item in Model.Categories.Where(x => x.ParentId == 0))
                     {
                         <li class="list-group-item mb-1">
-                            <input class="form-check-input me-1" type="checkbox" name="categories" value="@item.Id" id="category-@item.Link" onchange="toggleDisplayLink(this)">
-                            <label class="form-check-label" for="category-@item.Link">@item.Name</label>
-                            <a href="#" class="float-end d-none" id="link-@item.Id" onclick="updateMainCategory(@item.Id)"><small>دسته‌بندی اصلی</small></a>
+                            @if (item.Name == "بدون دسته‌بندی")
+                            {
+                                <input class="form-check-input me-1" type="checkbox" name="categories" value="@item.Id" id="category-@item.Link" onchange="toggleDisplayLink(this)" checked>
+                                <label class="form-check-label" for="category-@item.Link">@item.Name</label>
+                                <a href="#" class="float-end" id="link-@item.Id" onclick="updateMainCategory(@item.Id)"><small>دسته‌بندی اصلی</small></a>
+                            }
+                            else
+                            {
+
+                                <input class="form-check-input me-1" type="checkbox" name="categories" value="@item.Id" id="category-@item.Link" onchange="toggleDisplayLink(this)">
+                                <label class="form-check-label" for="category-@item.Link">@item.Name</label>
+                                <a href="#" class="float-end d-none" id="link-@item.Id" onclick="updateMainCategory(@item.Id)"><small>دسته‌بندی اصلی</small></a>
+                            }
                             <ul>
                                 @foreach (var cat2 in Model.Categories.Where(y => y.ParentId == item.Id))
                                 {
@@ -343,7 +353,7 @@
         }
 
         function updateMainCategory(categoryId) {
-            document.getElementById("Product_MainCategory").value = categoryId;
+            document.getElementById("Product_MainCategoryId").value = categoryId;
 
             if (prevBoldedLink) {
                 prevBoldedLink.style.fontWeight = 'normal';
@@ -381,9 +391,9 @@
 
             $('#addProductPros').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
-                                                                                                                                                            <button class="btn btn-primary remove-button" type="button">-</button>
-                                                                                                                                                        </div>`;
+                                                                                                                                                                            <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
+                                                                                                                                                                            <button class="btn btn-primary remove-button" type="button">-</button>
+                                                                                                                                                                        </div>`;
                 $('#product-pros').append(newInputField);
                 productProsIndex++;
             });
@@ -399,9 +409,9 @@
 
             $('#addProductCons').click(function () {
                 const newInputField = `<div class="input-group mb-2">
-                                                                                                                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
-                                                                                                                                                            <button class="btn btn-danger remove-button" type="button">-</button>
-                                                                                                                                                        </div>`;
+                                                                                                                                                                            <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
+                                                                                                                                                                            <button class="btn btn-danger remove-button" type="button">-</button>
+                                                                                                                                                                        </div>`;
                 $('#product-cons').append(newInputField);
                 productConsIndex++;
             });
@@ -463,7 +473,7 @@
 
             $('#select-attribute-' + selectedValue).select2({
                 ajax: {
-                    url: "/Products/GetAttributeValues",
+                    url: "/Admin/Products/GetAttributeValues",
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -519,7 +529,7 @@
 
         $('#tag-select').select2({
             ajax: {
-                url: "/Products/GetTags",
+                url: "/Admin/Products/GetTags",
                 method: 'Get',
                 processResults: function (data, params) {
 
@@ -561,7 +571,7 @@
 
         $('#brand-select').select2({
             ajax: {
-                url: "/Products/GetBrands",
+                url: "/Admin/Products/GetBrands",
                 method: 'Get',
                 processResults: function (data, params) {
 

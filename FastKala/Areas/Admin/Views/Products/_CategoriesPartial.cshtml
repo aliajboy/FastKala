@@ -10,7 +10,7 @@
             <br>
             <form method="post" class="d-inline">
                 <a href="#" onclick="changeEditCategory(this.id,@item.Id)" id="editCategoryButton">ویرایش</a> |
-                <button asp-route-id="@item.Id" asp-action="RemoveCategory" asp-controller="Products" class="btn p-0 text-decoration-none remove-product">حذف</button>
+                <button asp-route-id="@item.Id" asp-action="RemoveCategory" asp-area="Admin" asp-controller="Products" class="btn p-0 text-decoration-none remove-product">حذف</button>
             </form>
         </td>
         <td>

@@ -64,8 +64,8 @@
     }
     <script>
         document.getElementById('addNewAttribute').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent the default form submission behavior
-            submitForm(); // Call the function to submit the form via AJAX
+            event.preventDefault();
+            submitForm();
         });
 
         function submitForm() {
@@ -75,7 +75,7 @@
                 var attributeType = $('#attribute-type').val();
 
                 $.ajax({
-                    url: '/Products/AddNewAttribute',
+                    url: '/Admin/Products/AddNewAttribute',
                     method: 'POST',
                     data: { attributeName: attributeName, attributeLink: attributeLink, attributeType: attributeType },
                     success: function (partial) {
@@ -90,7 +90,7 @@
                 var attributeId = $('#attributeId').val();
 
                 $.ajax({
-                    url: '/Products/UpdateAttribute',
+                    url: '/Admin/Products/UpdateAttribute',
                     method: 'POST',
                     data: { id: attributeId, name: attributeName, link: attributeLink, type: attributeType },
                     success: function (partial) {
@@ -109,7 +109,7 @@
         function changeEditAttribute(id, itemId) {
             if (id == 'editAttributeButton') {
                 $.ajax({
-                    url: '/Products/GetAttribute',
+                    url: '/Admin/Products/GetAttribute',
                     method: 'POST',
                     data: { id: itemId },
                     success: function (data) {

@@ -19,14 +19,17 @@ public class ProductModel : PageModel
     public async Task<IActionResult> OnGetAsync(int id)
     {
         ProductView = await _productService.GetProductById(id);
-        ProductView.MainCategory = ProductView.Categories.First(x => x.Id == ProductView.Product.MainCategoryId);
-        ProductView.CategoryOrder.Add(ProductView.MainCategory);
-        int parentId = ProductView.MainCategory.ParentId;
-        while (parentId != 0)
+        if (ProductView.Categories.Any())
         {
-            var pCategory = ProductView.Categories.First(x => x.Id == parentId);
-            ProductView.CategoryOrder.Add(pCategory);
-            parentId = pCategory.ParentId;
+            ProductView.MainCategory = ProductView.Categories.First(x => x.Id == ProductView.Product.MainCategoryId);
+            ProductView.CategoryOrder.Add(ProductView.MainCategory);
+            int parentId = ProductView.MainCategory.ParentId;
+            while (parentId != 0)
+            {
+                var pCategory = ProductView.Categories.First(x => x.Id == parentId);
+                ProductView.CategoryOrder.Add(pCategory);
+                parentId = pCategory.ParentId;
+            }
         }
         if (ProductView.Product.Name == "پیش فرض" || ProductView.Product.Status != Domain.Enums.ProductStatus.Published)
         {

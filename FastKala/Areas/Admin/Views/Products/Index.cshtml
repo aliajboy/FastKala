@@ -6,7 +6,7 @@
 }
 
 <p>
-    <a asp-controller="Products" asp-action="NewProduct" class="btn btn-primary">افزودن محصول جدید</a>
+    <a asp-area="Admin" asp-controller="Products" asp-action="NewProduct" class="btn btn-primary">افزودن محصول جدید</a>
 </p>
 <div class="card">
     <div class="card-body">
@@ -34,8 +34,8 @@
                             </strong><br>
                             <div>
                                 <form method="post">
-                                    <a class="product-name" asp-action="EditProduct" asp-controller="Products" asp-route-id="@item.Id">ویرایش</a> |
-                                    <button type="submit" class="btn btn-link p-0 text-decoration-none product-name remove-product" asp-controller="Products" asp-action="RemoveProduct" asp-route-id="@item.Id">حذف</button>
+                                    <a class="product-name" asp-area="Admin" asp-action="EditProduct" asp-controller="Products" asp-route-id="@item.Id">ویرایش</a> |
+                                    <button type="submit" class="btn btn-link p-0 text-decoration-none product-name remove-product" asp-area="Admin" asp-controller="Products" asp-action="RemoveProduct" asp-route-id="@item.Id">حذف</button>
                                 </form>
                             </div>
                         </td>

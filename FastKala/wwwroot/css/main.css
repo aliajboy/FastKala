@@ -129,7 +129,7 @@ div {
 }
 
 .container-main {
-    max-width: 1640px;
+    max-width: 1440px;
     display: block;
     margin: 0 auto;
 }
@@ -3585,7 +3585,7 @@ aside.main-row-bg .card-product-horizontal .card-product-horizontal-content {
 .main-row #breadcrumb {
     width: 100%;
     font-size: 14px;
-    padding: 8px 30px 8px 10px;
+    padding: 8px 30px 0px 10px;
     color: #bbb;
     margin-bottom: 0;
     position: relative;
@@ -6348,6 +6348,7 @@ main.single-product .product .gallery-items li img:hover {
     font-size: 12px;
     transition: 0.2s;
     border-bottom: #aaa 1px dashed;
+    margin-left: 10px;
     margin-right: 5px;
     display: inline-block;
 }
@@ -7072,18 +7073,6 @@ span.show-less {
     padding: 5px 40px 5px 12px;
     position: relative;
 }
-
-    .tabs .tabs-content .comments .comments-summary .product-comment-list ul.comment-list li .message-red {
-        font-size: 12px;
-        line-height: 2.23;
-        background-color: #fff1f1;
-        border: 1px solid #f7c2c2;
-        border-radius: 20px;
-        margin: 20px 0 5px;
-        color: #ff1f51;
-        padding: 5px 40px 5px 12px;
-        position: relative;
-    }
 
 .tabs .tabs-content .comments .comments-summary .product-comment-list ul.comment-list li .message-light i {
     position: absolute;

@@ -55,7 +55,7 @@
                 var attributeId = $('#Attribute_Id').val();
 
                 $.ajax({
-                    url: '/Products/AddAttributeValue',
+                    url: '/Admin/Products/AddAttributeValue',
                     method: 'POST',
                     data: { ValueName: attributeName, ValueLink: attributeValue, id: attributeId },
                     success: function (partial) {
@@ -72,7 +72,7 @@
                 var attributeValueId = $('#attributeValueId').val();
 
                 $.ajax({
-                    url: '/Products/UpdateAttributeValue',
+                    url: '/Admin/Products/UpdateAttributeValue',
                     method: 'POST',
                     data: { name: attributeName, value: attributeValue, id: attributeValueId, attributeId: attributeId },
                     success: function (partial) {
@@ -89,7 +89,7 @@
         function changeEditAttributeValue(id, itemId) {
             if (id == 'editAttributeValueButton') {
                 $.ajax({
-                    url: '/Products/GetAttributeValue?attributeId=' + itemId,
+                    url: '/Admin/Products/GetAttributeValue?attributeId=' + itemId,
                     method: 'GET',
                     success: function (data) {
                         $('#AttributeValue_Name').val(data.attributeValue.name);
@@ -110,7 +110,7 @@
 
         function removeAttributeValue(valueId) {
             $.ajax({
-                url: '/Products/RemoveAttributeValue',
+                url: '/Admin/Products/RemoveAttributeValue',
                 method: 'POST',
                 data: {
                     attributeValueId: valueId, attributeId: $('#Attribute_Id').val()

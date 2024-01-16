@@ -84,7 +84,7 @@
             opt.innerHTML = 'دسته بندی اصلی';
             $('#Category_ParentId').append(opt);
             $.ajax({
-                url: '/Products/GetCategories',
+                url: '/Admin/Products/GetCategories',
                 method: 'Get',
                 success: function (data) {
                     for (var i = 0; i < data.categories.length; i++) {
@@ -110,7 +110,7 @@
             var categoryParentId = $('#Category_ParentId').val();
             if (document.getElementById('addNewCategory').value == 'افزودن دسته بندی') {
                 $.ajax({
-                    url: '/Products/CreateCategory',
+                    url: '/Admin/Products/CreateCategory',
                     method: 'POST',
                     data: { name: categoryName, link: categoryLink, description: categoryDescription, parentId: categoryParentId },
                     success: function (partial) {
@@ -125,7 +125,7 @@
             }
             else if (document.getElementById('addNewCategory').value == 'ویرایش دسته بندی') {
                 $.ajax({
-                    url: '/Products/UpdateCategory',
+                    url: '/Admin/Products/UpdateCategory',
                     method: 'POST',
                     data: { id: $('#category-id').val(), name: categoryName, link: categoryLink, description: categoryDescription, parentId: categoryParentId
                     },
@@ -147,7 +147,7 @@
         function changeEditCategory(id, itemId) {
             if (id == 'editCategoryButton') {
                 $.ajax({
-                    url: '/Products/GetCategory',
+                    url: '/Admin/Products/GetCategory',
                     method: 'POST',
                     data: { categoryId: itemId },
                     success: function (data) {

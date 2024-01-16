@@ -36,7 +36,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
                 <img src="~/img/logo.png" alt="">
                 <span class="d-none d-lg-block">FastAdmin</span>
             </a>
@@ -266,44 +266,44 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Home",null,"","collapsed")" asp-controller="Home" asp-action="Index">
+                <a class="nav-link @Html.ActiveClass("Home",null,"","collapsed")" asp-area="Admin" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-grid"></i>
                     <span>داشبورد</span>
                 </a>
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Products",null,"","collapsed")" data-bs-target="#components-nav" data-bs-toggle="collapse" asp-controller="Products" asp-action="Index">
+                <a class="nav-link @Html.ActiveClass("Products",null,"","collapsed")" data-bs-target="#components-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Products" asp-action="Index">
                     <i class="bi bi-menu-button-wide"></i><span>محصولات</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav" class="nav-content collapse @Html.ActiveClass("Products",null,"show","")" data-bs-parent="#sidebar-nav">
                     <li>
-                        <a asp-controller="Products" asp-action="Index" class="@Html.ActiveClass("Products","Index")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="@Html.ActiveClass("Products","Index")">
                             <i class="bi bi-circle"></i><span>محصولات</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Products" asp-action="NewProduct" class="@Html.ActiveClass("Products","NewProduct")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="NewProduct" class="@Html.ActiveClass("Products","NewProduct")">
                             <i class="bi bi-circle"></i><span>افزودن محصول</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Products" asp-action="Attributes" class="@Html.ActiveClass("Products","Attributes")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Attributes" class="@Html.ActiveClass("Products","Attributes")">
                             <i class="bi bi-circle"></i><span>ویژگی ها</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Products" asp-action="Categories" class="@Html.ActiveClass("Products","Categories")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Categories" class="@Html.ActiveClass("Products","Categories")">
                             <i class="bi bi-circle"></i><span>دسته بندی ها</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Products" asp-action="Tags" class="@Html.ActiveClass("Products","Tags")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Tags" class="@Html.ActiveClass("Products","Tags")">
                             <i class="bi bi-circle"></i><span>برچسب ها</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-controller="Products" asp-action="Brands" class="@Html.ActiveClass("Products","Brands")">
+                        <a asp-area="Admin" asp-controller="Products" asp-action="Brands" class="@Html.ActiveClass("Products","Brands")">
                             <i class="bi bi-circle"></i><span>برند ها</span>
                         </a>
                     </li>
@@ -335,8 +335,8 @@
     <script src="~/lib/select2/js/select2.min.js"></script>
 
     <!-- Template Main JS File -->
-    <script src="~/js/main.js" asp-append-version="true"></script>
-    <script src="~/js/local.js" asp-append-version="true"></script>
+    <script src="~/js/main-admin.js" asp-append-version="true"></script>
+    <script src="~/js/local-admin.js" asp-append-version="true"></script>
     @RenderSection("Scripts", false)
 </body>
 

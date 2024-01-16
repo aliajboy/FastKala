@@ -39,7 +39,7 @@ public class ProductService : IProductService
                 await connection.OpenAsync();
 
                 // Add Product
-                int insertedId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Name,Status,Description,BrandId,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,MainImage,LastChangeTime) OUTPUT Inserted.ID VALUES  (@name,@status,@description,@brandId,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantityStep,@weight,@englishName,@mainImage,@lastChangeTime)", new
+                int insertedId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Name,Status,Description,BrandId,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,MainImage,LastChangeTime,MainCategoryId) OUTPUT Inserted.ID VALUES  (@name,@status,@description,@brandId,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantityStep,@weight,@englishName,@mainImage,@lastChangeTime,@mainCategoryId)", new
                 {
                     name = product.Product.Name,
                     status = product.Product.Status,
@@ -56,7 +56,8 @@ public class ProductService : IProductService
                     weight = product.Product.Weight,
                     englishName = product.Product.EnglishName,
                     mainImage = mainImageURL,
-                    lastChangeTime = DateTime.Now
+                    lastChangeTime = DateTime.Now,
+                    mainCategoryId = product.Product.MainCategoryId
                 });
 
                 List<ProductImage> galleryImages = new();
@@ -155,13 +156,13 @@ public class ProductService : IProductService
                     product.Tags = multi.ReadAsync<ProductTag>().Result.ToList();
                 }
                 product.Brand = await connection.QuerySingleAsync<ProductBrand>("SELECT Name ,Link FROM ProductBrands where Id = @brandId", new { brandId = product.Product.BrandId });
-                string sql = "select * from productattributes pa inner join productattributevalues pav on pav.ProductattributeId = pa.Id ";
+                string sql = "select pa.Id,pa.Name,pa.Link,pa.Type,pav.Id,pav.Name,pav.value,pav.ProductAttributeId from productattributes pa inner join productattributevalues pav on pav.ProductattributeId = pa.Id inner join ProductAttributeRelations par on par.AttributeValueId = pav.Id where ProductId = @Id";
 
                 var attributeResult = await connection.QueryAsync<ProductAttribute, ProductAttributeValues, ProductAttribute>(sql, (attributes, attributevalues) =>
                 {
                     attributes.AttributeValues.Add(attributevalues);
                     return attributes;
-                }, splitOn: "Id");
+                }, splitOn: "Id", param: new {Id = id});
 
                 product.ProductAttributes = attributeResult.GroupBy(p => p.Id).Select(g =>
                 {

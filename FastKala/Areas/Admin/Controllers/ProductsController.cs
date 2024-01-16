@@ -4,6 +4,8 @@ using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
+
+[Area("Admin")]
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
@@ -41,6 +43,8 @@ public class ProductsController : Controller
     [HttpPost]
     public async Task<IActionResult> NewProduct(ProductViewModel productView)
     {
+        ModelState.Remove("MainCategory.Name");
+        ModelState.Remove("MainCategory.Link");
         if (!ModelState.IsValid)
         {
             return View(productView);
