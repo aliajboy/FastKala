@@ -18,9 +18,11 @@ public class ProductModel : PageModel
     public async Task<IActionResult> OnGetAsync(int id)
     {
         ProductView = await _productService.GetProductById(id);
+
         if (ProductView.Categories.Any())
         {
             ProductView.MainCategory = ProductView.Categories.First(x => x.Id == ProductView.Product.MainCategoryId);
+
             ProductView.CategoryOrder.Add(ProductView.MainCategory);
             int parentId = ProductView.MainCategory.ParentId;
             while (parentId != 0)
@@ -30,6 +32,7 @@ public class ProductModel : PageModel
                 parentId = pCategory.ParentId;
             }
         }
+
         if (ProductView.Product.Name == "پیش فرض" || ProductView.Product.Status != Domain.Enums.ProductStatus.Published)
         {
             return NotFound();

@@ -42,7 +42,7 @@ public class ProductService : IProductService
                 int insertedId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Name,Status,Description,BrandId,Price,SalePrice,StockQuantity,Sku,ManageSaleQuantity,ManageStockQuantity,MinimumSaleQuantity,SaleQuantityStep,Weight,EnglishName,MainImage,LastChangeTime,MainCategoryId) OUTPUT Inserted.ID VALUES  (@name,@status,@description,@brandId,@price,@salePrice,@stockQuantity,@sku,@manageSaleQuantity,@manageStockQuantity,@minimumSaleQuantity,@saleQuantityStep,@weight,@englishName,@mainImage,@lastChangeTime,@mainCategoryId)", new
                 {
                     name = product.Product.Name,
-                    status = product.Product.Status,
+                    status = ProductStatus.Published,
                     description = product.Product.Description,
                     brandId = product.Product.BrandId,
                     price = product.Product.Price,
@@ -143,7 +143,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT TitleName, Value FROM ProductFeature Where ProductId = @ID SELECT Text,IsPros FROM ProductProsCons Where ProductId = @ID SELECT ProductId,AttributeValueId FROM ProductAttributeRelations Where ProductId = @ID SELECT ProductId,CategoryId FROM ProductCategoryRelations Where ProductId = @ID SELECT ProductId,TagId FROM ProductTagRelations Where ProductId = @ID SELECT ProductId,ImageName FROM ProductImages Where ProductId = @ID SELECT * FROM ProductCategories where Id in (select CategoryId from ProductCategoryRelations where ProductId = @ID) Select Name,Link from ProductTags where Id in (Select TagId from ProductTagRelations where ProductId = @ID)", new { ID = id }))
+                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT TitleName, Value FROM ProductFeature Where ProductId = @ID SELECT Text,IsPros FROM ProductProsCons Where ProductId = @ID SELECT ProductId,AttributeValueId FROM ProductAttributeRelations Where ProductId = @ID SELECT ProductId,CategoryId FROM ProductCategoryRelations Where ProductId = @ID SELECT ProductId,TagId FROM ProductTagRelations Where ProductId = @ID SELECT * FROM ProductImages Where ProductId = @ID SELECT * FROM ProductCategories where Id in (select CategoryId from ProductCategoryRelations where ProductId = @ID) Select Name,Link from ProductTags where Id in (Select TagId from ProductTagRelations where ProductId = @ID)", new { ID = id }))
                 {
                     product.Product = await multi.ReadSingleAsync<Product>();
                     product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();
