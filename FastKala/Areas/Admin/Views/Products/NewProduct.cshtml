@@ -618,7 +618,7 @@
             for (var i = 0; i < checkedCategories.length; i++) {
                 let checked = checkedCategories[i].value;
                 $("<input />").attr("type", "hidden")
-                    .attr("name", "Product.Categories[" + i + "].CategoryId")
+                    .attr("name", "Product.CategoriesRelations[" + i + "].CategoryId")
                     .attr("value", checked)
                     .appendTo("#addproductform");
             }
@@ -632,7 +632,7 @@
                         let tags = $('#' + attributeSelects[i]).select2('data');
                         for (let x = 0; x < tags.length; x++) {
                             $("<input />").attr("type", "hidden")
-                                .attr("name", "Product.Tags[" + x + "].TagId")
+                                .attr("name", "Product.TagsRelations[" + x + "].TagId")
                                 .attr("value", tags[x].id)
                                 .appendTo("#addproductform");
                         }
@@ -641,7 +641,7 @@
                         let items = $('#' + attributeSelects[i]).select2('data');
                         for (let x = 0; x < items.length; x++) {
                             $("<input />").attr("type", "hidden")
-                                .attr("name", "Product.Attributes[" + x + "].AttributeValueId")
+                                .attr("name", "Product.AttributesRelations[" + x + "].AttributeValueId")
                                 .attr("value", items[x].id)
                                 .appendTo("#addproductform");
                         }
