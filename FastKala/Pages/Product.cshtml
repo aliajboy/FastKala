@@ -358,34 +358,30 @@
                                             }
                                         </ul>
                                     </div>
-                                    <div class="product-price-survey-question">
-                                        آیا قیمت مناسب‌تری سراغ دارید؟
-                                        <div class="answers">
-                                            <a href="#"
-                                               class="product-price-survery-answer price-yes btn btn-secondary">بلی</a>
-                                            <a href="#"
-                                               class="product-price-survery-answer price-no btn btn-secondary">خیر</a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="col=lg-6 col-md-6 col-xs-12 pr">
                                     <div class="product-seller-info">
                                         <div class="seller-info-changable">
-                                            <div class="product-seller-row guarantee">
-                                                <span class="title"> گارانتی:</span>
-                                                <a href="#" class="product-name">۱۸ ماهه کالامارکت</a>
+                                            <div class="product-seller-row guarantee pt-1 d-flex justify-content-between align-items-center">
+                                                <span class="title"> گارانتی :</span>
+                                                @if (Model.ProductView.ProductAttributes.Any(x => x.Name == "گارانتی"))
+                                                {
+                                                    <span class="product-name px-2 py-1 bg-white border rounded">@Model.ProductView.ProductAttributes.Single(x => x.Name == "گارانتی").AttributeValues.First().Name</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="product-name px-2 py-1 bg-white border rounded">اصالت و سلامت فیزیکی</span>
+                                                }
                                             </div>
                                             <div class="product-seller-row price">
-                                                <span class="title"> قیمت:</span>
-                                                <a href="#" class="product-name">
-                                                    <span class="amount">
-                                                        @Model.ProductView.Product.Price.ToString("N0")
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </a>
+                                                <span class="title"> قیمت :</span>
+                                                <span class="product-name amount">
+                                                    @Model.ProductView.Product.Price.ToString("N0")
+                                                    <span>تومان</span>
+                                                </span>
                                             </div>
                                             <div class="product-seller-row guarantee">
-                                                <span class="title mt-3"> تعداد:</span>
+                                                <span class="title mt-3"> تعداد :</span>
                                                 <div class="quantity pl">
                                                     <input type="number" min="1" max="100" step="1" value="1">
                                                     <div class="quantity-nav">
