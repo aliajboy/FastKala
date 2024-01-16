@@ -1,0 +1,35 @@
+﻿@model ProductAtrributesListViewModel
+@foreach (var item in Model.ProductAttributes)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+            <br>
+            <form method="post" class="d-inline">
+                <a href="#" onclick="changeEditAttribute(this.id,@item.Id)" id="editAttributeButton">ویرایش</a> |
+                <button asp-controller="Products" asp-action="RemoveAttribute" asp-route-id="@item.Id" type="submit" class="btn p-0 text-decoration-none remove-product">حذف</button>
+            </form>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Link)
+        </td>
+        <td>
+            @if (Model.ProductAttributeValues.Count > 0)
+            {
+                foreach (var attrValue in Model.ProductAttributeValues.Where(x=>x.ProductAttributeId == item.Id))
+                {
+                    if (attrValue != Model.ProductAttributeValues.Where(x => x.ProductAttributeId == item.Id).Last())
+                    {
+                        @(attrValue.Name + ", ")
+                    }
+                    else
+                    {
+                        @(attrValue.Name)
+                    }
+                }
+            }
+            <br>
+            <a asp-action="AttributeValues" asp-controller="Products" asp-route-id="@item.Id">پیکربندی</a>
+        </td>
+    </tr>
+}

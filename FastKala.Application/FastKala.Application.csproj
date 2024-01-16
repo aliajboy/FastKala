@@ -17,8 +17,4 @@
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Product\" />
-  </ItemGroup>
-
 </Project>

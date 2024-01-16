@@ -1,0 +1,137 @@
+﻿@model ProductTagsViewModel
+@{
+    ViewData["Title"] = "برچسب محصولات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" id="tag-id" />
+                    <div class="form-group mb-2">
+                        <label class="control-label" asp-for="ProductTag.Name">نام برچسب</label>
+                        <input class="form-control" asp-for="ProductTag.Name" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="control-label" asp-for="ProductTag.Link">لینک</label>
+                        <input class="form-control" asp-for="ProductTag.Link" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" asp-for="ProductTag.Description">توضیحات</label>
+                        <textarea class="CategoryDescription" asp-for="ProductTag.Description" style="height:450px;"></textarea>
+                    </div>
+                    <div class="form-group my-3">
+                        <input id="addNewTag" type="button" value="افزودن برچسب" class="btn btn-primary" />
+                        <input type="button" value="انصراف" id="cancellEditTag" onclick="changeEditTag(this.id)" class="btn btn-danger d-none" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped bg-white border b-rounded">
+                    <thead>
+                        <tr>
+                            <th>
+                                عکس
+                            </th>
+                            <th>
+                                نام برچسب
+                            </th>
+                            <th>
+                                لینک
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-data">
+                        @if (Model.ProductTags.Count > 0)
+                        {
+                            <partial name="~/Views/Products/_TagsPartial.cshtml" model="Model" />
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section tinymce {
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+}
+
+@section Scripts {
+
+    <script>
+        document.getElementById('addNewTag').addEventListener('click', function (event) {
+            event.preventDefault();
+            submitForm();
+        });
+
+        function submitForm() {
+            tinyMCE.triggerSave();
+            var tagName = $('#ProductTag_Name').val();
+            var tagLink = $('#ProductTag_Link').val();
+            var tagDescription = $('#ProductTag_Description').val();
+            if (document.getElementById('addNewTag').value == 'افزودن برچسب') {
+                $.ajax({
+                    url: '/Products/CreateTag',
+                    method: 'POST',
+                    data: { name: tagName, link: tagLink, description: tagDescription },
+                    success: function (partial) {
+                        $('#table-data').html(partial);
+                        $('#ProductTag_Name').val('');
+                        $('#ProductTag_Link').val('');
+                        tinyMCE.activeEditor.setContent('');
+                    }
+                });
+            }
+            else if (document.getElementById('addNewTag').value == 'ویرایش برچسب') {
+                $.ajax({
+                    url: '/Products/UpdateTag',
+                    method: 'POST',
+                    data: {
+                        id: $('#tag-id').val(), name: tagName, link: tagLink, description: tagDescription
+                    },
+                    success: function (partial) {
+                        $('#table-data').html(partial);
+                        $('#ProductTag_Name').val('');
+                        $('#ProductTag_Link').val('');
+                        tinyMCE.activeEditor.setContent('');
+                        $('#tag-id').val('');
+                        $('#addNewTag').val('افزودن برچسب');
+                        $('#cancellEditTag').addClass('d-none');
+                    }
+                });
+            }
+        }
+
+        function changeEditTag(id, itemId) {
+            if (id == 'editTagButton') {
+                $.ajax({
+                    url: '/Products/GetTag',
+                    method: 'POST',
+                    data: { tagId: itemId },
+                    success: function (data) {
+                        $('#ProductTag_Name').val(data.productTag.name);
+                        $('#ProductTag_Link').val(data.productTag.link);
+                        tinymce.activeEditor.setContent(data.productTag.description);
+                    }
+                });
+                $('#tag-id').val(itemId);
+                $('#addNewTag').val('ویرایش برچسب');
+                $('#cancellEditTag').removeClass('d-none');
+            }
+            else if (id == 'cancellEditTag') {
+                $('#ProductTag_Name').val('');
+                $('#ProductTag_Link').val('');
+                tinyMCE.activeEditor.setContent('');
+                $('#addNewTag').val('افزودن برچسب');
+                $('#cancellEditTag').addClass('d-none');
+            }
+        }
+    </script>
+}

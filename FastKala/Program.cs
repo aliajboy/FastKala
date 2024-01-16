@@ -1,6 +1,7 @@
 ﻿using FastKala.Application.Data;
 using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
+using FastKala.Application.Services.Global;
 using FastKala.Application.Services.Products;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddTransient<IProductService, ProductService>();
 
 // Features
 builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 builder.Services.AddResponseCompression();
 builder.Services.AddResponseCaching();
 
@@ -37,5 +39,8 @@ app.UseResponseCompression();
 app.UseResponseCaching();
 
 app.MapRazorPages();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

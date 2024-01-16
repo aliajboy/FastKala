@@ -1,0 +1,134 @@
+﻿@model ProductAtrributesListViewModel
+@{
+    ViewData["Title"] = "ویژگی محصولات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" id="addAtrrForm">
+                    <input type="hidden" id="attributeId" />
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-name">نام ویژگی</label>
+                        <input class="form-control" id="attribute-name" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-link">لینک</label>
+                        <input class="form-control" id="attribute-link" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="attribute-type">نوع ویژگی</label>
+                        <select class="form-select" id="attribute-type" asp-items="@Html.GetEnumSelectList<FastKala.Domain.Enums.AttributeType>()">
+                        </select>
+                    </div>
+                    <div class="form-group my-3">
+                        <input id="addNewAttribute" type="button" value="افزودن ویژگی" class="btn btn-primary" />
+                        <input type="button" value="انصراف" id="cancellEditAttribute" onclick="changeEditAttribute(this.id)" class="btn btn-danger d-none" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-striped bg-white border b-rounded">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductAttributes[0].Link)
+                            </th>
+                            <th>
+                                پیکربندی
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-data">
+                        <partial name="~/Views/Products/_ProductAttributePartial.cshtml" model="Model" />
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.getElementById('addNewAttribute').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            submitForm(); // Call the function to submit the form via AJAX
+        });
+
+        function submitForm() {
+            if (document.getElementById('addNewAttribute').value == 'افزودن ویژگی') {
+                var attributeName = $('#attribute-name').val();
+                var attributeLink = $('#attribute-link').val();
+                var attributeType = $('#attribute-type').val();
+
+                $.ajax({
+                    url: '/Products/AddNewAttribute',
+                    method: 'POST',
+                    data: { attributeName: attributeName, attributeLink: attributeLink, attributeType: attributeType },
+                    success: function (partial) {
+                        $('#table-data').html(partial);
+                    }
+                });
+            }
+            else if (document.getElementById('addNewAttribute').value == 'ویرایش ویژگی') {
+                var attributeName = $('#attribute-name').val();
+                var attributeLink = $('#attribute-link').val();
+                var attributeType = $('#attribute-type').val();
+                var attributeId = $('#attributeId').val();
+
+                $.ajax({
+                    url: '/Products/UpdateAttribute',
+                    method: 'POST',
+                    data: { id: attributeId, name: attributeName, link: attributeLink, type: attributeType },
+                    success: function (partial) {
+                        $('#table-data').html(partial);
+                        $('#attribute-name').val('');
+                        $('#attribute-link').val('');
+                        $('#attribute-type').val('1');
+                        $('#attributeId').val('');
+                        $('#addNewAttribute').val('افزودن ویژگی');
+                        $('#cancellEditAttribute').addClass('d-none');
+                    }
+                });
+            }
+        }
+
+        function changeEditAttribute(id, itemId) {
+            if (id == 'editAttributeButton') {
+                $.ajax({
+                    url: '/Products/GetAttribute',
+                    method: 'POST',
+                    data: { id: itemId },
+                    success: function (data) {
+                        $('#attribute-name').val(data.attribute.name);
+                        $('#attribute-link').val(data.attribute.link);
+                        $('#attribute-type').val(data.attribute.type);
+                    }
+                });
+                $('#attributeId').val(itemId);
+                $('#addNewAttribute').val('ویرایش ویژگی');
+                $('#cancellEditAttribute').removeClass('d-none');
+            }
+            else if (id == 'cancellEditAttribute') {
+                $('#attribute-name').val('');
+                $('#attribute-link').val('');
+                $('#attribute-type').val('1');
+                $('#addNewAttribute').val('افزودن ویژگی');
+                $('#cancellEditAttribute').addClass('d-none');
+            }
+        }
+    </script>
+}

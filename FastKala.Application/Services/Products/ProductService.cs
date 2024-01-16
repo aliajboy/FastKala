@@ -197,10 +197,10 @@ public class ProductService : IProductService
 
     public async Task<OperationResult> UpdateProduct(ProductViewModel product)
     {
-        using (SqlConnection connection = _context.CreateConnection())
-        {
+        //using (SqlConnection connection = _context.CreateConnection())
+        //{
 
-        }
+        //}
         throw new NotImplementedException();
     }
 
