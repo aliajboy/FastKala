@@ -106,9 +106,9 @@ public class UploadService : IUploadService
         return path;
     }
 
-    public string GetImageUrl(ImageType typeFolder)
+    public string GetImageUrl(ImageType imageType, string imageName)
     {
-        string path = $"/Uploads/{typeFolder.ToString()}";
+        string path = "/Uploads/"+ imageType.ToString() + "/" + imageName;
         return path;
     }
 }

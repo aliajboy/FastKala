@@ -16,5 +16,5 @@ public interface IUploadService
     /// <returns>Operation result Success if Image Saved. return false if image is bigger than size limit or when file is null.</returns>
     Task<OperationResult> UploadSingleImages(IFormFile file, ImageType type, ImageSize sizeLimit);
     string GetImagePath(ImageType typeFolder);
-    string GetImageUrl(ImageType typeFolder);
+    string GetImageUrl(ImageType imageType, string imageName);
 }

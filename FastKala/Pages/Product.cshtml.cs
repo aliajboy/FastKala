@@ -1,6 +1,5 @@
 ﻿using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

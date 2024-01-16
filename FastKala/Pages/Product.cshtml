@@ -1,5 +1,7 @@
 ﻿@page
+@using FastKala.Application.Interfaces.Global
 @model FastKala.Pages.ProductModel
+@inject IUploadService _uploadService
 @{
     ViewData["Title"] = Model.ProductView.Product.Name;
     bool attributes = Model.ProductView.ProductAttributes.Any();
@@ -204,8 +206,8 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-body">
                                                                     <div id="custom-events">
-                                                                        <a href="/images/page-single-product/product-img/product-img-note10.jpg">
-                                                                            <img src="/images/page-single-product/product-img/product-img-note10.jpg" />
+                                                                        <a href="@_uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages,Model.ProductView.Product.MainImage)">
+                                                                            <img src="@_uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages,Model.ProductView.Product.MainImage)" />
                                                                         </a>
                                                                         <a href="/images/page-single-product/product-img/product-img-note10-big-1.jpg">
                                                                             <img src="/images/page-single-product/product-img/product-img-note10-big-1.jpg" />
