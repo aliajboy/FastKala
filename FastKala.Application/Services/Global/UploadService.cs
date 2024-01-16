@@ -1,9 +1,9 @@
-﻿using FastKala.Application.Interfaces;
+﻿using FastKala.Application.Interfaces.Global;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace FastKala.Application.Services.Products;
+namespace FastKala.Application.Services.Global;
 public class UploadService : IUploadService
 {
     public async Task<List<ProductImage>> UploadMultipleImages(IList<IFormFile> files, ImageType type, ImageSize sizeLimit, int productId)

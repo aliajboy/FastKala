@@ -1,5 +1,6 @@
 ﻿using FastKala.Application.Data;
-using FastKala.Application.Interfaces;
+using FastKala.Application.Interfaces.Global;
+using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Products;
 
 var builder = WebApplication.CreateBuilder(args);

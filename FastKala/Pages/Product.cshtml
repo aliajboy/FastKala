@@ -539,8 +539,7 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="Review" role="tabpanel"
                              aria-labelledby="Review-tab">
-                            <h2 class="params-headline">نقد و بررسی اجمالی</h2>
-                            <section class="content-expert-summary">
+                            <section class="content-expert-summary mb-0 pt-3">
                                 <div class="mask pm-3">
                                     <div class="mask-text">
                                         @Html.Raw(Model.ProductView.Product.Description)
@@ -617,7 +616,7 @@
                                                         {
                                                             if (attrValue != item.AttributeValues.Last())
                                                             {
-                                                                @(attrValue.Name + ", ")
+                                                                @(attrValue.Name + " , ")
                                                             }
                                                             else
                                                             {

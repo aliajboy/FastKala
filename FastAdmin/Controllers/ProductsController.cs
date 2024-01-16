@@ -1,4 +1,5 @@
-﻿using FastKala.Application.Interfaces;
+﻿using FastKala.Application.Interfaces.Global;
+using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 

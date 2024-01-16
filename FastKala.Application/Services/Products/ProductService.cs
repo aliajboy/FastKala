@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using FastKala.Application.Data;
-using FastKala.Application.Interfaces;
+using FastKala.Application.Interfaces.Global;
+using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;

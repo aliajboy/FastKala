@@ -1,7 +1,7 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 
-namespace FastKala.Application.Interfaces;
+namespace FastKala.Application.Interfaces.Product;
 public interface IProductService
 {
     #region Product
