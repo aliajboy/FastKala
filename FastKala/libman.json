@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap-slider@11.0.2",
+      "destination": "wwwroot/js/vendor/",
+      "files": [
+        "bootstrap-slider.min.js"
+      ]
+    }
+  ]
+}

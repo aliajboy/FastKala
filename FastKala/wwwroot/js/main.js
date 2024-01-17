@@ -266,7 +266,7 @@ $(document).ready(function (e) {
                 '<div class="ui-dynamic-label ui-dynamic-label--positive js-advantage-item">\n' +
                 advantageInput.val() +
                 '<button type="button" class="ui-dynamic-label-remove js-icon-form-remove"></button>\n' +
-                '<input type="hidden" name="comment[advantages][]" value="' + advantageInput
+                '<input type="hidden" name="CommentView.Advantages" value="' + advantageInput
                     .val() + '">\n' +
                 '</div>');
 
@@ -292,7 +292,7 @@ $(document).ready(function (e) {
                 '<div class="ui-dynamic-label ui-dynamic-label--negative js-disadvantage-item">\n' +
                 disadvantageInput.val() +
                 '<button type="button" class="ui-dynamic-label-remove js-icon-form-remove"></button>\n' +
-                '<input type="hidden" name="comment[disadvantages][]" value="' +
+                '<input type="hidden" name="CommentView.DisAdvantages" value="' +
                 disadvantageInput.val() + '">\n' +
                 '</div>');
 

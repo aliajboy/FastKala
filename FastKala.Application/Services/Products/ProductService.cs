@@ -179,6 +179,21 @@ public class ProductService : IProductService
                     return productAttribute;
                 }).ToList();
             }
+
+            // Make Categories in Order
+            if (product.Categories.Any())
+            {
+                product.MainCategory = product.Categories.First(x => x.Id == product.Product.MainCategoryId);
+
+                product.CategoryOrder.Add(product.MainCategory);
+                int parentId = product.MainCategory.ParentId;
+                while (parentId != 0)
+                {
+                    var pCategory = product.Categories.First(x => x.Id == parentId);
+                    product.CategoryOrder.Add(pCategory);
+                    parentId = pCategory.ParentId;
+                }
+            }
             return product;
         }
         catch

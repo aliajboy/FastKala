@@ -88,4 +88,10 @@ public interface IProductService
     Task<OperationResult> UpdateProductBrand(int id, string name, string link, string description = "");
 
     #endregion
+
+    #region Product Comment
+
+    
+
+    #endregion
 }

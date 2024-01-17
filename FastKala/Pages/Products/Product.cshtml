@@ -22,7 +22,9 @@
                                 <li class="breadcrumb-item"><a href="#">@item.Name</a></li>
                             }
                             <li class="breadcrumb-item active" aria-current="page">
+                                <a asp-page="/Products/Product" asp-route-id="@Model.ProductView.Product.Id">
                                 @Model.ProductView.Product.Name
+                                </a>
                             </li>
                         </ol>
                     </nav>
@@ -601,7 +603,7 @@
                                                     </div>
                                                 </li>
                                                 <li>
-                                                    <span class="cell-title">نوآوری:</span>
+                                                    <span class="cell-title">خدمات پس از فروش:</span>
                                                     <span class="cell-value">خوب</span>
                                                     <div class="rating-general">
                                                         <div class="rating-value" style="width: 70%;"></div>
@@ -640,7 +642,7 @@
                                                 نظر
                                                 شما به عنوان مالک محصول ثبت خواهد شد.
                                             </p>
-                                            <a href="#" class="btn-add-comment btn btn-secondary">
+                                            <a asp-page="/Products/ProductComment" asp-route-id="@Model.ProductView.Product.Id" class="btn-add-comment btn btn-secondary">
                                                 افزودن نظر
                                                 جدید
                                             </a>
