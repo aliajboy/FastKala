@@ -1,4 +1,6 @@
-﻿namespace FastKala.Domain.Models.Product;
+﻿using FastKala.Domain.Enums;
+
+namespace FastKala.Domain.Models.Product;
 public record ProductComment
 {
     public int Id { get; set; }
@@ -8,6 +10,7 @@ public record ProductComment
     public int HelpedCount { get; set; }
     public int NotHelpedCount { get; set; }
     public DateTime SubmitDate { get; set; }
+    public CommentStatus Status { get; set; }
     public string UserName { get; set; }
     public bool IsBuyer { get; set; } = false;
     public bool Recommended { get; set; } = true;

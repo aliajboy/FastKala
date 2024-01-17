@@ -14,3 +14,13 @@ public enum ProductStatus
     [Display(Name = "همه")]
     All = 4
 }
+
+public enum CommentStatus
+{
+    [Display(Name = "در انتظار تایید")]
+    Pending = 0,
+    [Display(Name = "تایید شده")]
+    Verified = 1,
+    [Display(Name = "رد شده")]
+    Denied = 2
+}

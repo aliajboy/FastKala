@@ -1,6 +1,7 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;
+using FastKala.Domain.Models.Product;
 
 namespace FastKala.Application.Interfaces.Product;
 public interface IProductService
@@ -91,7 +92,13 @@ public interface IProductService
 
     #region Product Comment
 
-    
+    Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel);
+
+    Task<OperationResult> RemoveProductComment();
+
+    Task<OperationResult> UpdateProductComment(ProductCommentViewModel productCommentView);
+
+    Task<OperationResult> UpdateProductComment(CommentStatus status);
 
     #endregion
 }

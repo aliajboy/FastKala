@@ -781,4 +781,57 @@ public class ProductService : IProductService
     }
 
     #endregion
+
+    #region Comments
+
+    public async Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel)
+    {
+        try
+        {
+            foreach (var item in productCommentViewModel.Advantages)
+            {
+            }
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync("INSERT INTO ProductComments (Title,Description,Rate,HelpedCount,NotHelpedCount,SubmitDate,UserName,IsBuyer,Recommended,Status,ProductId) VALUES (@title,@description,@rate,@helpedCount,@notHelpedCount,@submitDate,@userName,@isBuyer,@recommended,@status,@productId)",
+                    new
+                    {
+                        title = productCommentViewModel.ProductComment.Title,
+                        description = productCommentViewModel.ProductComment.Description,
+                        rate = productCommentViewModel.ProductComment.Rate,
+                        helpedCount = productCommentViewModel.ProductComment.HelpedCount,
+                        notHelpedCount = productCommentViewModel.ProductComment.NotHelpedCount,
+                        submitDate= productCommentViewModel.ProductComment.SubmitDate,
+                        userName = productCommentViewModel.ProductComment.UserName,
+                        isBuyer = productCommentViewModel.ProductComment.IsBuyer,
+                        recommended = productCommentViewModel.ProductComment.Recommended,
+                        status = productCommentViewModel.ProductComment.Status,
+                        productId = productCommentViewModel.ProductComment.ProductId
+                    });
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public Task<OperationResult> RemoveProductComment()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<OperationResult> UpdateProductComment(ProductCommentViewModel productCommentView)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<OperationResult> UpdateProductComment(CommentStatus status)
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
 }

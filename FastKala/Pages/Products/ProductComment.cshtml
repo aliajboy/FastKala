@@ -32,6 +32,7 @@
                 </div>
             </div>
             <form id="addCommentForm" method="post">
+                <input type="hidden" asp-for="CommentView.ProductComment.ProductId" value="@Model.ProductView.Product.Id"/>
                 <section class="product-comment mt-0">
                     <div class="comments-product">
                         <div class="comments-product-row">
