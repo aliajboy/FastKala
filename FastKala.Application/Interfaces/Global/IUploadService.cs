@@ -1,5 +1,5 @@
 ﻿using FastKala.Application.ViewModels.Global;
-using FastKala.Domain.Models;
+using FastKala.Domain.Models.Product;
 using Microsoft.AspNetCore.Http;
 
 namespace FastKala.Application.Interfaces.Global;

@@ -1,17 +1,17 @@
 using FastKala.Application.Interfaces.Product;
 using FastKala.Domain.Enums;
-using FastKala.Domain.Models;
+using FastKala.Domain.Models.Product;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FastKala.Pages;
+namespace FastKala.Pages.Products;
 
-public class ShopModel : PageModel
+public class ProductsModel : PageModel
 {
     private readonly IProductService _productService;
     [BindProperty]
     public List<Product> Products { get; set; }
-    public ShopModel(IProductService productService)
+    public ProductsModel(IProductService productService)
     {
         _productService = productService;
     }

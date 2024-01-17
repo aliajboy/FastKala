@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Models;
+﻿using FastKala.Domain.Models.Product;
 using Microsoft.AspNetCore.Http;
 
 namespace FastKala.Application.ViewModels.Products;

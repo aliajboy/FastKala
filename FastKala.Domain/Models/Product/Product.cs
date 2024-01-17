@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace FastKala.Domain.Models;
+namespace FastKala.Domain.Models.Product;
 
 public record Product
 {
@@ -53,6 +53,7 @@ public record Product
 
     [DisplayName("نقاط قوت و ضعف")]
     public List<ProductProsCons> ProductProsCons { get; set; } = new();
+
     public List<ProductAttributeValues> AttributeValues { get; set; } = new();
 
     public List<ProductAttributeRelation> AttributesRelations { get; set; } = new();
@@ -60,4 +61,7 @@ public record Product
     public List<ProductCategoryRelation> CategoriesRelations { get; set; } = new();
 
     public List<ProductTagRelation> TagsRelations { get; set; } = new();
+
+    [DisplayName("نظرات")]
+    public List<ProductComment> ProductComments { get; set; } = new();
 }

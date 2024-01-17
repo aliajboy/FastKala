@@ -1,6 +1,6 @@
-﻿@page
+﻿@page "/Product/{id}"
 @using FastKala.Application.Interfaces.Global
-@model FastKala.Pages.ProductModel
+@model FastKala.Pages.Products.ProductModel
 @inject IUploadService _uploadService
 @{
     ViewData["Title"] = Model.ProductView.Product.Name;
@@ -636,7 +636,7 @@
                                             <h6>شما هم می‌توانید در مورد این کالا نظر بدهید.</h6>
                                             <p>
                                                 برای ثبت نظر، لازم است ابتدا وارد حساب کاربری خود شوید. اگر این
-                                                محصول را قبلا از دیجی‌کالا خریده باشید،
+                                                محصول را قبلا از ما خریده باشید،
                                                 نظر
                                                 شما به عنوان مالک محصول ثبت خواهد شد.
                                             </p>

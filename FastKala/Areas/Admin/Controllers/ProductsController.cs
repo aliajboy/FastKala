@@ -200,7 +200,7 @@ public class ProductsController : Controller
     {
         ProductCategoriesViewModel viewModel = new ProductCategoriesViewModel()
         {
-            Category = new FastKala.Domain.Models.ProductCategory()
+            Category = new FastKala.Domain.Models.Product.ProductCategory()
             {
                 Name = name,
                 Link = link,
@@ -217,7 +217,7 @@ public class ProductsController : Controller
     {
         ProductCategoriesViewModel viewModel = new ProductCategoriesViewModel()
         {
-            Category = new FastKala.Domain.Models.ProductCategory()
+            Category = new FastKala.Domain.Models.Product.ProductCategory()
             {
                 Id = id,
                 Name = name,

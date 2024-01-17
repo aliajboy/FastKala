@@ -1,7 +1,7 @@
 ﻿using FastKala.Domain.Enums;
 using System.ComponentModel;
 
-namespace FastKala.Domain.Models;
+namespace FastKala.Domain.Models.Product;
 
 public record ProductAttribute
 {

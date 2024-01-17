@@ -5,7 +5,7 @@ using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;
-using FastKala.Domain.Models;
+using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Z.Dapper.Plus;

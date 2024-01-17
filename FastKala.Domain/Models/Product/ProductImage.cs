@@ -1,4 +1,4 @@
-﻿namespace FastKala.Domain.Models;
+﻿namespace FastKala.Domain.Models.Product;
 public record ProductImage
 {
     public int Id { get; set; }

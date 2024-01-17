@@ -1,4 +1,4 @@
-﻿namespace FastKala.Domain.Models;
+﻿namespace FastKala.Domain.Models.Product;
 public class ProductTagRelation
 {
     public int Id { get; set; }

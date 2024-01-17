@@ -3,7 +3,7 @@ using FastKala.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FastKala.Pages;
+namespace FastKala.Pages.Products;
 
 public class ProductModel : PageModel
 {
