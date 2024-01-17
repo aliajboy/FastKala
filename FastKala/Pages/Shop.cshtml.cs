@@ -1,4 +1,5 @@
 using FastKala.Application.Interfaces.Product;
+using FastKala.Domain.Enums;
 using FastKala.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,7 +18,7 @@ public class ShopModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var products = await _productService.GetAllProducts();
+        var products = await _productService.GetAllProducts(ProductStatus.Published);
         Products = products.Products;
     }
 }

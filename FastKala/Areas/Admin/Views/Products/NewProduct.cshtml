@@ -615,6 +615,8 @@
             const attributeSelects = $('.select2-hidden-accessible').map(function () { return this.id; });
             const checkedCategories = $("input[name='categories']:checked");
 
+            let index = 0;
+
             for (var i = 0; i < checkedCategories.length; i++) {
                 let checked = checkedCategories[i].value;
                 $("<input />").attr("type", "hidden")
@@ -641,9 +643,10 @@
                         let items = $('#' + attributeSelects[i]).select2('data');
                         for (let x = 0; x < items.length; x++) {
                             $("<input />").attr("type", "hidden")
-                                .attr("name", "Product.AttributesRelations[" + x + "].AttributeValueId")
+                                .attr("name", "Product.AttributesRelations[" + index + "].AttributeValueId")
                                 .attr("value", items[x].id)
                                 .appendTo("#addproductform");
+                            index++;
                         }
                         break;
                 }

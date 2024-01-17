@@ -117,14 +117,22 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ProductListViewModel> GetAllProducts(int count = 20)
+    public async Task<ProductListViewModel> GetAllProducts(ProductStatus status = ProductStatus.All, int count = 20)
     {
         ProductListViewModel productList = new();
         try
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                var products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products", new { Count = count });
+                IEnumerable<Product> products;
+                if (status == ProductStatus.All)
+                {
+                    products = await connection.QueryAsync<Product>("SELECT TOP 20 * FROM Products");
+                }
+                else
+                {
+                    products = await connection.QueryAsync<Product>("SELECT TOP (@Count) * FROM Products where Status = @productStatus", new { Count = count, productStatus = status });
+                }
                 productList.TotalProductsCount = await connection.QuerySingleOrDefaultAsync<int>("SELECT COUNT(Id) FROM Products");
                 productList.Products = products.ToList();
             }
@@ -143,7 +151,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                using (var multi = await connection.QueryMultipleAsync("SELECT * FROM Products Where Id = @ID SELECT TitleName, Value FROM ProductFeature Where ProductId = @ID SELECT Text,IsPros FROM ProductProsCons Where ProductId = @ID SELECT ProductId,AttributeValueId FROM ProductAttributeRelations Where ProductId = @ID SELECT ProductId,CategoryId FROM ProductCategoryRelations Where ProductId = @ID SELECT ProductId,TagId FROM ProductTagRelations Where ProductId = @ID SELECT * FROM ProductImages Where ProductId = @ID SELECT * FROM ProductCategories where Id in (select CategoryId from ProductCategoryRelations where ProductId = @ID) Select Name,Link from ProductTags where Id in (Select TagId from ProductTagRelations where ProductId = @ID)", new { ID = id }))
+                using (var multi = await connection.QueryMultipleAsync("EXEC GetProduct @productId = @ID", new { ID = id }))
                 {
                     product.Product = await multi.ReadSingleAsync<Product>();
                     product.Product.ProductFeatures = multi.ReadAsync<ProductFeature>().Result.ToList();

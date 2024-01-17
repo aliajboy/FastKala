@@ -10,5 +10,7 @@ public enum ProductStatus
     [Display(Name = "پیش نویس")]
     Draft = 2,
     [Display(Name = "منتشر شده")]
-    Published = 3
+    Published = 3,
+    [Display(Name = "همه")]
+    All = 4
 }

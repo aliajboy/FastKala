@@ -1,12 +1,13 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Enums;
 
 namespace FastKala.Application.Interfaces.Product;
 public interface IProductService
 {
     #region Product
 
-    Task<ProductListViewModel> GetAllProducts(int count = 20);
+    Task<ProductListViewModel> GetAllProducts(ProductStatus status = ProductStatus.All, int count = 20);
     Task<ProductViewModel> GetProductById(int id);
     Task<OperationResult> UpdateProduct(ProductViewModel product);
     Task<OperationResult> RemoveProductById(int id);
