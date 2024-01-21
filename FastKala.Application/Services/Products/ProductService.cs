@@ -793,7 +793,7 @@ public class ProductService : IProductService
             }
             using (SqlConnection connection = _context.CreateConnection())
             {
-                await connection.ExecuteAsync("INSERT INTO ProductComments (Title,Description,Rate,HelpedCount,NotHelpedCount,SubmitDate,UserName,IsBuyer,Recommended,Status,ProductId) VALUES (@title,@description,@rate,@helpedCount,@notHelpedCount,@submitDate,@userName,@isBuyer,@recommended,@status,@productId)",
+                await connection.ExecuteAsync("INSERT INTO ProductComments (Title,Description,Rate,HelpedCount,NotHelpedCount,UserName,IsBuyer,Recommended,Status,ProductId) VALUES (@title,@description,@rate,@helpedCount,@notHelpedCount,@userName,@isBuyer,@recommended,@status,@productId)",
                     new
                     {
                         title = productCommentViewModel.ProductComment.Title,
@@ -801,8 +801,7 @@ public class ProductService : IProductService
                         rate = productCommentViewModel.ProductComment.Rate,
                         helpedCount = productCommentViewModel.ProductComment.HelpedCount,
                         notHelpedCount = productCommentViewModel.ProductComment.NotHelpedCount,
-                        submitDate= productCommentViewModel.ProductComment.SubmitDate,
-                        userName = productCommentViewModel.ProductComment.UserName,
+                        userName = productCommentViewModel.ProductComment.UserName ?? "",
                         isBuyer = productCommentViewModel.ProductComment.IsBuyer,
                         recommended = productCommentViewModel.ProductComment.Recommended,
                         status = productCommentViewModel.ProductComment.Status,
