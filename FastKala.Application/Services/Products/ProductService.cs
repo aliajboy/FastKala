@@ -164,19 +164,35 @@ public class ProductService : IProductService
                     product.Tags = multi.ReadAsync<ProductTag>().Result.ToList();
                 }
                 product.Brand = await connection.QuerySingleAsync<ProductBrand>("SELECT Name ,Link FROM ProductBrands where Id = @brandId", new { brandId = product.Product.BrandId });
+
                 string sql = "select pa.Id,pa.Name,pa.Link,pa.Type,pav.Id,pav.Name,pav.value,pav.ProductAttributeId from productattributes pa inner join productattributevalues pav on pav.ProductattributeId = pa.Id inner join ProductAttributeRelations par on par.AttributeValueId = pav.Id where ProductId = @Id";
 
                 var attributeResult = await connection.QueryAsync<ProductAttribute, ProductAttributeValues, ProductAttribute>(sql, (attributes, attributevalues) =>
                 {
                     attributes.AttributeValues.Add(attributevalues);
                     return attributes;
-                }, splitOn: "Id", param: new {Id = id});
+                }, splitOn: "Id", param: new { Id = id });
 
                 product.ProductAttributes = attributeResult.GroupBy(p => p.Id).Select(g =>
                 {
                     var productAttribute = g.First();
                     productAttribute.AttributeValues = g.Select(p => p.AttributeValues.Single()).ToList();
                     return productAttribute;
+                }).ToList();
+
+                sql = "SELECT * FROM ProductComments pc inner join ProductCommentsProsCons pcp on pcp.commentId = pc.Id where pc.ProductId = @Id";
+
+                var commentResult = await connection.QueryAsync<ProductComment, ProductCommentsProsCons, ProductComment>(sql, (comment, commentProsCons) =>
+                {
+                    comment.ProsCons.Add(commentProsCons);
+                    return comment;
+                }, splitOn: "Id", param: new { Id = id });
+
+                product.Product.ProductComments = commentResult.GroupBy(p => p.Id).Select(g =>
+                {
+                    var comment = g.First();
+                    comment.ProsCons = g.Select(p => p.ProsCons.Single()).ToList();
+                    return comment;
                 }).ToList();
             }
 
@@ -784,29 +800,94 @@ public class ProductService : IProductService
 
     #region Comments
 
+    public async Task<ProductCommentListViewModel> GetProductComment(int id)
+    {
+        try
+        {
+            ProductCommentListViewModel commentViewModel = new ProductCommentListViewModel();
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                string sql = "SELECT * FROM ProductComments pc inner join ProductCommentsProsCons pcp on pcp.commentId = pc.Id where pc.Id = @Id";
+
+                var commentResult = await connection.QueryAsync<ProductComment, ProductCommentsProsCons, ProductComment>(sql, (comment, commentProsCons) =>
+                {
+                    comment.ProsCons.Add(commentProsCons);
+                    return comment;
+                }, splitOn: "Id", param: new { Id = id });
+
+                commentViewModel.ProductComments = commentResult.GroupBy(p => p.Id).Select(g =>
+                {
+                    var comment = g.First();
+                    comment.ProsCons = g.Select(p => p.ProsCons.Single()).ToList();
+                    return comment;
+                }).ToList();
+            }
+            return commentViewModel;
+        }
+        catch
+        {
+            return new ProductCommentListViewModel();
+        }
+    }
+
     public async Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel)
     {
         try
         {
-            foreach (var item in productCommentViewModel.Advantages)
-            {
-            }
+            double rate = ((int)productCommentViewModel.ProductComment.Support + (int)productCommentViewModel.ProductComment.Quality + (int)productCommentViewModel.ProductComment.Usability + (int)productCommentViewModel.ProductComment.Feature + (int)productCommentViewModel.ProductComment.Value + (int)productCommentViewModel.ProductComment.Design) / 6;
+
             using (SqlConnection connection = _context.CreateConnection())
             {
-                await connection.ExecuteAsync("INSERT INTO ProductComments (Title,Description,Rate,HelpedCount,NotHelpedCount,UserName,IsBuyer,Recommended,Status,ProductId) VALUES (@title,@description,@rate,@helpedCount,@notHelpedCount,@userName,@isBuyer,@recommended,@status,@productId)",
+                await connection.OpenAsync();
+                int insertedId = await connection.ExecuteScalarAsync<int>("INSERT INTO ProductComments (Title,Description,Rate,HelpedCount,NotHelpedCount,UserName,IsBuyer,Recommended,Status,Quality,Design,Value,Support,Feature,Usability,ProductId) OUTPUT Inserted.Id VALUES (@title,@description,@rate,@helpedCount,@notHelpedCount,@userName,@isBuyer,@recommended,@status,@quality,@design,@value,@support,@feature,@usability,@productId)",
                     new
                     {
                         title = productCommentViewModel.ProductComment.Title,
                         description = productCommentViewModel.ProductComment.Description,
-                        rate = productCommentViewModel.ProductComment.Rate,
+                        rate = Math.Round(rate),
                         helpedCount = productCommentViewModel.ProductComment.HelpedCount,
                         notHelpedCount = productCommentViewModel.ProductComment.NotHelpedCount,
                         userName = productCommentViewModel.ProductComment.UserName ?? "",
                         isBuyer = productCommentViewModel.ProductComment.IsBuyer,
                         recommended = productCommentViewModel.ProductComment.Recommended,
                         status = productCommentViewModel.ProductComment.Status,
+                        quality = productCommentViewModel.ProductComment.Quality,
+                        design = productCommentViewModel.ProductComment.Design,
+                        value = productCommentViewModel.ProductComment.Value,
+                        support = productCommentViewModel.ProductComment.Support,
+                        feature = productCommentViewModel.ProductComment.Feature,
+                        usability = productCommentViewModel.ProductComment.Usability,
                         productId = productCommentViewModel.ProductComment.ProductId
                     });
+
+                foreach (var item in productCommentViewModel.Advantages)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        productCommentViewModel.ProductComment.ProsCons.Add(new ProductCommentsProsCons()
+                        {
+                            CommentId = insertedId,
+                            IsPros = true,
+                            Title = item
+                        });
+                    }
+                }
+                foreach (var item in productCommentViewModel.DisAdvantages)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        productCommentViewModel.ProductComment.ProsCons.Add(new ProductCommentsProsCons()
+                        {
+                            CommentId = insertedId,
+                            IsPros = false,
+                            Title = item
+                        });
+                    }
+                }
+
+                connection.BulkInsert<ProductCommentsProsCons>(productCommentViewModel.ProductComment.ProsCons);
+
+                await connection.CloseAsync();
             }
 
             return new OperationResult() { OperationStatus = OperationStatus.Success };

@@ -92,6 +92,8 @@ public interface IProductService
 
     #region Product Comment
 
+    Task<ProductCommentListViewModel> GetProductComment(int id);
+
     Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel);
 
     Task<OperationResult> RemoveProductComment();

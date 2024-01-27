@@ -57,11 +57,12 @@
                                             <div class="col-sm-6 col-12 mb-3">
                                                 <div class="col-12">
                                                     <div class="comments-product-attributes-title">کیفیت ساخت</div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-quality" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Quality"/>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-12 mb-3">
@@ -70,11 +71,12 @@
                                                         ارزش خرید به نسبت
                                                         قیمت
                                                     </div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-value" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Value" />
                                                 </div>
                                             </div>
                                         </div>
@@ -82,11 +84,12 @@
                                             <div class="col-sm-6 col-12 mb-3">
                                                 <div class="col-12">
                                                     <div class="comments-product-attributes-title">خدمات پس از فروش</div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-support" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Support" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-12 mb-3">
@@ -94,11 +97,12 @@
                                                     <div class="comments-product-attributes-title">
                                                         امکانات و قابلیت ها
                                                     </div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-feature" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Feature" />
                                                 </div>
                                             </div>
                                         </div>
@@ -106,21 +110,23 @@
                                             <div class="col-sm-6 col-12 mb-3">
                                                 <div class="col-12">
                                                     <div class="comments-product-attributes-title">سهولت استفاده</div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-usablity" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Usability" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 col-12 mb-3">
                                                 <div class="col-12">
                                                     <div class="comments-product-attributes-title">طراحی و ظاهر</div>
-                                                    <input id="ex19" type="text" data-provide="slider"
+                                                    <input id="comment-design" type="text" data-provide="slider"
                                                            data-slider-ticks="[1, 2, 3, 4, 5]"
                                                            data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
                                                            data-slider-min="1" data-slider-max="5" data-slider-step="1"
-                                                           data-slider-value="5" data-slider-tooltip="hide" />
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="CommentView.ProductComment.Design" />
                                                 </div>
                                             </div>
                                         </div>

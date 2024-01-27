@@ -1,5 +1,6 @@
 ﻿@page "/Product/{id}"
 @using FastKala.Application.Interfaces.Global
+@using FastKala.Domain.Enums
 @model FastKala.Pages.Products.ProductModel
 @inject IUploadService _uploadService
 @{
@@ -23,7 +24,7 @@
                             }
                             <li class="breadcrumb-item active" aria-current="page">
                                 <a asp-page="/Products/Product" asp-route-id="@Model.ProductView.Product.Id">
-                                @Model.ProductView.Product.Name
+                                    @Model.ProductView.Product.Name
                                 </a>
                             </li>
                         </ol>
@@ -588,46 +589,64 @@
                                     <div class="col-lg-6 col-md-6 col-xs-12 pr">
                                         <div class="comments-summary-box">
                                             <ul class="comments-item-rating">
+                                                @{
+                                                    ProductCommentRatings commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Quality));
+                                                }
                                                 <li>
                                                     <span class="cell-title">کیفیت ساخت:</span>
-                                                    <span class="cell-value">خوب</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
+                                                @{
+                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Value));
+                                                }
                                                 <li>
                                                     <span class="cell-title">ارزش خرید به نسبت قیمت:</span>
-                                                    <span class="cell-value">خوب</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
+                                                @{
+                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Support));
+                                                }
                                                 <li>
                                                     <span class="cell-title">خدمات پس از فروش:</span>
-                                                    <span class="cell-value">خوب</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value" style="width: 70%;"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
+                                                @{
+                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Feature));
+                                                }
                                                 <li>
                                                     <span class="cell-title">امکانات و قابلیت ها:</span>
-                                                    <span class="cell-value">متوسط</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value" style="width: 65%;"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
+                                                @{
+                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Usability));
+                                                }
                                                 <li>
                                                     <span class="cell-title">سهولت استفاده:</span>
-                                                    <span class="cell-value">خوب</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value" style="width: 75%;"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
+                                                @{
+                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Design));
+                                                }
                                                 <li>
                                                     <span class="cell-title">طراحی و ظاهر:</span>
-                                                    <span class="cell-value">خوب</span>
+                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
                                                     <div class="rating-general">
-                                                        <div class="rating-value"></div>
+                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -650,171 +669,90 @@
                                     </div>
                                     <div class="product-comment-list">
                                         <ul class="comment-list">
-                                            <li>
-                                                <div class="col-lg-3 pr">
-                                                    <section>
-                                                        <div class="comments-user-shopping">
-                                                            حسن شجاعی
-                                                            <div class="cell-date">
-                                                                در تاریخ ۱۸ فروردین ۱۳۹۹
-                                                            </div>
-                                                            <div class="message-light">
-                                                                <i class="fa fa-thumbs-o-up"></i>خرید این محصول را
-                                                                توصیه می‌کنم
-                                                            </div>
-                                                        </div>
-                                                    </section>
-                                                </div>
-                                                <div class="col-lg-9 pl">
-                                                    <div class="article">
-                                                        <ul class="comment-text">
-                                                            <div class="header">
-                                                                <div>بهتر از آیفون</div>
-                                                                <div class="product-rate pl">
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
+                                            @foreach (var item in Model.ProductView.Product.ProductComments)
+                                            {
+                                                <li>
+                                                    <div class="col-lg-3 pr">
+                                                        <section>
+                                                            <div class="comments-user-shopping">
+                                                                @item.UserName
+                                                                <div class="cell-date">
+                                                                    در تاریخ @item.SubmitDate.MiladiToPersian()
                                                                 </div>
-                                                                <p>
-                                                                    در کل سامسونگ کاربردی تر از آیفون هست ولی از نظر
-                                                                    کیفیت تصویر و سرعت آیفون بهتره و کلاس!
-                                                                </p>
+                                                                <div class="message-light">
+                                                                    <i class="fa fa-thumbs-o-up"></i>خرید این محصول را
+                                                                    توصیه می‌کنم
+                                                                </div>
                                                             </div>
-                                                            <div class="comments-evaluation">
-                                                                <div class="comments-evaluation-positive">
-                                                                    <span>نقاط قوت</span>
-                                                                    <ul>
-                                                                        <li>
-                                                                            سبک
-                                                                        </li>
-                                                                        <li>
-                                                                            سرعت پردازش بالا
-                                                                        </li>
-                                                                        <li>
-                                                                            خوش دست
-                                                                        </li>
-                                                                        <li>
-                                                                            صفحه نمایش عالی
-                                                                        </li>
-                                                                    </ul>
+                                                        </section>
+                                                    </div>
+                                                    <div class="col-lg-9 pl">
+                                                        <div class="article">
+                                                            <ul class="comment-text">
+                                                                <div class="header">
+                                                                    <div>@item.Title</div>
+                                                                    <div class="product-rate pl">
+                                                                        <i class="fa fa-star active"></i>
+                                                                        <i class="fa fa-star active"></i>
+                                                                        <i class="fa fa-star active"></i>
+                                                                        <i class="fa fa-star active"></i>
+                                                                        <i class="fa fa-star active"></i>
+                                                                    </div>
+                                                                    <p>
+                                                                        @item.Description
+                                                                    </p>
                                                                 </div>
-                                                                <div class="comments-evaluation-negative">
-                                                                    <span>نقاط قوت</span>
-                                                                    <ul>
-                                                                        <li>
-                                                                            قیمت زیاد
-                                                                        </li>
-                                                                        <li>
-                                                                            باطری ضعیف
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="footer">
-                                                                    <div class="comments-likes">
-                                                                        آیا این نظر برایتان
-                                                                        مفید بود؟
-                                                                        <button class="btn-like js-comment-like"
-                                                                                type="submit">
-                                                                            بله
-                                                                            <span class="count">8</span>
-                                                                        </button>
-                                                                        <button class="btn-like js-comment-dislike"
-                                                                                type="submit">
-                                                                            خیر
-                                                                            <span class="count">4</span>
-                                                                        </button>
+                                                                <div class="comments-evaluation">
+                                                                    @if (item.ProsCons.Any(x => x.IsPros == true))
+                                                                    {
+                                                                        <div class="comments-evaluation-positive">
+                                                                            <span>نقاط قوت</span>
+                                                                            <ul>
+                                                                                @foreach (var advantage in item.ProsCons.Where(x => x.IsPros == true))
+                                                                                {
+                                                                                    <li>
+                                                                                        @advantage.Title
+                                                                                    </li>
+                                                                                }
+                                                                            </ul>
+                                                                        </div>
+                                                                    }
+                                                                    @if (item.ProsCons.Any(x => x.IsPros == false))
+                                                                    {
+                                                                        <div class="comments-evaluation-negative">
+                                                                            <span>نقاط قوت</span>
+                                                                            <ul>
+                                                                                @foreach (var advantage in item.ProsCons.Where(x => x.IsPros == false))
+                                                                                {
+                                                                                    <li>
+                                                                                        @advantage.Title
+                                                                                    </li>
+                                                                                }
+                                                                            </ul>
+                                                                        </div>
+                                                                    }
+                                                                    <div class="footer">
+                                                                        <div class="comments-likes">
+                                                                            آیا این نظر برایتان
+                                                                            مفید بود؟
+                                                                            <button class="btn-like js-comment-like"
+                                                                                    type="submit">
+                                                                                بله
+                                                                                <span class="count">@item.HelpedCount</span>
+                                                                            </button>
+                                                                            <button class="btn-like js-comment-dislike"
+                                                                                    type="submit">
+                                                                                خیر
+                                                                                <span class="count">@item.NotHelpedCount</span>
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="col-lg-3 pr">
-                                                    <section>
-                                                        <div class="comments-user-shopping">
-                                                            اشکان
-                                                            <div class="cell-date">
-                                                                در تاریخ ۱۹ فروردین ۱۳۹۹
-                                                            </div>
-                                                            <div class="message-red">
-                                                                <i class="fa fa-thumbs-o-down"></i>خرید این محصول را
-                                                                توصیه نمی‌کنم
-                                                            </div>
+                                                            </ul>
                                                         </div>
-                                                    </section>
-                                                </div>
-                                                <div class="col-lg-9 pl">
-                                                    <div class="article">
-                                                        <ul class="comment-text">
-                                                            <div class="header">
-                                                                <div>عالی و صدرصد بهتر از اپل</div>
-                                                                <div class="product-rate pl">
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                    <i class="fa fa-star active"></i>
-                                                                </div>
-                                                                <p>
-                                                                    عالییه بنظرمن اونایی که میرن پول گوشی های ایفون
-                                                                    با اون قیمت رو میدن با استفاده از این گوشی باید
-                                                                    نظرشونو عوض کنن
-                                                                </p>
-                                                            </div>
-                                                            <div class="comments-evaluation">
-                                                                <div class="comments-evaluation-positive">
-                                                                    <span>نقاط قوت</span>
-                                                                    <ul>
-                                                                        <li>
-                                                                            سبک
-                                                                        </li>
-                                                                        <li>
-                                                                            سرعت پردازش بالا
-                                                                        </li>
-                                                                        <li>
-                                                                            خوش دست
-                                                                        </li>
-                                                                        <li>
-                                                                            صفحه نمایش عالی
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="comments-evaluation-negative">
-                                                                    <span>نقاط قوت</span>
-                                                                    <ul>
-                                                                        <li>
-                                                                            قیمت زیاد
-                                                                        </li>
-                                                                        <li>
-                                                                            باطری ضعیف
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="footer">
-                                                                    <div class="comments-likes">
-                                                                        آیا این نظر برایتان
-                                                                        مفید بود؟
-                                                                        <button class="btn-like js-comment-like"
-                                                                                type="submit">
-                                                                            بله
-                                                                            <span class="count">8</span>
-                                                                        </button>
-                                                                        <button class="btn-like js-comment-dislike"
-                                                                                type="submit">
-                                                                            خیر
-                                                                            <span class="count">4</span>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </ul>
                                                     </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            }
                                         </ul>
                                     </div>
                                 </div>

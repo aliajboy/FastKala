@@ -14,16 +14,21 @@ public record ProductComment
     public string UserName { get; set; }
     public bool IsBuyer { get; set; } = false;
     public bool Recommended { get; set; } = true;
+    public ProductCommentRatings Quality { get; set; } = ProductCommentRatings.Perfect;
+    public ProductCommentRatings Value { get; set; } = ProductCommentRatings.Perfect;
+    public ProductCommentRatings Support { get; set; } = ProductCommentRatings.Perfect;
+    public ProductCommentRatings Feature { get; set; } = ProductCommentRatings.Perfect;
+    public ProductCommentRatings Usability { get; set; } = ProductCommentRatings.Perfect;
+    public ProductCommentRatings Design { get; set; } = ProductCommentRatings.Perfect;
     public int ProductId { get; set; }
 
-    public List<ProductCommentProsCons> ProsCons { get; set; } = new();
+    public List<ProductCommentsProsCons> ProsCons { get; set; } = new();
 }
 
-public record ProductCommentProsCons
+public record ProductCommentsProsCons
 {
     public int Id { get; set; }
     public string Title { get; set; }
     public bool IsPros { get; set; }
-
-    public ProductComment comment { get; set; } = new();
+    public int CommentId { get; set; }
 }

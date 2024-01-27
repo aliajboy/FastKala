@@ -26,7 +26,11 @@ public class ProductCommentModel : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        var a = await _productService.AddProductComment(CommentView);
-        return RedirectToPage("/Products/Product", new { id = CommentView.ProductComment.ProductId });
+        var result = await _productService.AddProductComment(CommentView);
+        if (result.OperationStatus == Domain.Enums.OperationStatus.Success)
+        {
+            return RedirectToPage("/Products/Product", new { id = CommentView.ProductComment.ProductId });
+        }
+        return RedirectToPage("ProductComment", new { id = CommentView.ProductComment.ProductId });
     }
 }
