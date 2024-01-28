@@ -1,6 +1,8 @@
 ﻿using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
+using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -319,6 +321,42 @@ public class ProductsController : Controller
     {
         await _productService.RemoveProductBrand(id);
         return RedirectToAction(nameof(Tags));
+    }
+
+    #endregion
+
+    #region Comments
+
+    public async Task<IActionResult> Comments()
+    {
+        return View(await _productService.GetAllComments());
+    }
+
+    [HttpPost]
+    public async Task<OperationResult> RemoveComment(int commentId)
+    {
+        return await _productService.RemoveProductComment(commentId);
+    }
+
+    [HttpPost]
+    public async Task<OperationResult> VerifyComment(int id)
+    {
+        return await _productService.VerifyComment(id);
+    }
+
+    [HttpPost]
+    public async Task<ProductCommentViewModel> GetComment(int id)
+    {
+        ProductCommentViewModel viewModel = new ProductCommentViewModel();
+        var res = await _productService.GetProductComment(id);
+        viewModel.ProductComment = res.ProductComments.First();
+        return viewModel;
+    }
+
+    [HttpPost]
+    public async Task<OperationResult> EditComment(int id, string comment)
+    {
+        return await _productService.UpdateProductComment(id, comment);
     }
 
     #endregion

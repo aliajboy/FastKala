@@ -26,11 +26,11 @@ public static class datetimeExtensions
         try
         {
             PersianCalendar pc = new PersianCalendar();
-            return pc.GetYear(MDate).ToString() +
-                pc.GetMonth(MDate).ToString("00") +
-                pc.GetDayOfMonth(MDate).ToString("00") +
-                pc.GetHour(MDate).ToString("00") +
-                pc.GetMinute(MDate).ToString("00");
+            return pc.GetHour(MDate).ToString("00") + ":" +
+                pc.GetMinute(MDate).ToString("00") + " " +
+            pc.GetYear(MDate).ToString("0000") + "/" +
+                pc.GetMonth(MDate).ToString("00") + "/" +
+                pc.GetDayOfMonth(MDate).ToString("00");
         }
         catch (Exception)
         {

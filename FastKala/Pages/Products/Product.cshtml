@@ -588,68 +588,115 @@
                                 <div class="comments-summary">
                                     <div class="col-lg-6 col-md-6 col-xs-12 pr">
                                         <div class="comments-summary-box">
-                                            <ul class="comments-item-rating">
-                                                @{
-                                                    ProductCommentRatings commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Quality));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">کیفیت ساخت:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                                @{
-                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Value));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">ارزش خرید به نسبت قیمت:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                                @{
-                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Support));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">خدمات پس از فروش:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                                @{
-                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Feature));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">امکانات و قابلیت ها:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                                @{
-                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Usability));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">سهولت استفاده:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                                @{
-                                                    commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Design));
-                                                }
-                                                <li>
-                                                    <span class="cell-title">طراحی و ظاهر:</span>
-                                                    <span class="cell-value">@commentRatings.ToDisplay()</span>
-                                                    <div class="rating-general">
-                                                        <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                            @if (Model.ProductView.Product.ProductComments.Count() > 0)
+                                            {
+                                                ProductCommentRatings commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Quality));
+                                                <ul class="comments-item-rating">
+                                                    <li>
+                                                        <span class="cell-title">کیفیت ساخت:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Value));
+                                                    }
+                                                    <li>
+                                                        <span class="cell-title">ارزش خرید به نسبت قیمت:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Support));
+                                                    }
+                                                    <li>
+                                                        <span class="cell-title">خدمات پس از فروش:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Feature));
+                                                    }
+                                                    <li>
+                                                        <span class="cell-title">امکانات و قابلیت ها:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Usability));
+                                                    }
+                                                    <li>
+                                                        <span class="cell-title">سهولت استفاده:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        commentRatings = (ProductCommentRatings)Math.Round(Model.ProductView.Product.ProductComments.Average(x => (long)x.Design));
+                                                    }
+                                                    <li>
+                                                        <span class="cell-title">طراحی و ظاهر:</span>
+                                                        <span class="cell-value">@commentRatings.ToDisplay()</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:@((int)commentRatings*20)%"></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            }
+                                            else{
+                                                <ul class="comments-item-rating">
+                                                    <li>
+                                                        <span class="cell-title">کیفیت ساخت:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="cell-title">ارزش خرید به نسبت قیمت:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="cell-title">خدمات پس از فروش:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="cell-title">امکانات و قابلیت ها:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="cell-title">سهولت استفاده:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <span class="cell-title">طراحی و ظاهر:</span>
+                                                        <span class="cell-value">بدون امتیاز</span>
+                                                        <div class="rating-general">
+                                                            <div class="rating-value" style="width:0%"></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-xs-12 pr">
@@ -669,7 +716,7 @@
                                     </div>
                                     <div class="product-comment-list">
                                         <ul class="comment-list">
-                                            @foreach (var item in Model.ProductView.Product.ProductComments)
+                                            @foreach (var item in Model.ProductView.Product.ProductComments.Where(x=>x.Status == CommentStatus.Verified))
                                             {
                                                 <li>
                                                     <div class="col-lg-3 pr">

@@ -3,7 +3,6 @@ using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Reflection;
 
 namespace FastKala.Pages.Products;
 

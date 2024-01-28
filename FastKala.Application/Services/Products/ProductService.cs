@@ -807,13 +807,43 @@ public class ProductService : IProductService
             ProductCommentListViewModel commentViewModel = new ProductCommentListViewModel();
             using (SqlConnection connection = _context.CreateConnection())
             {
-                string sql = "SELECT * FROM ProductComments pc inner join ProductCommentsProsCons pcp on pcp.commentId = pc.Id where pc.Id = @Id";
+                string sql = "SELECT * FROM ProductComments pc left join ProductCommentsProsCons pcp on pcp.commentId = pc.Id where pc.Id = @Id";
 
                 var commentResult = await connection.QueryAsync<ProductComment, ProductCommentsProsCons, ProductComment>(sql, (comment, commentProsCons) =>
                 {
                     comment.ProsCons.Add(commentProsCons);
                     return comment;
                 }, splitOn: "Id", param: new { Id = id });
+
+                commentViewModel.ProductComments = commentResult.GroupBy(p => p.Id).Select(g =>
+                {
+                    var comment = g.First();
+                    comment.ProsCons = g.Select(p => p.ProsCons.Single()).ToList();
+                    return comment;
+                }).ToList();
+            }
+            return commentViewModel;
+        }
+        catch
+        {
+            return new ProductCommentListViewModel();
+        }
+    }
+
+    public async Task<ProductCommentListViewModel> GetAllComments()
+    {
+        try
+        {
+            ProductCommentListViewModel commentViewModel = new ProductCommentListViewModel();
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                string sql = "SELECT * FROM ProductComments pc left join ProductCommentsProsCons pcp on pcp.commentId = pc.Id";
+
+                var commentResult = await connection.QueryAsync<ProductComment, ProductCommentsProsCons, ProductComment>(sql, (comment, commentProsCons) =>
+                {
+                    comment.ProsCons.Add(commentProsCons);
+                    return comment;
+                }, splitOn: "Id");
 
                 commentViewModel.ProductComments = commentResult.GroupBy(p => p.Id).Select(g =>
                 {
@@ -898,19 +928,55 @@ public class ProductService : IProductService
         }
     }
 
-    public Task<OperationResult> RemoveProductComment()
+    public async Task<OperationResult> RemoveProductComment(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync("RemoveProductComment", new { commentId = id }, commandType: CommandType.StoredProcedure);
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
     }
 
-    public Task<OperationResult> UpdateProductComment(ProductCommentViewModel productCommentView)
+    public async Task<OperationResult> UpdateProductComment(int commentId, string description)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync("Update ProductComments SET Description = @Description where Id = @id", new { id = commentId, Description = description });
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
     }
 
-    public Task<OperationResult> UpdateProductComment(CommentStatus status)
+    public async Task<OperationResult> VerifyComment(int commentId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync("Update ProductComments SET Status = 1 where Id = @id", new { id = commentId });
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
     }
 
     #endregion

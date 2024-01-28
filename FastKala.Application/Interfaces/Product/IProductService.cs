@@ -94,13 +94,15 @@ public interface IProductService
 
     Task<ProductCommentListViewModel> GetProductComment(int id);
 
+    Task<ProductCommentListViewModel> GetAllComments();
+
     Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel);
 
-    Task<OperationResult> RemoveProductComment();
+    Task<OperationResult> RemoveProductComment(int id);
 
-    Task<OperationResult> UpdateProductComment(ProductCommentViewModel productCommentView);
+    Task<OperationResult> UpdateProductComment(int commentid, string description);
 
-    Task<OperationResult> UpdateProductComment(CommentStatus status);
+    Task<OperationResult> VerifyComment(int commentId);
 
     #endregion
 }
