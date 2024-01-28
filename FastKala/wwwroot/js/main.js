@@ -96,8 +96,8 @@ $(document).ready(function (e) {
                 slideBy: 2
             },
             1400: {
-                items: 4,
-                slideBy: 3
+                items: 5,
+                slideBy: 1
             }
         }
     });
