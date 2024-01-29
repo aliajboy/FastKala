@@ -1,18 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FastKala.Application.Interfaces.Product;
+using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Models.Product;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FastKala.Pages;
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly IProductService _productService;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public List<Product> Products { get; set; }
+
+    public IndexModel(IProductService productService)
     {
-        _logger = logger;
+        _productService = productService;
     }
 
-    public void OnGet()
+    public async Task OnGet()
     {
+        var res = await _productService.GetAllProducts();
+        Products = res.Products.OrderByDescending(p => p.LastChangeTime).ToList();
     }
 }

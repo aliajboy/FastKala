@@ -1,5 +1,7 @@
 ﻿@page
+@using FastKala.Application.Interfaces.Global
 @model IndexModel
+@inject IUploadService uploadService
 @{
     ViewData["Title"] = "فروشگاه پر سرعت علی جبالی";
 }
@@ -463,42 +465,45 @@
                     <div class="owl-stage-outer">
                         <div class="owl-stage"
                              style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
-                            <div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
-                                <div class="item">
-                                    <a href="#" class="d-block hover-img-link">
-                                        <img src="~/images/slider-product/Stove-lopez.jpg"
-                                             class="img-fluid" alt="">
-                                    </a>
-                                    <h2 class="post-title">
-                                        <a href="#">
-                                            اجاق گاز طرح فر لوپز مدل 10000S
+                            @foreach (var item in Model.Products.OrderByDescending(x => x.LastChangeTime))
+                            {
+                                <div class="owl-item active">
+                                    <div class="item">
+                                        <a asp-page="/Products/Product" asp-route-id="@item.Id" class="d-block hover-img-link">
+                                            <img src="@uploadService.GetImageUrl(Application.ViewModels.Global.ImageType.ProductImages,item.MainImage)"
+                                                 class="img-fluid" alt="">
                                         </a>
-                                    </h2>
-                                    <div class="price">
-                                        <del><span>۱۲,۰۰۰,۰۰۰<span>تومان</span></span></del>
-                                        <ins><span>۱۰,۵۰۰,۰۰۰<span>تومان</span></span></ins>
-                                    </div>
-                                    <div class="actions">
-                                        <ul>
-                                            <li class="action-item like">
-                                                <button class="btn btn-light add-product-wishes" type="submit">
-                                                    <i class="fa fa-heart-o"></i>
-                                                </button>
-                                            </li>
-                                            <li class="action-item compare">
-                                                <button class="btn btn-light btn-compare" type="submit">
-                                                    <i class="fa fa-random"></i>
-                                                </button>
-                                            </li>
-                                            <li class="action-item add-to-cart">
-                                                <button class="btn btn-light btn-add-to-cart" type="submit">
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </button>
-                                            </li>
-                                        </ul>
+                                        <h2 class="post-title">
+                                            <a asp-page="/Products/Product">
+                                                @item.Name
+                                            </a>
+                                        </h2>
+                                        <div class="price">
+                                            <del><span>@item.Price.ToString("N0")<span>تومان</span></span></del>
+                                            <ins><span>@item.SalePrice?.ToString("N0")<span>تومان</span></span></ins>
+                                        </div>
+                                        <div class="actions">
+                                            <ul>
+                                                <li class="action-item like">
+                                                    <button class="btn btn-light add-product-wishes" type="submit">
+                                                        <i class="fa fa-heart-o"></i>
+                                                    </button>
+                                                </li>
+                                                <li class="action-item compare">
+                                                    <button class="btn btn-light btn-compare" type="submit">
+                                                        <i class="fa fa-random"></i>
+                                                    </button>
+                                                </li>
+                                                <li class="action-item add-to-cart">
+                                                    <button class="btn btn-light btn-add-to-cart" type="submit">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                             <div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
                                 <div class="item">
                                     <a href="#" class="d-block hover-img-link">
