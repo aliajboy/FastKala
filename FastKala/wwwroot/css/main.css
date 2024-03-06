@@ -4153,7 +4153,7 @@ input[type="number"] {
     padding-right: 0;
     text-align: center;
     border: 1px solid #eee;
-    font-size: 1.071rem;
+    font-size: 1.1rem;
     color: #8e8e8e;
     border-radius: 20px;
 }
@@ -6527,7 +6527,7 @@ main.single-product .product .gallery-items li img:hover {
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row {
     padding: 10px;
-    font-size: 12px;
+    font-size: 0.95rem;
     color: #666666;
     float: right;
     width: 100%;
@@ -6535,7 +6535,7 @@ main.single-product .product .gallery-items li img:hover {
 }
 
 .product .product-info .product-config-wrapper .product-seller-info .product-seller-row span.title {
-    font-size: 14px;
+    font-size: 1rem;
     color: #888;
     float: right;
 }
@@ -8259,14 +8259,12 @@ span.show-less {
 }
 
 .about .about-us-head {
-    min-height: 500px;
     background: url(../images/head-about.jpg) no-repeat 50%;
     background-size: cover;
     margin-bottom: 0;
 }
 
 .about .about-us-head .about-us-head-inner {
-    background-color: rgba(64 52 251 / 45%);
     width: 100%;
     height: 100%;
     padding: 75px 100px;
