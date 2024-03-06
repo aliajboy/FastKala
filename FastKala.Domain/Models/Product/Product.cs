@@ -19,7 +19,7 @@ public record Product
     public int BrandId { get; set; }
     [DisplayName("قیمت")]
     [DisplayFormat(DataFormatString = "{0:N0}")]
-    public int Price { get; set; }
+    public int? Price { get; set; }
     [DisplayName("قیمت فروش ویژه")]
     [DisplayFormat(DataFormatString = "{0:N0}")]
     public int? SalePrice { get; set; }

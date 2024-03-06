@@ -1,4 +1,4 @@
-﻿@page "/Product/{id}"
+﻿@page "/Product/{id:int}"
 @using FastKala.Application.Interfaces.Global
 @using FastKala.Domain.Enums
 @model FastKala.Pages.Products.ProductModel
@@ -377,27 +377,45 @@
                                                 }
                                             </div>
                                             <div class="product-seller-row price">
-                                                <span class="title"> قیمت :</span>
-                                                <span class="product-name amount">
-                                                    @Model.ProductView.Product.Price.ToString("N0")
-                                                    <span>تومان</span>
-                                                </span>
+                                                @if (Model.ProductView.Product.Price != null)
+                                                {
+                                                    <span class="title"> قیمت :</span>
+                                                    <span class="product-name amount">
+                                                        @Model.ProductView.Product.Price?.ToString("N0")
+                                                        <span>تومان</span>
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="font-weight-bold">برای استعلام قیمت و ثبت سفارش تماس بگیرید</span>
+                                                }
                                             </div>
-                                            <div class="product-seller-row guarantee">
-                                                <span class="title mt-3"> تعداد :</span>
-                                                <div class="quantity pl">
-                                                    <input type="number" min="1" max="100" step="1" value="1">
-                                                    <div class="quantity-nav">
-                                                        <div class="quantity-button quantity-up">+</div>
-                                                        <div class="quantity-button quantity-down">-</div>
+                                            @if (Model.ProductView.Product.Price == null)
+                                            {
+                                                <div class="product-seller-row">
+                                                    <a href="tel:09128988449" class="btn-add-to-cart-contact btn btn-primary">
+                                                        <span class="btn-add-to-cart-txt">مشاوره و خرید</span>
+                                                    </a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product-seller-row guarantee">
+                                                    <span class="title mt-3"> تعداد :</span>
+                                                    <div class="quantity pl">
+                                                        <input type="number" min="1" max="100" step="1" value="1">
+                                                        <div class="quantity-nav">
+                                                            <div class="quantity-button quantity-up">+</div>
+                                                            <div class="quantity-button quantity-down">-</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="product-seller-row add-to-cart">
-                                                <a href="#" class="btn-add-to-cart btn btn-primary">
-                                                    <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
-                                                </a>
-                                            </div>
+                                                <div class="product-seller-row add-to-cart">
+                                                    <a href="#" class="btn-add-to-cart btn btn-primary">
+                                                        <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
+                                                    </a>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -651,7 +669,8 @@
                                                     </li>
                                                 </ul>
                                             }
-                                            else{
+                                            else
+                                            {
                                                 <ul class="comments-item-rating">
                                                     <li>
                                                         <span class="cell-title">کیفیت ساخت:</span>
@@ -716,7 +735,7 @@
                                     </div>
                                     <div class="product-comment-list">
                                         <ul class="comment-list">
-                                            @foreach (var item in Model.ProductView.Product.ProductComments.Where(x=>x.Status == CommentStatus.Verified))
+                                            @foreach (var item in Model.ProductView.Product.ProductComments.Where(x => x.Status == CommentStatus.Verified))
                                             {
                                                 <li>
                                                     <div class="col-lg-3 pr">

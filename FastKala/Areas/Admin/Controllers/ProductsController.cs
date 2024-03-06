@@ -70,7 +70,7 @@ public class ProductsController : Controller
     [HttpPost]
     public async Task<IActionResult> RemoveProduct(int id)
     {
-        await _productService.RemoveProductById(id);
+        var a = await _productService.RemoveProductById(id);
         return RedirectToAction(nameof(Index));
     }
 

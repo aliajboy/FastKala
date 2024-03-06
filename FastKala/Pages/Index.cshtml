@@ -466,12 +466,12 @@
                                                  class="img-fluid" alt="">
                                         </a>
                                         <h2 class="post-title">
-                                            <a asp-page="/Products/Product">
+                                            <a asp-page="/Products/Product" asp-route-id="@item.Id">
                                                 @item.Name
                                             </a>
                                         </h2>
                                         <div class="price">
-                                            <del><span>@item.Price.ToString("N0")<span>تومان</span></span></del>
+                                            <del><span>@item.Price?.ToString("N0")<span>تومان</span></span></del>
                                             <ins><span>@item.SalePrice?.ToString("N0")<span>تومان</span></span></ins>
                                         </div>
                                         <div class="actions">

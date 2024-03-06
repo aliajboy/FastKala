@@ -31,7 +31,7 @@ public class UploadService : IUploadService
                         fileNameWithPath = Path.Combine(path, fileName + $"-({directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count + 1})" + fileInfo.Extension);
                     }
                 }
-                if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg")
+                if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg" || fileInfo.Extension == ".webp")
                 {
                     using (var stream = File.Create(fileNameWithPath))
                     {
@@ -74,7 +74,7 @@ public class UploadService : IUploadService
                         fileNameWithPath = Path.Combine(path, fileName + $"-({directory.GetFiles().Where(x => x.Name.StartsWith(fileName)).ToList().Count + 1})" + fileInfo.Extension);
                     }
                 }
-                if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg")
+                if (fileInfo.Extension == ".png" || fileInfo.Extension == ".jpeg" || fileInfo.Extension == ".jpg" || fileInfo.Extension == ".webp")
                 {
                     using (var stream = File.Create(fileNameWithPath))
                     {
