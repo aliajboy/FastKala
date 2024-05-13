@@ -186,8 +186,10 @@
         noneditable_class: 'mceNonEditable',
         toolbar_mode: 'sliding',
         contextmenu: 'link image table',
-        skin: useDarkMode ? 'oxide-dark' : 'oxide',
-        content_css: useDarkMode ? 'dark' : 'default',
+        skin: 'oxide-dark',
+        content_css: 'dark',
+        //skin: useDarkMode ? 'oxide-dark' : 'oxide',
+        //content_css: useDarkMode ? 'dark' : 'default',
         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
         promotion: false,
         directionality: "rtl"
@@ -200,7 +202,9 @@
         promotion: false,
         menubar: false,
         plugins: 'preview importcss autolink autosave save directionality code visualblocks visualchars image link media table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-        directionality: "rtl"
+        directionality: "rtl",
+        skin: 'oxide-dark',
+        content_css: 'dark'
     });
 
     /**
