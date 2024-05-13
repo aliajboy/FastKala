@@ -249,7 +249,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" asp-area="Admin" asp-controller="Home" asp-action="Logout">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>خروج</span>
                             </a>
@@ -268,11 +268,11 @@
         <ul class="sidebar-nav" id="sidebar-nav">
 
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Home",null,"","collapsed")" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link @Html.ActiveClass("Home",null,"","collapsed")">
                     <i class="bi bi-grid"></i>
                     <span>داشبورد</span>
                 </a>
-            </li><!-- End Dashboard Nav -->
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link @Html.ActiveClass("Products",null,"","collapsed")" data-bs-target="#components-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Products" asp-action="Index">
@@ -315,7 +315,13 @@
                         </a>
                     </li>
                 </ul>
-            </li><!-- End Components Nav -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @Html.ActiveClass("Home",null,"","collapsed")" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                    <i class='bi bi-box-seam'></i>
+                    <span>سفارشات</span>
+                </a>
+            </li>
 
         </ul>
 
