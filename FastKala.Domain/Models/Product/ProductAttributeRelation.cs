@@ -7,5 +7,5 @@ public record ProductAttributeRelation
 
     // relation
     public Product? Product { get; set; }
-    public ProductAttributeValues? ProductAttributeValue { get; set; }
+    public ProductAttributeValue? ProductAttributeValue { get; set; }
 }

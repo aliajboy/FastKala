@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Enums;
-public enum ProductStatus
+public enum ProductStatus : byte
 {
     [Display(Name = "جدید")]
     New = 0,
@@ -15,7 +15,7 @@ public enum ProductStatus
     All = 4
 }
 
-public enum CommentStatus
+public enum CommentStatus : byte
 {
     [Display(Name = "در انتظار تایید")]
     Pending = 0,

@@ -2,7 +2,7 @@
 
 namespace FastKala.Domain.Enums;
 
-public enum ProductCommentRatings:byte
+public enum ProductCommentRatings : byte
 {
     [Display(Name = "خیلی بد")]
     VeryBad = 1,

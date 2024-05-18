@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Enums;
-public enum AttributeType
+public enum AttributeType : byte
 {
     [Display(Name = "ساده")]
     Simple = 1,

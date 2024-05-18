@@ -14,10 +14,10 @@ public record ProductAttribute
     public AttributeType Type { get; set; }
 
     // Relations
-    public List<ProductAttributeValues> AttributeValues { get; set; } = new List<ProductAttributeValues>();
+    public List<ProductAttributeValue> AttributeValues { get; set; } = new List<ProductAttributeValue>();
 }
 
-public record ProductAttributeValues
+public record ProductAttributeValue
 {
     public int Id { get; set; }
     public required string Name { get; set; }

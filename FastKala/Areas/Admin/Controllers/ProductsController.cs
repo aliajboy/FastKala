@@ -2,7 +2,6 @@
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -70,7 +69,7 @@ public class ProductsController : Controller
     [HttpPost]
     public async Task<IActionResult> RemoveProduct(int id)
     {
-        var a = await _productService.RemoveProductById(id);
+        var result = await _productService.RemoveProductById(id);
         return RedirectToAction(nameof(Index));
     }
 

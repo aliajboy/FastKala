@@ -3,7 +3,7 @@
 namespace FastKala.Application.ViewModels.Products;
 public class ProductAttributeValueViewModel
 {
-    public List<ProductAttributeValues> AttributeValues { get; set; } = new();
-    public ProductAttributeValues? AttributeValue { get; set; }
+    public List<ProductAttributeValue> AttributeValues { get; set; } = new();
+    public ProductAttributeValue? AttributeValue { get; set; }
     public ProductAttribute Attribute { get; set; } = new();
 }

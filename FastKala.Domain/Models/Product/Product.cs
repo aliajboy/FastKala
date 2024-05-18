@@ -12,17 +12,17 @@ public record Product
     [DisplayName("عنوان انگلیسی")]
     public string? EnglishName { get; set; }
     [DisplayName("کد محصول")]
-    public int? Sku { get; set; }
+    public string? Sku { get; set; }
     [DisplayName("توضیحات")]
     public string? Description { get; set; } = "";
     [DisplayName("برند")]
     public int BrandId { get; set; }
     [DisplayName("قیمت")]
     [DisplayFormat(DataFormatString = "{0:N0}")]
-    public int? Price { get; set; }
+    public long? Price { get; set; }
     [DisplayName("قیمت فروش ویژه")]
     [DisplayFormat(DataFormatString = "{0:N0}")]
-    public int? SalePrice { get; set; }
+    public long? SalePrice { get; set; }
     [DisplayName("موجودی")]
     public int? StockQuantity { get; set; }
     [DisplayName("مدیریت موجودی انبار")]
@@ -54,7 +54,7 @@ public record Product
     [DisplayName("نقاط قوت و ضعف")]
     public List<ProductProsCons> ProductProsCons { get; set; } = new();
 
-    public List<ProductAttributeValues> AttributeValues { get; set; } = new();
+    public List<ProductAttributeValue> AttributeValues { get; set; } = new();
 
     public List<ProductAttributeRelation> AttributesRelations { get; set; } = new();
 

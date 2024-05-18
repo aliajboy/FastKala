@@ -6,7 +6,7 @@ public record ProductComment
     public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public int Rate { get; set; } = 5;
+    public byte Rate { get; set; } = 5;
     public int HelpedCount { get; set; }
     public int NotHelpedCount { get; set; }
     public DateTime SubmitDate { get; set; }
