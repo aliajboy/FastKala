@@ -8,6 +8,17 @@
       "files": [
         "bootstrap-slider.min.js"
       ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "lazysizes@5.3.2",
+      "destination": "wwwroot/lib/lazysizes/",
+      "files": [
+        "lazysizes-umd.js",
+        "lazysizes-umd.min.js",
+        "lazysizes.js",
+        "lazysizes.min.js"
+      ]
     }
   ]
 }

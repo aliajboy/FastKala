@@ -163,6 +163,8 @@ public class ProductService : IProductService
                     product.ProductImages = (await multi.ReadAsync<ProductImage>()).ToList();
                     product.Categories = (await multi.ReadAsync<ProductCategory>()).ToList();
                     product.Tags = (await multi.ReadAsync<ProductTag>()).ToList();
+                    product.ProductComments = (await multi.ReadAsync<ProductComment>()).ToList();
+                    product.Tags = (await multi.ReadAsync<ProductTag>()).ToList();
                 }
                 product.Brand = await connection.QuerySingleAsync<ProductBrand>("SELECT Name ,Link FROM ProductBrands where Id = @brandId", new { brandId = product.Product.BrandId });
 
@@ -279,10 +281,8 @@ public class ProductService : IProductService
             {
                 using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes SELECT * FROM ProductAttributeValues"))
                 {
-                    var attributes = await multi.ReadAsync<ProductAttribute>();
-                    var attributesValues = await multi.ReadAsync<ProductAttributeValue>();
-                    productAtrributesList.ProductAttributes = attributes.ToList();
-                    productAtrributesList.ProductAttributeValues = attributesValues.ToList();
+                    productAtrributesList.ProductAttributes = (await multi.ReadAsync<ProductAttribute>()).ToList();
+                    productAtrributesList.ProductAttributeValues = (await multi.ReadAsync<ProductAttributeValue>()).ToList();
                 }
             }
             return productAtrributesList;
@@ -303,7 +303,7 @@ public class ProductService : IProductService
                 using (var multi = await connection.QueryMultipleAsync("SELECT * FROM ProductAttributes Where Id = @ID SELECT * From ProductAttributeValues where ProductAttributeId = @ID", new { ID = id }))
                 {
                     productAtrribute.Attribute = await multi.ReadSingleAsync<ProductAttribute>();
-                    productAtrribute.AttributeValues = multi.ReadAsync<ProductAttributeValue>().Result.ToList();
+                    productAtrribute.AttributeValues = (await multi.ReadAsync<ProductAttributeValue>()).ToList();
                 }
             }
             return productAtrribute;
@@ -321,7 +321,7 @@ public class ProductService : IProductService
             int res = 0;
             using (SqlConnection connection = _context.CreateConnection())
             {
-                res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: System.Data.CommandType.StoredProcedure);
+                res = await connection.ExecuteAsync("RemoveProductAttribute", new { AttributeId = id }, commandType: CommandType.StoredProcedure);
             }
             if (res >= 1)
             {
@@ -396,7 +396,7 @@ public class ProductService : IProductService
         {
             using (SqlConnection connection = _context.CreateConnection())
             {
-                var values = await connection.QueryAsync<ProductAttributeValue>("Select * From ProductAttributeValues where ProductAttributeId = @Id and Name Like N'%" + content + "%'", new { Id = id });
+                var values = await connection.QueryAsync<ProductAttributeValue>("Select * From ProductAttributeValues where ProductAttributeId = @Id and Name Like @searchText", new { Id = id, searchText = "%" + content + "%" });
                 productAtrribute = values.ToList();
             }
             return new AttributeValuesResponse() { results = productAtrribute };
@@ -462,7 +462,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = _context.CreateConnection())
             {
-                res = await connection.ExecuteAsync("Delete From ProductAttributeValues where Id = @ID", new { ID = id });
+                res = await connection.ExecuteAsync("delete FROM ProductAttributeRelations where AttributeValueId = @ID Delete From ProductAttributeValues where Id = @ID", new { ID = id });
             }
             if (res == 1)
             {
@@ -539,7 +539,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = _context.CreateConnection())
             {
-                res = await connection.ExecuteAsync("Delete From ProductCategories Where Id = @ID", new
+                res = await connection.ExecuteAsync("Delete From ProductCategoryRelations where CategoryId = @ID Delete From ProductCategories Where Id = @ID", new
                 {
                     ID = id
                 });
@@ -602,7 +602,7 @@ public class ProductService : IProductService
                 }
                 else if (id > 0)
                 {
-                    productTags.ProductTag = await connection.QuerySingleOrDefaultAsync<ProductTag>("Select TOP 1 * From ProductTags where Id = @Id", new { Id = id });
+                    productTags.ProductTag = await connection.QuerySingleOrDefaultAsync<ProductTag>("Select * From ProductTags where Id = @Id", new { Id = id });
                 }
             }
             return productTags;
@@ -646,7 +646,7 @@ public class ProductService : IProductService
             int res;
             using (SqlConnection connection = _context.CreateConnection())
             {
-                res = await connection.ExecuteAsync("Delete From ProductTags Where Id = @ID", new
+                res = await connection.ExecuteAsync("DELETE FROM ProductTagRelations where TagId = @ID Delete From ProductTags Where Id = @ID", new
                 {
                     ID = id
                 });
@@ -709,7 +709,7 @@ public class ProductService : IProductService
                 }
                 else if (id > 0)
                 {
-                    productBrands.Brand = await connection.QuerySingleOrDefaultAsync<ProductBrand>("Select TOP 1 * From ProductBrands where Id = @Id", new { Id = id });
+                    productBrands.Brand = await connection.QuerySingleOrDefaultAsync<ProductBrand>("Select * From ProductBrands where Id = @Id", new { Id = id });
                 }
             }
             return productBrands;

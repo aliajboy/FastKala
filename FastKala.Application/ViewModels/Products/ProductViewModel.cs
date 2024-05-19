@@ -18,4 +18,5 @@ public class ProductViewModel
     public IFormFile? MainImage { get; set; }
     public List<IFormFile>? GalleryImages { get; set; }
     public List<ProductImage> ProductImages { get; set; } = new();
+    public List<ProductComment> ProductComments { get; set; } = new();
 }
