@@ -4,6 +4,7 @@ public record Orders
 {
     public int Id { get; set; }
     public int OrderNumber { get; set; }
+    public byte Status { get; set; }
     public DateTime DateTimeCreated { get; set; } = new DateTime();
     public DateTime? DateTimePaid { get; set; }
     public DateTime? DateTimeCompleted { get; set; }
@@ -22,7 +23,5 @@ public record Orders
     public long TotalPrice { get; set; } = 0;
     public long TotalTax { get; set; } = 0;
     public long TotalShipping { get; set; } = 0;
-    public byte ShippingMethod { get; set; }
-    public long ShippingPrice { get; set; } = 0;
-    public long ShippingTax { get; set; } = 0;
+    public int ShippingTypeId { get; set; }
 }
