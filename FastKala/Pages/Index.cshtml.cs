@@ -14,7 +14,7 @@ public class IndexModel : PageModel
         _productService = productService;
     }
 
-    public async Task OnGet()
+    public async Task OnGetAsync()
     {
         var res = await _productService.GetAllProducts();
         Products = res.Products.OrderByDescending(p => p.LastChangeTime).ToList();
