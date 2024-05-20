@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Enums;
+﻿using FastKala.Domain.Enums.Products;
 
 namespace FastKala.Domain.Models.Product;
 public record ProductComment

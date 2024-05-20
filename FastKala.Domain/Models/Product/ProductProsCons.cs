@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Enums;
+﻿using FastKala.Domain.Enums.Products;
 using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Models.Product;

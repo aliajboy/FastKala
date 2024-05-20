@@ -1,4 +1,5 @@
 ﻿@using FastKala.Application.Interfaces.Product
+@using FastKala.Domain.Enums.Products
 @model ProductCommentListViewModel
 @inject IProductService productService
 @{
@@ -17,7 +18,7 @@
                 <div class="card-header">
                     <span class="float-start">
                         @productService.GetProductById(item.ProductId).Result.Product.Name
-                        @if (item.Status == FastKala.Domain.Enums.CommentStatus.Verified)
+                        @if (item.Status == CommentStatus.Verified)
                         {
                             <i class="bx bxs-badge-check text-success"></i>
                         }
@@ -29,7 +30,7 @@
                 <div class="card-body">
                     <p class="pb-2" id="description-@item.Id">@item.Description</p>
                     <div class="position-absolute bottom-0 pb-2">
-                        @if (item.Status != FastKala.Domain.Enums.CommentStatus.Verified)
+                        @if (item.Status != CommentStatus.Verified)
                         {
                             <button onclick="verifyComment(@item.Id)" type="button" class="btn link-success px-0" id="verifyButton-@item.Id">تایید</button>
 

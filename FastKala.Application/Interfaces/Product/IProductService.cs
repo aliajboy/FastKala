@@ -1,6 +1,6 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Enums;
+using FastKala.Domain.Enums.Products;
 using FastKala.Domain.Models.Product;
 
 namespace FastKala.Application.Interfaces.Product;

@@ -1,6 +1,6 @@
 ﻿using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Products;
-using FastKala.Domain.Enums;
+using FastKala.Domain.Enums.Products;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -20,7 +20,7 @@ public class ProductModel : PageModel
     {
         ProductView = await _productService.GetProductById(id);
 
-        if (ProductView.Product.Name == "پیش فرض" || ProductView.Product.Status != Domain.Enums.ProductStatus.Published)
+        if (ProductView.Product.Name == "پیش فرض" || ProductView.Product.Status != ProductStatus.Published)
         {
             return NotFound();
         }

@@ -1,4 +1,5 @@
-﻿ @using FastKala.Application.ViewModels.Products
+﻿@using FastKala.Application.ViewModels.Products
+@using FastKala.Domain.Enums.Products
 @model ProductViewModel
 @{
     ViewData["Title"] = "افزودن محصول";
@@ -169,7 +170,7 @@
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted mb-3">وضعیت محصول : @Model.Product.Status.ToDisplay()</h6>
                 <div class="mb-2 d-flex">
-                    @if (Model.Product.Status != FastKala.Domain.Enums.ProductStatus.New)
+                    @if (Model.Product.Status != ProductStatus.New)
                     {
                         <button class="btn btn-outline-secondary flex-fill me-1">ذخیره پیش نویس</button>
                         <button class="btn btn-outline-danger flex-fill ms-1">حذف</button>

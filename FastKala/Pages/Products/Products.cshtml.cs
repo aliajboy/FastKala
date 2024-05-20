@@ -1,5 +1,5 @@
 using FastKala.Application.Interfaces.Product;
-using FastKala.Domain.Enums;
+using FastKala.Domain.Enums.Products;
 using FastKala.Domain.Models.Product;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

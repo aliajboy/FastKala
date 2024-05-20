@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FastKala.Domain.Enums;
+namespace FastKala.Domain.Enums.Products;
 
 public enum ProductCommentRatings : byte
 {

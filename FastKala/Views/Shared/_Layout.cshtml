@@ -275,10 +275,10 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Products",null,"","collapsed")" data-bs-target="#components-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Products" asp-action="Index">
+                <a class="nav-link @Html.ActiveClass("Products",null,"","collapsed")" data-bs-target="#products-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Products" asp-action="Index">
                     <i class="bi bi-menu-button-wide"></i><span>محصولات</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse @Html.ActiveClass("Products",null,"show","")" data-bs-parent="#sidebar-nav">
+                <ul id="products-nav" class="nav-content collapse @Html.ActiveClass("Products",null,"show","")" data-bs-parent="#sidebar-nav">
                     <li>
                         <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="@Html.ActiveClass("Products","Index")">
                             <i class="bi bi-circle"></i><span>محصولات</span>
@@ -317,10 +317,18 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link @Html.ActiveClass("Home",null,"","collapsed")" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                <a class="nav-link @Html.ActiveClass("Orders",null,"","collapsed")" data-bs-target="#orders-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Orders" asp-action="Index">
                     <i class='bi bi-box-seam'></i>
-                    <span>سفارشات</span>
+                    <span>سفارش ها</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
                 </a>
+                <ul id="orders-nav" class="nav-content collapse @Html.ActiveClass("Orders",null,"show","")" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Orders" asp-action="Index" class="@Html.ActiveClass("Orders","Index")">
+                            <i class="bi bi-circle"></i><span>سفارش ها</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
 
         </ul>

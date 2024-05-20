@@ -1,4 +1,4 @@
-﻿namespace FastKala.Domain.Enums;
+﻿namespace FastKala.Domain.Enums.Global;
 public enum OperationStatus
 {
     Success = 0,

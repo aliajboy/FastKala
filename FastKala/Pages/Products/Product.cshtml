@@ -1,6 +1,6 @@
 ﻿@page "/Product/{id:int}"
 @using FastKala.Application.Interfaces.Global
-@using FastKala.Domain.Enums
+@using FastKala.Domain.Enums.Products
 @model FastKala.Pages.Products.ProductModel
 @inject IUploadService _uploadService
 @{
@@ -521,12 +521,12 @@
                             <section class="content-expert-stats">
                                 <div class="content-expert-evaluation">
                                     <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
-                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros).Count() > 0)
+                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == ProsConsType.Pros).Count() > 0)
                                         {
                                             <div class="positive">
                                                 <span class="plus">نقاط قوت</span>
                                                 <ul>
-                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Pros))
+                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == ProsConsType.Pros))
                                                     {
                                                         <li>
                                                             <i class="fa fa-plus-circle"></i>
@@ -538,12 +538,12 @@
                                         }
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-xs-12 d-inline-block pr">
-                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons).Count() > 0)
+                                        @if (Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == ProsConsType.Cons).Count() > 0)
                                         {
                                             <div class="negative">
                                                 <span class="neg">نقاط قوت</span>
                                                 <ul>
-                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == Domain.Enums.ProsConsType.Cons))
+                                                    @foreach (var item in Model.ProductView.Product.ProductProsCons.Where(x => x.IsPros == ProsConsType.Cons))
                                                     {
                                                         <li>
                                                             <i class="fa fa-minus-circle"></i>

@@ -1,5 +1,6 @@
 ﻿using FastKala.Application.Interfaces.Global;
 using FastKala.Application.ViewModels.Global;
+using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Models.Product;
 using Microsoft.AspNetCore.Http;
 
@@ -61,7 +62,7 @@ public class UploadService : IUploadService
                 string path = GetImagePath(type);
                 if (file.Length > (long)sizeLimit)
                 {
-                    return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };
+                    return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = $"حجم فایل بیشتر از {sizeLimit.ToString().Substring(0, 1)} مگابایت می‌باشد." };
                 }
                 var fileName = Path.GetFileNameWithoutExtension(file.FileName);
                 DirectoryInfo directory = new DirectoryInfo(path);
@@ -83,16 +84,16 @@ public class UploadService : IUploadService
                 }
                 else
                 {
-                    return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail, Message = "فرمت فایل ارسالی اشتباه است" };
+                    return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "فرمت فایل ارسالی اشتباه است" };
                 }
 
-                return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Success, Message = fileName + fileInfo.Extension };
+                return new OperationResult() { OperationStatus = OperationStatus.Success, Message = fileName + fileInfo.Extension };
             }
-            return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Fail };
+            return new OperationResult() { OperationStatus = OperationStatus.Fail };
         }
         catch
         {
-            return new OperationResult() { OperationStatus = Domain.Enums.OperationStatus.Exception };
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
         }
     }
 

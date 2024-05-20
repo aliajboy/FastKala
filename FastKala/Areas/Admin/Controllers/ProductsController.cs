@@ -2,6 +2,7 @@
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
+using FastKala.Domain.Enums.Global;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
@@ -53,7 +54,7 @@ public class ProductsController : Controller
 
         var res = await _productService.AddProduct(productView);
 
-        if (res.OperationStatus == FastKala.Domain.Enums.OperationStatus.Success)
+        if (res.OperationStatus == OperationStatus.Success)
         {
             return RedirectToAction(nameof(Index));
         }
@@ -128,7 +129,7 @@ public class ProductsController : Controller
 
         var res = await _productService.AddAttributeValue(ValueName, ValueLink, Id);
 
-        if (res.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        if (res.OperationStatus != OperationStatus.Success)
         {
             return View();
         }
@@ -156,7 +157,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> UpdateAttributeValue(int id, int attributeId, string name, string value)
     {
         var res = await _productService.UpdateAttributeValue(id, name, value);
-        if (res.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        if (res.OperationStatus != OperationStatus.Success)
         {
             return View();
         }
@@ -168,7 +169,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> RemoveAttributeValue(int attributeValueId, int attributeId)
     {
         var result = await _productService.RemoveAttributeValue(attributeValueId);
-        if (result.OperationStatus != FastKala.Domain.Enums.OperationStatus.Success)
+        if (result.OperationStatus != OperationStatus.Success)
         {
             return View();
         }

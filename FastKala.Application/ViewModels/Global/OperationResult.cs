@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Enums;
+﻿using FastKala.Domain.Enums.Global;
 
 namespace FastKala.Application.ViewModels.Global;
 public class OperationResult
