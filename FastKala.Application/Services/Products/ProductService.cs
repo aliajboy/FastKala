@@ -163,8 +163,6 @@ public class ProductService : IProductService
                     product.ProductImages = (await multi.ReadAsync<ProductImage>()).ToList();
                     product.Categories = (await multi.ReadAsync<ProductCategory>()).ToList();
                     product.Tags = (await multi.ReadAsync<ProductTag>()).ToList();
-                    product.ProductComments = (await multi.ReadAsync<ProductComment>()).ToList();
-                    product.Tags = (await multi.ReadAsync<ProductTag>()).ToList();
                 }
                 product.Brand = await connection.QuerySingleAsync<ProductBrand>("SELECT Name ,Link FROM ProductBrands where Id = @brandId", new { brandId = product.Product.BrandId });
 

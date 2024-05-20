@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.8.2 (2023-12-11)
+ * TinyMCE version 7.1.0 (2024-05-08)
  */
 
 (function () {
@@ -587,6 +587,7 @@
         register(editor);
         init(editor, database);
         setup(editor);
+        return { getAllEmojis: () => database.waitForLoad().then(() => database.listAll()) };
       });
     };
 
