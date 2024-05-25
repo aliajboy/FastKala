@@ -1,8 +1,50 @@
-﻿
-@{
-    ViewData["Title"] = "AddOrder";
+﻿@{
+    ViewData["Title"] = "افزودن سفارش جدید";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>AddOrder</h1>
-
+<div class="row">
+    <div class="col-8">
+        <div class="card">
+            <h4 class="p-3">
+                جزئیات سفارش شماره 1
+            </h4>
+            <div class="card-body">
+                <label>تاریخ ایجاد:</label>
+                <input class="form-control" type="text"/>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                آیتم های سفارش
+            </div>
+            <div class="card-body">
+                sad
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                وضعیت
+            </div>
+            <div class="card-body">
+                <select class="form-select">
+                    <option>انتخاب وضعیت</option>
+                </select>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <button class="btn btn-danger text-end" href="#">حذف</button>
+                <button class="btn btn-primary" href="#">بروزرسانی</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                یادداشت های سفارش
+            </div>
+            <div class="card-body">
+                sad
+            </div>
+        </div>
+    </div>
+</div>

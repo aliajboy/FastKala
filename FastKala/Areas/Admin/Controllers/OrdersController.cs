@@ -15,7 +15,7 @@ public class OrdersController : Controller
         return View();
     }
 
-    public IActionResult AddOrders()
+    public IActionResult AddOrder()
     {
         return View();
     }

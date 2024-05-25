@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "سفارش ها";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a asp-area="Admin" asp-controller="Orders" asp-action="NewOrder" class="btn btn-primary mb-3">سفارش جدید</a>
+<a asp-area="Admin" asp-controller="Orders" asp-action="AddOrder" class="btn btn-primary mb-3">سفارش جدید</a>
 
 <div class="card">
     <div class="card-body">
@@ -12,13 +12,25 @@
             <thead>
                 <tr>
                     <th>
-                        نام محصول
+                        شماره سفارش
                     </th>
                     <th>
-                        قیمت
+                        نام خریدار
                     </th>
                     <th>
-                        موجودی
+                        تاریخ
+                    </th>
+                    <th>
+                        وضعیت
+                    </th>
+                    <th>
+                        مبلغ کل
+                    </th>
+                    <th>
+                        استان مقصد
+                    </th>
+                    <th>
+                        عملیات
                     </th>
                 </tr>
             </thead>
