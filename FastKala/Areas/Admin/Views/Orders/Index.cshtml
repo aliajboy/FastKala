@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "سفارش ها";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,60 +10,33 @@
         <table class="table table-striped bg-white border b-rounded">
             <thead>
                 <tr>
-                    <th>
-                        شماره سفارش
+                    <th class="text-center">
+                        سفارش
                     </th>
-                    <th>
-                        نام خریدار
-                    </th>
-                    <th>
+                    <th class="text-center">
                         تاریخ
                     </th>
-                    <th>
+                    <th class="text-center">
                         وضعیت
                     </th>
-                    <th>
+                    <th class="text-center">
                         مبلغ کل
                     </th>
-                    <th>
+                    <th class="text-center">
                         استان مقصد
-                    </th>
-                    <th>
-                        عملیات
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @* @foreach (var item in Model.Products)
-                {
-                    <tr>
-                        <td>
-                            <strong class="product-name">
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </strong><br>
-                            <div>
-                                <form method="post">
-                                    <a class="product-name" asp-area="Admin" asp-action="EditProduct" asp-controller="Products" asp-route-id="@item.Id">ویرایش</a> |
-                                    <button type="submit" class="btn btn-link p-0 text-decoration-none product-name remove-product" asp-area="Admin" asp-controller="Products" asp-action="RemoveProduct" asp-route-id="@item.Id">حذف</button>
-                                </form>
-                            </div>
-                        </td>
-                        <td>
-                            @if (item.SalePrice != null)
-                            {
-                                <del>@Html.DisplayFor(modelItem => item.Price) <span>تومان</span></del>
-                                <br> @Html.DisplayFor(modelItem => item.SalePrice) <span>تومان</span>
-                            }
-                            else
-                            {
-                                @Html.DisplayFor(modelItem => item.Price) <br> @Html.DisplayFor(modelItem => item.SalePrice)
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StockQuantity)
-                        </td>
-                    </tr>
-                } *@
+                <tr>
+                    <td class="text-center">#35346 علی جبالی</td>
+                    <td class="text-center">1402-03-06</td>
+                    <td class="text-center">
+                        <span class="badge bg-label-primary">در حال انجام</span>
+                    </td>
+                    <td class="text-center">32,526,000 تومان</td>
+                    <td class="text-center">تهران</td>
+                </tr>
             </tbody>
         </table>
     </div>
