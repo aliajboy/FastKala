@@ -15,12 +15,6 @@
 	  <_ContentIncludedByDefault Remove="wwwroot\img\messages-3.jpg" />
 	  <_ContentIncludedByDefault Remove="wwwroot\img\not-found.svg" />
 	  <_ContentIncludedByDefault Remove="wwwroot\img\upload-image-icon.webp" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\css\bootstrap.rtl.min.css" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\css\bootstrap.rtl.min.css.map" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.bundle.min.js.map" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.min.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\js\bootstrap.min.js.map" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\additional-methods.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\additional-methods.min.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\jquery.validate.js" />

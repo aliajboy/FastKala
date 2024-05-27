@@ -188,6 +188,14 @@
         "skins/ui/tinymce-5-dark/skin.shadowdom.min.css",
         "themes/silver/theme.min.js"
       ]
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.bundle.min.js.map"
+      ]
     }
   ]
 }

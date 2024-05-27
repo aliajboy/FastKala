@@ -4,26 +4,103 @@
 }
 
 <div class="row">
-    <div class="col-8">
+    <div class="col-xxl-10 col-xl-9 col-md-8">
         <div class="card">
-            <h4 class="p-3">
+            <h5 class="p-3">
                 جزئیات سفارش شماره 1
-            </h4>
+            </h5>
             <div class="card-body">
-                <label>تاریخ ایجاد:</label>
-                <input class="form-control" type="text"/>
+                <div class="row">
+                    <div class="col-xl-2 col-form-label">
+                        <label class="form-label">تاریخ ایجاد:</label>
+                    </div>
+                    <div class="col-xl-4">
+                        <input class="form-control text-center" type="text" />
+                    </div>
+                    <div class="col-xl-2">
+                        <input type="time" class="form-control"/>
+                    </div>
+                </div>
+                <h6 class="text-secondary">اطلاعات مشتری</h6>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <label class="form-label">نام</label>
+                        <input type="text" class="form-control"/>
+                    </div>
+                    <div class="col-xl-6">
+                        <label class="form-label">نام خانوادگی</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">استان</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">شهر</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-xl-9 mt-1">
+                        <label class="form-label">آدرس</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-xl-3 mt-1">
+                        <label class="form-label">کدپستی</label>
+                        <input type="text" class="form-control text-center" maxlength="10"/>
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">ایمیل</label>
+                        <input type="text" class="form-control text-center" />
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">شماره تماس</label>
+                        <input type="text" class="form-control text-center" />
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">روش پرداخت</label>
+                        <input type="text" class="form-control text-center" />
+                    </div>
+                    <div class="col-xl-6 mt-1">
+                        <label class="form-label">کدرهگیری پرداخت</label>
+                        <input type="text" class="form-control text-center" />
+                    </div>
+                    <div class="col-xl-12 mt-1">
+                        <label class="form-label">یادداشت مشتری</label>
+                        <textarea class="form-control" ></textarea>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                آیتم های سفارش
+                <div class="row">
+                    <div class="col-xl-6">
+                        آیتم های سفارش
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                sad
+            <div class="card-body px-0 px-xxl-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">نام محصول</th>
+                            <th scope="col" class="text-center">مبلغ (تومان)</th>
+                            <th scope="col" class="text-center">تعداد</th>
+                            <th scope="col" class="text-center">مجموع (تومان)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>گوشی موبایل سامسونگ Galaxy A7 32G 8G Ram</td>
+                            <td>32,500,659 تومان</td>
+                            <td class="text-center">x1</td>
+                            <td>32,500,659 تومان</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-xxl-2 col-xl-3 col-md-4 ps-0">
         <div class="card">
             <div class="card-header">
                 وضعیت
@@ -43,7 +120,11 @@
                 یادداشت های سفارش
             </div>
             <div class="card-body">
-                sad
+                <div class="bg-light rounded mb-2" style="min-height:8rem;">
+
+                </div>
+                <label class="form-label">افزودن یادداشت</label>
+                <textarea class="form-control"></textarea>
             </div>
         </div>
     </div>

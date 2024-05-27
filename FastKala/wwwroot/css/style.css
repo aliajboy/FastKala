@@ -462,7 +462,7 @@ h6 {
 
     .header .toggle-sidebar-btn {
         font-size: 32px;
-        padding-left: 10px;
+        padding-right: 10px;
         cursor: pointer;
         color: #012970;
     }
@@ -688,7 +688,7 @@ h6 {
 
 @media (max-width: 1199px) {
     .sidebar {
-        left: -300px;
+        right: -300px;
     }
 }
 
