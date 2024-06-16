@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = "تماس با ما";
+}
+<!-- contact-us---------------------------->
+<div class="container-main">
+    <div class="col-12">
+        <div id="content">
+            <div class="contact-us">
+                <div class="col-md-12 col-xs-12 mx-auto">
+                    <div class="contact-us-section">
+                        <div class="box-header">
+                            <span class="box-title">تماس با کالامارکت</span>
+                        </div>
+                        <div class="contact-us-row">
+                            <p>برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.</p>
+                        </div>
+                        <form method="post" id="contactForm" class="contact-us-form">
+                            <div class="contact-us-row contact-us-row--align-top">
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">موضوع*</div>
+                                    <div class="custom-select-ui">
+                                        <select class="right">
+                                            <option>-- انتخاب موضوع --</option>
+                                            <option>پیشنهاد</option>
+                                            <option>انتقاد یا شکایات</option>
+                                            <option>پیگیری سفارش</option>
+                                            <option>خدمات پس از فروش</option>
+                                            <option>استعلام گارانتی</option>
+                                            <option>مدیریت</option>
+                                        </select>
+                                        <div class="nice-select right" tabindex="0">
+                                            <span class="current">
+                                                -- انتخاب
+                                                موضوع --
+                                            </span>
+                                            <ul class="list">
+                                                <li data-value="-- انتخاب موضوع --" class="option selected">
+                                                    --
+                                                    انتخاب موضوع --
+                                                </li>
+                                                <li data-value="پیشنهاد" class="option">پیشنهاد</li>
+                                                <li data-value=" انتقاد یا شکایات" class="option">
+                                                    انتقاد یا شکایات
+                                                </li>
+                                                <li data-value="پیگیری سفارش" class="option">پیگیری سفارش</li>
+                                                <li data-value="خدمات پس از فروش" class="option">
+                                                    خدمات پس از فروش
+                                                </li>
+                                                <li data-value="استعلام گارانتی" class="option">استعلام گارانتی</li>
+                                                <li data-value="مدیریت" class="option">مدیریت</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">نام و نام خانوادگی*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[fullName]" type="text" placeholder="" class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row--align-width">
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">ایمیل*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[email]" type="email" placeholder="" class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                                <label for="#" class="form-field-container">
+                                    <div class="form-field-label">تلفن تماس*</div>
+                                    <div class="form-field-frame">
+                                        <input name="contact[phone]" type="number" placeholder="" class="form-field js-input-field form-control">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row--align-bottom">
+                                <label for="#" class="form-field-container" style="width:97%;">
+                                    <div class="form-field-label">متن پیام*</div>
+                                    <div class="form-field-frame">
+                                        <textarea name="contact[message]" type="text" placeholder="" class="form-field js-input-field form-control"></textarea>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="contact-us-row contact-us-row-align-left text-left d-block pl-3">
+                                <button type="button" class="btn btn-info js-contact-form-submit ml-4">
+                                    ثبت و ارسال
+                                </button>
+                            </div>
+                        </form>
+                        <div class="box-header">
+                            <span class="box-title">اطلاعات کالامارکت</span>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="contact-us-row">
+                                    <div class="contact-us-address-container">
+                                        <div class="contact-us-address-header">
+                                            آدرس فروشگاه
+                                        </div>
+                                        <div class="contact-us-address-text">
+                                            استان تهران - شهر تهران - خیابان اکباتان - کوچه نفیسی - پاساژ قطعه - طبقه 2 - پلاک 45
+                                        </div>
+                                        <div class="contact-us-address-header">
+                                            ایمیل سازمانی
+                                        </div>
+                                        <div class="contact-us-address-text">
+                                            <a href="mailto:info@toyotavanjani.com">info@toyotavanjani.com</a>
+                                        </div>
+                                        <div class="contact-us-address-header">
+                                            شماره تماس
+                                        </div>
+                                        <div class="contact-us-address-text">
+                                            <a href="tel:09128988449">09128988449</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=51.42051100730897%2C35.68536561864818%2C51.42942667007446%2C35.689186751998776&amp;layer=mapnik&amp;marker=35.68727620820258%2C51.42496883869171" style="width: 100%;height: 100%;border-radius: 15px;"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- contact-us---------------------------->
+@section Scripts {
+
+}

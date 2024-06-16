@@ -1,0 +1,260 @@
+﻿@using FastKala.Application.Interfaces.Global
+@using FastKala.Application.ViewModels.Products
+@model ProductCommentViewModel
+@inject IUploadService _uploadService
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/shop/bootstrap-slider.min.css">
+}
+<!-- product-comment----------------------->
+<div class="container-main">
+    <div class="col-12">
+        <div class="page-content page-row">
+            <div class="main-row pt-2 pb-0">
+                <div id="breadcrumb">
+                    <i class="mdi mdi-home"></i>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">خانه</a></li>
+                            @foreach (var item in Model.Product.CategoryOrder)
+                            {
+                                <li class="breadcrumb-item"><a href="#">@item.Name</a></li>
+                            }
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <a asp-controller="Products" asp-action="Product" asp-route-id="@Model.Product.Product.Id">
+                                    @Model.Product.Product.Name
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <form id="addCommentForm" method="post">
+                <input type="hidden" asp-for="ProductComment.ProductId" value="@Model.Product.Product.Id"/>
+                <section class="product-comment mt-0">
+                    <div class="comments-product">
+                        <div class="comments-product-row">
+                            <div class="col-lg-4 col-md-4 col-xs-12 pull-right">
+                                <div class="comments-product-col-gallery mt-3 pt-3 text-center">
+                                    <a href="#">
+                                        <img src="@(_uploadService.GetImageUrl(FastKala.Application.ViewModels.Global.ImageType.ProductImages, Model.Product.Product.MainImage))"
+                                             style="max-width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-xs-12 pull-left">
+                                <div class="comments-product-col-info">
+                                    <div class="comments-product-headline">
+                                        <h3 class="comments-product-title">
+                                            @Model.Product.Product.Name
+                                            <span>@Model.Product.Product.EnglishName</span>
+                                        </h3>
+                                    </div>
+                                    <div class="comments-product-attributes px-3">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">کیفیت ساخت</div>
+                                                    <input id="comment-quality" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Quality"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">
+                                                        ارزش خرید به نسبت
+                                                        قیمت
+                                                    </div>
+                                                    <input id="comment-value" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Value" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">خدمات پس از فروش</div>
+                                                    <input id="comment-support" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Support" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">
+                                                        امکانات و قابلیت ها
+                                                    </div>
+                                                    <input id="comment-feature" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Feature" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">سهولت استفاده</div>
+                                                    <input id="comment-usablity" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Usability" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-12 mb-3">
+                                                <div class="col-12">
+                                                    <div class="comments-product-attributes-title">طراحی و ظاهر</div>
+                                                    <input id="comment-design" type="text" data-provide="slider"
+                                                           data-slider-ticks="[1, 2, 3, 4, 5]"
+                                                           data-slider-ticks-labels='["خیلی بد", "بد", "معمولی","خوب","عالی"]'
+                                                           data-slider-min="1" data-slider-max="5" data-slider-step="1"
+                                                           data-slider-value="5" data-slider-tooltip="hide"
+                                                           asp-for="ProductComment.Design" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comments-add">
+                                <div class="comments-add-row d-inline-block">
+                                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right">
+                                        <div class="comments-add-col-form">
+                                            <div class="form-comment">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-ui">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-row-title mb-2">
+                                                                    عنوان نظر شما
+                                                                    (اجباری)
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <input asp-for="ProductComment.Title" class="input-ui pr-2" type="text"
+                                                                           placeholder="عنوان نظر خود را بنویسید">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 form-comment-title--positive mt-4">
+                                                                <div class="form-row-title mb-2 pr-3">
+                                                                    نقاط قوت
+                                                                </div>
+                                                                <div id="advantages" class="form-row">
+                                                                    <div class="ui-input--add-point">
+                                                                        <input asp-for="Advantages"
+                                                                               class="input-ui pr-2 ui-input-field"
+                                                                               type="text" id="advantage-input"
+                                                                               autocomplete="off" value="">
+                                                                        <button class="ui-input-point js-icon-form-add"
+                                                                                type="button"></button>
+                                                                    </div>
+                                                                    <div class="form-comment-dynamic-labels js-advantages-list">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 form-comment-title--negative mt-2">
+                                                                <div class="form-row-title mb-2 pr-3">
+                                                                    نقاط ضعف
+                                                                </div>
+                                                                <div id="disadvantages" class="form-row">
+                                                                    <div class="ui-input--add-point">
+                                                                        <input asp-for="DisAdvantages"
+                                                                               class="input-ui pr-2 ui-input-field"
+                                                                               type="text" id="disadvantage-input"
+                                                                               autocomplete="off" value="">
+                                                                        <button class="ui-input-point js-icon-form-add"
+                                                                                type="button"></button>
+                                                                    </div>
+                                                                    <div class="form-comment-dynamic-labels js-disadvantages-list">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 mt-3">
+                                                                <div class="form-row-title mb-2">
+                                                                    متن نظر شما
+                                                                    (اجباری)
+                                                                </div>
+                                                                <div class="form-row">
+                                                                    <textarea asp-for="ProductComment.Description"
+                                                                              class="input-ui pr-2 pt-2"
+                                                                              rows="5"
+                                                                              placeholder="متن خود را بنویسید"
+                                                                              style="height:120px;"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <div class="col-12 mt-5 px-0">
+                                                                <button class="btn comment-submit-button">
+                                                                    ثبت نظر
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-xs-12 pull-left">
+                                        <div class="comments-add-col-content">
+                                            <h3>
+                                                دیگران را با نوشتن نظرات خود، برای انتخاب این محصول راهنمایی کنید.
+                                            </h3>
+                                            <div>
+                                                <p>لطفا پیش از ارسال نظر، خلاصه قوانین زیر را مطالعه کنید:</p>
+                                                <p>
+                                                    فارسی بنویسید و از کیبورد فارسی استفاده کنید. بهتر است از فضای
+                                                    خالی (Space)
+                                                    بیش‌از‌حدِ معمول، شکلک یا ایموجی استفاده نکنید و از کشیدن حروف
+                                                    یا کلمات با
+                                                    صفحه‌کلید بپرهیزید.
+                                                </p>
+                                                <p>
+                                                    به کاربران و سایر اشخاص احترام بگذارید. پیام‌هایی که شامل محتوای
+                                                    توهین‌آمیز و
+                                                    کلمات نامناسب باشند، حذف می‌شوند.
+                                                </p>
+                                                <p>
+                                                    هرگونه نقد و نظر در خصوص سایت ---، خدمات و درخواست کالا را
+                                                    با ایمیل
+                                                    <a href="mailto:info@kalamarket.com">
+                                                        info@kalamarket.com
+                                                    </a>
+                                                    یا با شماره‌ی
+
+                                                    <a href="tel: +982161930000">
+                                                        ۶۱۹۳۰۰۰۰ - ۰۲۱
+                                                    </a>
+                                                    در میان بگذارید و از نوشتن آن‌ها در بخش نظرات خودداری کنید.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- product-comment----------------------->
+@section Scripts {
+    <script src="~/js/vendor/bootstrap-slider.min.js"></script>
+}

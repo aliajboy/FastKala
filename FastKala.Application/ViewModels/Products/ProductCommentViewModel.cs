@@ -5,6 +5,7 @@ namespace FastKala.Application.ViewModels.Products;
 public class ProductCommentViewModel
 {
     public ProductComment ProductComment { get; set; } = new();
+    public ProductViewModel Product { get; set; } = new();
 
     public List<string> Advantages { get; set; } = new();
     public List<string> DisAdvantages { get; set; } = new();
