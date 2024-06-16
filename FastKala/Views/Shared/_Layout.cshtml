@@ -1,4 +1,8 @@
-﻿@using FastKala.Utilities
+﻿@using FastKala.Application.Interfaces.Product
+@inject IProductService productService
+@using FastKala.Utilities
+@{
+}
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 
@@ -312,6 +316,13 @@
                     <li>
                         <a asp-area="Admin" asp-controller="Products" asp-action="Comments" class="@Html.ActiveClass("Products","Comments")">
                             <i class="bi bi-circle"></i><span>نظرات</span>
+                            @{
+                                int count = await productService.GetUnVerifiedCommentsCount();
+                                if (count > 0)
+                                {
+                                    <div class="badge bg-label-primary rounded-pill ms-auto" style="font-size:0.8rem !important">@count</div>
+                                }
+                            }
                         </a>
                     </li>
                 </ul>

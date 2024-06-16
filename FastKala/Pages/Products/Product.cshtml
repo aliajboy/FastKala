@@ -758,11 +758,14 @@
                                                                 <div class="header">
                                                                     <div>@item.Title</div>
                                                                     <div class="product-rate pl">
-                                                                        <i class="fa fa-star active"></i>
-                                                                        <i class="fa fa-star active"></i>
-                                                                        <i class="fa fa-star active"></i>
-                                                                        <i class="fa fa-star active"></i>
-                                                                        <i class="fa fa-star active"></i>
+                                                                        @for (int i = 0; i < item.Rate; i++)
+                                                                        {
+                                                                            <i class="fa fa-star active"></i>
+                                                                        }
+                                                                        @for (int i = 0; i < (5 - item.Rate); i++)
+                                                                        {
+                                                                            <i class="fa fa-star"></i>
+                                                                        }
                                                                     </div>
                                                                     <p>
                                                                         @item.Description
@@ -802,14 +805,14 @@
                                                                             آیا این نظر برایتان
                                                                             مفید بود؟
                                                                             <button class="btn-like js-comment-like"
-                                                                                    type="submit">
+                                                                                    type="button" onclick="likeComment(@item.Id)">
                                                                                 بله
-                                                                                <span class="count">@item.HelpedCount</span>
+                                                                                <span class="count" id="comment-like-@item.Id">@item.HelpedCount</span>
                                                                             </button>
                                                                             <button class="btn-like js-comment-dislike"
-                                                                                    type="submit">
+                                                                                    type="button" onclick="dislikeComment(@item.Id)">
                                                                                 خیر
-                                                                                <span class="count">@item.NotHelpedCount</span>
+                                                                                <span class="count" id="comment-dislike-@item.Id">@item.NotHelpedCount</span>
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -830,4 +833,7 @@
         </div>
     </div>
 </div>
-<!-- arshive-product----------------------->
+
+@section Scripts {
+    <script src="~/js/client-pages/Product.js" asp-append-version="true"></script>
+}

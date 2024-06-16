@@ -14,9 +14,9 @@
     <div class="card-body pb-2">
         @foreach (var item in Model.ProductComments)
         {
-            <div class="card" id="comment-@item.Id">
+            <div class="card @(item.Status == CommentStatus.Verified?"":"bg-label-warning")" id="comment-@item.Id">
                 <div class="card-header">
-                    <span class="float-start">
+                    <span class="float-start" id="commentSender-@item.Id">
                         @productService.GetProductById(item.ProductId).Result.Product.Name
                         @if (item.Status == CommentStatus.Verified)
                         {
@@ -32,9 +32,9 @@
                     <div class="position-absolute bottom-0 pb-2">
                         @if (item.Status != CommentStatus.Verified)
                         {
-                            <button onclick="verifyComment(@item.Id)" type="button" class="btn link-success px-0" id="verifyButton-@item.Id">تایید</button>
-
-                            <text> | </text>
+                            <span id="verifySpan-@item.Id">
+                                <button onclick="verifyComment(@item.Id)" type="button" class="btn link-success px-0" id="verifyButton-@item.Id">تایید</button> |
+                            </span>
                         }
                         <button type="button" class="btn link-primary px-0" onclick="openModal(@item.Id)">ویرایش</button> |
                         <button onclick="removeComment(@item.Id)" type="button" class="btn link-danger px-0">حذف</button>
@@ -95,7 +95,9 @@
                 }
             }).done(function (result) {
                 if (result.operationStatus == 0) {
-                    $('#verifyButton-' + commentId).remove();
+                    $('#comment-' + commentId).removeClass('bg-label-warning');
+                    $('#verifySpan-' + commentId).remove();
+                    $('#commentSender-' + commentId).append('<i class= "bx bxs-badge-check text-success" > </i>');
                 }
             });
         }

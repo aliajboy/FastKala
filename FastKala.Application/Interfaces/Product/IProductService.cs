@@ -96,6 +96,8 @@ public interface IProductService
 
     Task<ProductCommentListViewModel> GetAllComments();
 
+    Task<int> GetUnVerifiedCommentsCount();
+
     Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel);
 
     Task<OperationResult> RemoveProductComment(int id);
@@ -103,6 +105,8 @@ public interface IProductService
     Task<OperationResult> UpdateProductComment(int commentid, string description);
 
     Task<OperationResult> VerifyComment(int commentId);
+
+    Task<OperationResult> LikeOrDislikeComment(int commentId, bool liked);
 
     #endregion
 }

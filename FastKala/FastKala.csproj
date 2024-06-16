@@ -453,6 +453,7 @@
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\images\" />
+	  <Folder Include="wwwroot\js\admin-pages\" />
 	  <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
 	  <Folder Include="wwwroot\lib\jquery\" />
 	</ItemGroup>

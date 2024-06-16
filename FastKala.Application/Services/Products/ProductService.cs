@@ -860,6 +860,25 @@ public class ProductService : IProductService
         }
     }
 
+    public async Task<int> GetUnVerifiedCommentsCount()
+    {
+        try
+        {
+            int countComments;
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                string sql = "SELECT COUNT(Id) FROM ProductComments where Status = 0";
+
+                countComments = await connection.ExecuteScalarAsync<int>(sql);
+            }
+            return countComments;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
     public async Task<OperationResult> AddProductComment(ProductCommentViewModel productCommentViewModel)
     {
         try
@@ -969,6 +988,30 @@ public class ProductService : IProductService
             using (SqlConnection connection = _context.CreateConnection())
             {
                 await connection.ExecuteAsync("Update ProductComments SET Status = 1 where Id = @id", new { id = commentId });
+            }
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
+        }
+        catch
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+        }
+    }
+
+    public async Task<OperationResult> LikeOrDislikeComment(int commentId, bool liked)
+    {
+        try
+        {
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                if (liked)
+                {
+                    await connection.ExecuteAsync("Update ProductComments SET HelpedCount += 1 where Id = @id", new { id = commentId });
+                }
+                else
+                {
+                    await connection.ExecuteAsync("Update ProductComments SET NotHelpedCount += 1 where Id = @id", new { id = commentId });
+                }
             }
 
             return new OperationResult() { OperationStatus = OperationStatus.Success };
