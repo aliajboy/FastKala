@@ -1,8 +1,7 @@
 ﻿@using FastKala.Application.Interfaces.Product
 @inject IProductService productService
 @using FastKala.Utilities
-@{
-}
+
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 
@@ -58,6 +57,7 @@
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
+                <a class="btn btn-outline-primary me-4" type="button" asp-area="" asp-controller="Home" asp-action="Index">مشاهده سایت</a>
 
                 <li class="nav-item d-block d-lg-none">
                     <a class="nav-link nav-icon search-bar-toggle " href="#">

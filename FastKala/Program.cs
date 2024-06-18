@@ -45,12 +45,12 @@ app.UseAuthorization();
 app.UseResponseCompression();
 app.UseResponseCaching();
 
+app.MapAreaControllerRoute(
+    name: "adminArea",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}"
-    );
 
 app.Run();

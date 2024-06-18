@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "افزودن سفارش جدید";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row">
@@ -11,61 +10,63 @@
             </h5>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-xl-2 col-form-label">
-                        <label class="form-label">تاریخ ایجاد:</label>
+                    <div class="col-xl-4 col-6 row col-form-label">
+                        <div class="col-xxl-3 col-4 d-flex align-items-center">
+                            <label class="form-label">تاریخ ایجاد:</label>
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <input class="form-control text-center" type="text" />
+                        </div>
                     </div>
-                    <div class="col-xl-4">
-                        <input class="form-control text-center" type="text" />
-                    </div>
-                    <div class="col-xl-2">
-                        <input type="time" class="form-control"/>
+                    <div class="col-lg-2 col-sm-3 col-5 d-flex align-items-center">
+                        <input type="time" class="form-control" />
                     </div>
                 </div>
-                <h6 class="text-secondary">اطلاعات مشتری</h6>
+                <h6 class="text-secondary mt-2">اطلاعات مشتری</h6>
                 <div class="row">
-                    <div class="col-xl-6">
+                    <div class="col-md-6">
                         <label class="form-label">نام</label>
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" />
                     </div>
-                    <div class="col-xl-6">
+                    <div class="col-md-6">
                         <label class="form-label">نام خانوادگی</label>
                         <input type="text" class="form-control" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">استان</label>
                         <input type="text" class="form-control" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">شهر</label>
                         <input type="text" class="form-control" />
                     </div>
-                    <div class="col-xl-9 mt-1">
+                    <div class="col-md-9 mt-1">
                         <label class="form-label">آدرس</label>
                         <input type="text" class="form-control" />
                     </div>
-                    <div class="col-xl-3 mt-1">
+                    <div class="col-md-3 mt-1">
                         <label class="form-label">کدپستی</label>
-                        <input type="text" class="form-control text-center" maxlength="10"/>
+                        <input type="text" class="form-control text-center" maxlength="10" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">ایمیل</label>
                         <input type="text" class="form-control text-center" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">شماره تماس</label>
                         <input type="text" class="form-control text-center" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">روش پرداخت</label>
                         <input type="text" class="form-control text-center" />
                     </div>
-                    <div class="col-xl-6 mt-1">
+                    <div class="col-md-6 mt-1">
                         <label class="form-label">کدرهگیری پرداخت</label>
                         <input type="text" class="form-control text-center" />
                     </div>
-                    <div class="col-xl-12 mt-1">
+                    <div class="col-md-12 mt-1">
                         <label class="form-label">یادداشت مشتری</label>
-                        <textarea class="form-control" ></textarea>
+                        <textarea class="form-control"></textarea>
                     </div>
                 </div>
             </div>
@@ -121,7 +122,6 @@
             </div>
             <div class="card-body">
                 <div class="bg-light rounded mb-2" style="min-height:8rem;">
-
                 </div>
                 <label class="form-label">افزودن یادداشت</label>
                 <textarea class="form-control"></textarea>
