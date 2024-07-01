@@ -33,6 +33,7 @@
     <!-- Template Main CSS File -->
     <link href="~/css/style.css" rel="stylesheet">
     <link href="~/css/local.css" rel="stylesheet">
+    @await RenderSectionAsync("Styles", false)
 </head>
 
 <body>
@@ -361,14 +362,13 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
-    @RenderSection("tinymce", false)
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
 
     <!-- Template Main JS File -->
     <script src="~/js/main-admin.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", false)
+    @await RenderSectionAsync("Scripts", false)
 </body>
 
 </html>

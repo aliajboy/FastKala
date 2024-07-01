@@ -2,6 +2,14 @@
     ViewData["Title"] = "سفارش ها";
 }
 
+@section Styles{
+    <style>
+        td, th {
+            text-align: center !important;
+        }
+    </style>
+}
+
 <a asp-area="Admin" asp-controller="Orders" asp-action="AddOrder" class="btn btn-primary mb-3">سفارش جدید</a>
 
 <div class="card">
@@ -9,34 +17,46 @@
         <table class="table table-striped bg-white border b-rounded">
             <thead>
                 <tr>
-                    <th class="text-center">
+                    <th>
+                        <input type="checkbox" class="form-check-input"/>
+                    </th>
+                    <th>
                         سفارش
                     </th>
-                    <th class="text-center">
+                    <th>
                         تاریخ
                     </th>
-                    <th class="text-center">
+                    <th>
                         وضعیت
                     </th>
-                    <th class="text-center">
+                    <th>
                         مبلغ کل
                     </th>
-                    <th class="text-center">
+                    <th>
                         استان مقصد
                     </th>
                 </tr>
             </thead>
             <tbody>
+                <a href="#">
                 <tr>
-                    <td class="text-center">#35346 علی جبالی</td>
-                    <td class="text-center">1402-03-06</td>
-                    <td class="text-center">
+                    <td>
+                        <input type="checkbox" class="form-check-input" />
+                    </td>
+                    <td>#35346 علی جبالی</td>
+                    <td>1402-03-06</td>
+                    <td>
                         <span class="badge bg-label-primary">در حال انجام</span>
                     </td>
-                    <td class="text-center">32,526,000 تومان</td>
-                    <td class="text-center">تهران</td>
+                    <td>32,526,000 تومان</td>
+                    <td>تهران</td>
                 </tr>
+                </a>
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/admin-pages/orders/orders.js" asp-append-version="true"></script>
+}
