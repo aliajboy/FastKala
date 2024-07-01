@@ -268,7 +268,7 @@
             <div class="card-body">
                 <div class="d-flex border rounded-3 align-items-center justify-content-center" style="aspect-ratio : 1 / 1;">
                     <label asp-for="MainImage" style="cursor:pointer">
-                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100 p-1" id="productMainImage" />
+                        <img src="~/img/upload-image-icon.webp" alt="تصویر اصلی محصول" class="w-100 p-1" id="productMainImage" width="322" height="216"/>
                     </label>
                     <input type="file" class="form-control d-none" accept="image/png, image/jpeg, image/jpg" onchange="showImage(this,'productMainImage')" asp-for="MainImage" />
                 </div>
@@ -295,6 +295,6 @@
 
 @section Scripts {
     <partial name="_Tinymce" />
-    <partial name="~/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml" />
     <script src="~/js/admin-pages/products/newProduct.js" asp-append-version="true"></script>
+    <partial name="~/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml" />
 }

@@ -23,7 +23,7 @@ builder.Services.AddTransient<IProductService, ProductService>();
 // Features
 builder.Services.AddControllersWithViews();
 builder.Services.AddResponseCompression();
-builder.Services.AddResponseCaching();
+//builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -35,6 +35,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseResponseCompression();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -42,8 +43,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseResponseCompression();
-app.UseResponseCaching();
+//app.UseResponseCaching();
 
 app.MapAreaControllerRoute(
     name: "adminArea",
