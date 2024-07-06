@@ -3,9 +3,7 @@ using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Global;
 using FastKala.Application.Services.Products;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string 'sqlserver' not found.");
@@ -15,7 +13,9 @@ builder.Services.AddDbContext<FastKalaContext>(options => options.UseSqlServer(c
 builder.Services.AddDefaultIdentity<FastKalaUser>(options => options.SignIn.RequireConfirmedPhoneNumber = true).AddEntityFrameworkStores<FastKalaContext>();
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // Services
 builder.Services.AddTransient<IUploadService, UploadService>();
 builder.Services.AddTransient<IProductService, ProductService>();
