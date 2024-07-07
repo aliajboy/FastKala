@@ -2,16 +2,19 @@
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Products;
+using FastKala.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastKala.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService, IHttpContextAccessor httpContextAccessor)
     {
         _productService = productService;
+        _httpContext = httpContextAccessor;
     }
 
     public async Task<IActionResult> Index()
@@ -52,5 +55,13 @@ public class ProductsController : Controller
             return RedirectToAction("Product", "Products", new { id = commentViewModel.ProductComment.ProductId });
         }
         return RedirectToAction("AddComment", new { id = commentViewModel.ProductComment.ProductId });
+    }
+
+    [HttpPost]
+    public async Task AddToCard()
+    {
+        CookieHelper cookie = new CookieHelper(_httpContext);
+        
+        cookie.SetCartCookie(Guid.NewGuid());
     }
 }

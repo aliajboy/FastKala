@@ -411,7 +411,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-seller-row add-to-cart">
-                                                    <a href="#" class="btn-add-to-cart btn btn-primary">
+                                                    <a href="#" class="btn-add-to-cart btn btn-primary" onclick="addtocard()">
                                                         <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
                                                     </a>
                                                 </div>
@@ -836,4 +836,12 @@
 
 @section Scripts {
     <script src="~/js/client-pages/Product.js" asp-append-version="true"></script>
+    <script>
+        async function addtocard() {
+            const res = await $.ajax({
+                url: '/products/addtocard',
+                method: 'POST'
+            });
+        }
+    </script>
 }
