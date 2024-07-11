@@ -3,6 +3,7 @@ using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Global;
 using FastKala.Application.Services.Products;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("SqlServer") ??
 
 builder.Services.AddDbContext<FastKalaContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<FastKalaUser>(options => options.SignIn.RequireConfirmedPhoneNumber = true).AddEntityFrameworkStores<FastKalaContext>();
+builder.Services.AddDefaultIdentity<FastKalaUser>().AddEntityFrameworkStores<FastKalaContext>();
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
@@ -42,6 +43,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 //app.UseResponseCaching();
 

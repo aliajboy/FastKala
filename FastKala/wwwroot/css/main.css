@@ -348,7 +348,6 @@ header.header-main {
     display: inline-block;
     border-radius: 20px;
     overflow: hidden;
-    cursor: pointer;
 }
 
 .account-box span.icon-account {

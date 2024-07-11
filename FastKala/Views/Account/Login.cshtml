@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginViewModel
+@{
     Layout = null;
 }
 
@@ -9,12 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ثبت نام</title>
     <!-- font---------------------------------------->
-    <link rel="stylesheet" href="~/css/shop/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/shop/materialdesignicons.css">
     <!-- plugin-------------------------------------->
     <link rel="stylesheet" href="~/css/shop/bootstrap.css">
-    <link rel="stylesheet" href="~/css/shop/owl.carousel.min.css">
-    <link rel="stylesheet" href="~/css/shop/noUISlider.min.css">
     <!-- main-style---------------------------------->
     <link rel="stylesheet" href="~/css/main.css">
 </head>
@@ -42,22 +40,25 @@
                                 <div class="Login-to-account mt-4">
                                     <div class="account-box-content">
                                         <h4>ورود به حساب کاربری</h4>
-                                        <form method="post" class="form-account text-right">
+                                        <div asp-validation-summary="ModelOnly" class="alert alert-danger pb-0 mb-0"></div>
+                                        <form method="post" asp-action="Login" asp-controller="Account" class="form-account text-right">
                                             <div class="form-account-title">
-                                                <label>ایمیل / شماره موبایل</label>
-                                                <input type="text" class="number-email-input">
+                                                <label asp-for="Email">ایمیل</label>
+                                                <input type="email" asp-for="Email" class="number-email-input">
+                                                <span asp-validation-for="Email" class="text-danger"></span>
                                             </div>
                                             <div class="form-account-title">
-                                                <label for="password">رمز عبور</label>
+                                                <label asp-for="Password">رمز عبور</label>
                                                 <a href="#" class="account-link-password">رمز خود را فراموش کرده ام</a>
-                                                <input type="password" class="password-input">
+                                                <input type="password" asp-for=Password class="password-input">
+                                                <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                             <div class="form-auth-row">
-                                                <label for="#" class="ui-checkbox mt-1">
-                                                    <input type="checkbox" value="1" name="login" id="remember">
+                                                <label class="ui-checkbox mt-1">
+                                                    <input type="checkbox" asp-for="RememberMe">
                                                     <span class="ui-checkbox-check"></span>
                                                 </label>
-                                                <label for="remember" class="remember-me mr-0">مرا به خاطر بسپار</label>
+                                                <label asp-for="RememberMe" class="remember-me mr-0">مرا به خاطر بسپار</label>
                                             </div>
                                             <div class="form-row-account">
                                                 <button class="btn btn-primary btn-login">ورود به فست کالا</button>
@@ -79,12 +80,11 @@
 <script src="~/lib/jquery/jquery.min.js"></script>
 <script src="~/js/vendor/bootstrap.js"></script>
 <!-- plugin----------------------------------------------------->
-<script src="~/js/vendor/owl.carousel.min.js"></script>
 <script src="~/js/vendor/jquery.countdown.js"></script>
 <script src="~/js/vendor/ResizeSensor.min.js"></script>
 <script src="~/js/vendor/theia-sticky-sidebar.min.js"></script>
 <script src="~/js/vendor/wNumb.js"></script>
-<script src="~/js/vendor/nouislider.min.js"></script>
 <!-- main js---------------------------------------------------->
 <script src="~/js/main.js"></script>
+<partial name="_ValidationScriptsPartial" />
 </html>
