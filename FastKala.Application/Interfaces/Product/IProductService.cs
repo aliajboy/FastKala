@@ -1,7 +1,6 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums.Products;
-using FastKala.Domain.Models.Product;
 
 namespace FastKala.Application.Interfaces.Product;
 public interface IProductService
@@ -107,6 +106,12 @@ public interface IProductService
     Task<OperationResult> VerifyComment(int commentId);
 
     Task<OperationResult> LikeOrDislikeComment(int commentId, bool liked);
+
+    #endregion
+
+    #region Cart
+
+    Task<OperationResult> AddToCard(int productId, int quantity, string userId);
 
     #endregion
 }

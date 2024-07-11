@@ -1,8 +1,11 @@
 ﻿@using FastKala.Application.Interfaces.Global
 @using FastKala.Application.ViewModels.Products
 @using FastKala.Domain.Enums.Products
-@model ProductViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<FastKalaUser> SignInManager
+@inject UserManager<FastKalaUser> UserManager
 @inject IUploadService _uploadService
+@model ProductViewModel
 @{
     ViewData["Title"] = Model.Product.Name;
     bool attributes = Model.ProductAttributes.Any();
@@ -244,7 +247,7 @@
                         </div>
                         </section>
                     </div>
-                    <div class="col-lg-7 col-xs-12 pl mt-5 d-block">
+                    <div class="col-lg-7 col-xs-12 px-0 px-xs-2 pl mt-5 d-block">
                         <section class="product-info">
                             <div class="product-headline">
                                 <h1 class="product-title">
@@ -363,7 +366,7 @@
                                     </div>
                                 </div>
                                 <div class="col=lg-6 col-md-6 col-xs-12 pr">
-                                    <div class="product-seller-info">
+                                    <div class="product-seller-info mb-2">
                                         <div class="seller-info-changable">
                                             <div class="product-seller-row guarantee pt-1 d-flex justify-content-between align-items-center">
                                                 <span class="title"> گارانتی :</span>
@@ -403,7 +406,7 @@
                                                 <div class="product-seller-row guarantee">
                                                     <span class="title mt-3"> تعداد :</span>
                                                     <div class="quantity pl">
-                                                        <input type="number" min="1" max="100" step="1" value="1">
+                                                        <input type="number" min="1" max="100" step="1" value="1" id="order-quantity">
                                                         <div class="quantity-nav">
                                                             <div class="quantity-button quantity-up">+</div>
                                                             <div class="quantity-button quantity-down">-</div>
@@ -411,9 +414,18 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-seller-row add-to-cart">
-                                                    <a href="#" class="btn-add-to-cart btn btn-primary" onclick="addtocard()">
-                                                        <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
-                                                    </a>
+                                                    @if (SignInManager.IsSignedIn(User))
+                                                    {
+                                                        <a href="#" class="btn-add-to-cart btn btn-primary" onclick="addToCart(@(Model.Product.Id), $('#order-quantity').val())">
+                                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="/Product/@Model.Product.Id" class="btn-add-to-cart btn btn-primary">
+                                                            <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
+                                                        </a>
+                                                    }
                                                 </div>
                                             }
                                         </div>
@@ -836,12 +848,4 @@
 
 @section Scripts {
     <script src="~/js/client-pages/Product.js" asp-append-version="true"></script>
-    <script>
-        async function addtocard() {
-            const res = await $.ajax({
-                url: '/products/addtocard',
-                method: 'POST'
-            });
-        }
-    </script>
 }

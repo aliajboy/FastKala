@@ -1,8 +1,11 @@
-﻿using FastKala.Application.Interfaces.Product;
+﻿using FastKala.Application.Data;
+using FastKala.Application.Interfaces.Product;
+using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Products;
-using FastKala.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastKala.Controllers;
@@ -10,11 +13,15 @@ public class ProductsController : Controller
 {
     private readonly IProductService _productService;
     private readonly IHttpContextAccessor _httpContext;
+    private readonly SignInManager<FastKalaUser> _signinManager;
+    private readonly UserManager<FastKalaUser> _userManager;
 
-    public ProductsController(IProductService productService, IHttpContextAccessor httpContextAccessor)
+    public ProductsController(IProductService productService, IHttpContextAccessor httpContextAccessor, SignInManager<FastKalaUser> signInManager, UserManager<FastKalaUser> userManager)
     {
         _productService = productService;
         _httpContext = httpContextAccessor;
+        _signinManager = signInManager;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
@@ -38,9 +45,9 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> AddComment(int id)
     {
-        ProductCommentViewModel commentViewModel = new ProductCommentViewModel() 
-        { 
-            Product = await _productService.GetProductById(id) 
+        ProductCommentViewModel commentViewModel = new ProductCommentViewModel()
+        {
+            Product = await _productService.GetProductById(id)
         };
 
         return View(commentViewModel);
@@ -58,10 +65,15 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    public async Task AddToCard()
+    [Authorize]
+    public async Task<OperationResult> AddToCard(int productId, int quantity)
     {
-        CookieHelper cookie = new CookieHelper(_httpContext);
-        
-        cookie.SetCartCookie(Guid.NewGuid());
+        FastKalaUser user = await _userManager.GetUserAsync(User);
+        if (user != null && productId > 0 && quantity > 0)
+        {
+            return await _productService.AddToCard(productId, quantity, user.Id);
+        }
+
+        return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "AddToCart Controller Error"};
     }
 }

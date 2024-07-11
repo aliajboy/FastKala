@@ -1023,4 +1023,42 @@ public class ProductService : IProductService
     }
 
     #endregion
+
+    #region Cart
+
+    public async Task<OperationResult> AddToCard(int productId, int quantity, string userId)
+    {
+        try
+        {
+            string sql = "";
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                Cart cartItem = await connection.QuerySingleOrDefaultAsync<Cart>("Select * From Cart where CustomerId = @customerid and ProductId = @productid", new
+                {
+                    customerid = userId,
+                    productid = productId
+                });
+
+                if (cartItem != null)
+                {
+                    sql = "UPDATE Cart SET Quantity = (Quantity + @quantity) WHERE CustomerId = @customerid and ProductId = @productid";
+
+                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
+                }
+                else
+                {
+                    sql = "INSERT INTO Cart (ProductId,Quantity,CustomerId) VALUES (@productid,@quantity,@customerid)";
+
+                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
+                }
+            }
+            return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "با موفقیت به سبد خرید اضافه شد" };
+        }
+        catch (Exception ex)
+        {
+            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = ex.StackTrace };
+        }
+    }
+
+    #endregion
 }
