@@ -29,7 +29,7 @@ public class AccountController : Controller
     [HttpGet]
     public async Task<IActionResult> Login(string returnUrl = null)
     {
-        if (!(User.Identity?.IsAuthenticated ?? false))
+        if (!_signInManager.IsSignedIn(User))
         {
             returnUrl ??= Url.Content("~/");
 
@@ -71,7 +71,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Register(string returnUrl = null)
     {
-        if (!(User.Identity?.IsAuthenticated ?? false))
+        if (!_signInManager.IsSignedIn(User))
         {
             ViewData["returnUrl"] = returnUrl;
             return View();

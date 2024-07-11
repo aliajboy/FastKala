@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<FastKalaUser> SignInManager
+@inject UserManager<FastKalaUser> UserManager
+<!DOCTYPE html>
 <html dir="rtl" lang="fa">
 <head>
     <meta charset="UTF-8">
@@ -139,34 +142,40 @@
                             <div class="d-block">
                                 <div class="account-box">
                                     <div class="nav-account d-block pl">
-                                        <span class="icon-account">
-                                            <img src="~/images/man.png" class="avator" style="vertical-align:top;">
-                                        </span>
-                                        <a asp-controller="Account" asp-action="Login">
-                                            <span class="title-account">
-                                                ورود / ثبت نام
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <span class="icon-account">
+                                                <img src="~/images/man.png" class="avator" style="vertical-align:top;">
                                             </span>
-                                        </a>
-                                        @* <span class="icon-account">
-                                        <img src="~/images/man.png" class="avator" style="vertical-align:top;">
-                                        </span>
-                                        <span class="title-account">حساب کاربری</span>
-                                        <div class="dropdown-menu">
-                                        <ul class="account-uls mb-0">
-                                        <li class="account-item">
-                                        <a href="#" class="account-link">پنل کاربری</a>
-                                        </li>
-                                        <li class="account-item">
-                                        <a href="#" class="account-link">سفارشات من</a>
-                                        </li>
-                                        <li class="account-item">
-                                        <a href="#" class="account-link">تنظیمات</a>
-                                        </li>
-                                        <li class="account-item">
-                                        <a href="#" class="account-link">خروج</a>
-                                        </li>
-                                        </ul>
-                                        </div> *@
+                                            <span class="title-account">حساب کاربری</span>
+                                            <div class="dropdown-menu">
+                                                <ul class="account-uls mb-0">
+                                                    <li class="account-item">
+                                                        <a href="#" class="account-link">پنل کاربری</a>
+                                                    </li>
+                                                    <li class="account-item">
+                                                        <a href="#" class="account-link">سفارشات من</a>
+                                                    </li>
+                                                    <li class="account-item">
+                                                        <a href="#" class="account-link">تنظیمات</a>
+                                                    </li>
+                                                    <li class="account-item">
+                                                        <a href="#" class="account-link text-danger">خروج</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="icon-account">
+                                                <img src="~/images/man.png" class="avator" style="vertical-align:top;">
+                                            </span>
+                                            <a asp-controller="Account" asp-action="Login">
+                                                <span class="title-account">
+                                                    ورود / ثبت نام
+                                                </span>
+                                            </a>
+                                        }
                                     </div>
                                 </div>
                             </div>
