@@ -3,11 +3,13 @@ using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums.Global;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastAdmin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;

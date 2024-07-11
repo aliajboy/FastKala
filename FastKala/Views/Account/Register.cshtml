@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginViewModel
+@{
     Layout = null;
 }
 
@@ -42,21 +43,24 @@
                                 <div class="Login-to-account mt-4">
                                     <div class="account-box-content">
                                         <h4>ثبت نام در فست کالا</h4>
+                                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-0 pb-0"></div>
                                         <form method="post" class="form-account text-right">
                                             <div class="form-account-title">
-                                                <label>ایمیل / شماره موبایل</label>
-                                                <input type="text" class="number-email-input">
+                                                <label asp-for="Email">ایمیل / شماره موبایل</label>
+                                                <input type="email" asp-for="Email" class="number-email-input">
+                                                <span asp-validation-for="Email" class="text-danger"></span>
                                             </div>
                                             <div class="form-account-title">
-                                                <label>رمز عبور</label>
-                                                <input type="password" class="password-input">
+                                                <label asp-for="Password">رمز عبور</label>
+                                                <input type="password" asp-for="Password" class="password-input">
+                                                <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                             <div class="form-auth-row">
-                                                <label for="#" class="ui-checkbox mt-1">
-                                                    <input type="checkbox" >
+                                                <label class="ui-checkbox mt-1">
+                                                    <input type="checkbox" asp-for="RememberMe">
                                                     <span class="ui-checkbox-check"></span>
                                                 </label>
-                                                <label for="remember" class="remember-me mr-0"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت فست کالا را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+                                                <label asp-for="RememberMe" class="remember-me mr-0"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت فست کالا را مطالعه نموده و با کلیه موارد آن موافقم.</label>
                                             </div>
                                             <div class="form-row-account">
                                                 <button class="btn btn-primary btn-register">ثبت نام در فست کالا</button>

@@ -3,7 +3,11 @@ using FastKala.Application.ViewModels.Global;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text.Encodings.Web;
+using System.Text;
 
 namespace FastKala.Controllers;
 
@@ -12,26 +16,30 @@ public class AccountController : Controller
 {
     private readonly UserManager<FastKalaUser> _userManager;
     private readonly SignInManager<FastKalaUser> _signInManager;
+    private readonly IEmailSender _emailSender;
 
-    public string ReturnUrl { get; set; }
-
-    public AccountController(SignInManager<FastKalaUser> signInManager, UserManager<FastKalaUser> userManager)
+    public AccountController(SignInManager<FastKalaUser> signInManager, UserManager<FastKalaUser> userManager, IEmailSender emailSender)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _emailSender = emailSender;
     }
 
     [Route("Login")]
     [HttpGet]
     public async Task<IActionResult> Login(string returnUrl = null)
     {
-        returnUrl ??= Url.Content("~/");
+        if (!(User.Identity?.IsAuthenticated ?? false))
+        {
+            returnUrl ??= Url.Content("~/");
 
-        // Clear the existing external cookie to ensure a clean login process
-        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        ReturnUrl = returnUrl;
-        return View();
+            ViewData["returnUrl"] = returnUrl;
+            return View();
+        }
+        return LocalRedirect("/");
     }
 
     [Route("Login")]
@@ -61,15 +69,67 @@ public class AccountController : Controller
 
     [Route("Register")]
     [HttpGet]
-    public async Task<IActionResult> Register(string returnUrl = null)
+    public IActionResult Register(string returnUrl = null)
     {
-        return View();
+        if (!(User.Identity?.IsAuthenticated ?? false))
+        {
+            ViewData["returnUrl"] = returnUrl;
+            return View();
+        }
+        return LocalRedirect("/");
     }
 
     [Route("Register")]
     [HttpPost]
     public async Task<IActionResult> Register(LoginViewModel loginViewModel, string returnUrl = null)
     {
+        returnUrl ??= Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            if (!loginViewModel.RememberMe)
+            {
+                ModelState.AddModelError(string.Empty, "برای ثبت نام نیاز است که قوانین سایت را تایید کنید!");
+                return View();
+            }
+
+            var user = new FastKalaUser
+            {
+                UserName = loginViewModel.Email,
+                Email = loginViewModel.Email
+            };
+            var result = await _userManager.CreateAsync(user, loginViewModel.Password);
+            if (result.Succeeded)
+            {
+                if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                {
+                    // Confirm Email
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(loginViewModel.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    return RedirectToPage("RegisterConfirmation", new { email = loginViewModel.Email, returnUrl = returnUrl });
+                }
+                else
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        // If we got this far, something failed, redisplay form
         return View();
     }
 }

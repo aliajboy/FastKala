@@ -3,7 +3,7 @@ using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Global;
 using FastKala.Application.Services.Products;
-using Microsoft.AspNetCore.Identity;
+using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,23 @@ var connectionString = builder.Configuration.GetConnectionString("SqlServer") ??
 
 builder.Services.AddDbContext<FastKalaContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<FastKalaUser>().AddEntityFrameworkStores<FastKalaContext>();
+builder.Services.AddDefaultIdentity<FastKalaUser>(options =>
+{
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 8;
+}).AddErrorDescriber<PersianIdentityErrorDescriber>().AddEntityFrameworkStores<FastKalaContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(2);
+    options.LoginPath = "/Login";
+    options.AccessDeniedPath = "/AccessDenied";
+});
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
@@ -42,8 +58,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 //app.UseResponseCaching();
 
@@ -55,4 +71,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+await app.RunAsync();
