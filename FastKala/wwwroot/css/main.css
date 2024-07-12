@@ -872,7 +872,7 @@ header.header-main {
     left: 10px;
     line-height: 20px;
     text-align: center;
-    top: 10px;
+    top: 35%;
     border-radius: 50px;
     font-size: 12px;
 }
@@ -924,14 +924,14 @@ header.header-main {
 }
 
 .header-main-nav .divider-space-card .header-cart-basket .widget-shopping-cart .widget-shopping-cart-content ul.product-list-widget li.mini-cart-item a.mini-cart-item-image {
-    width: 45px;
+    width: 50px;
     height: 45px;
     float: right;
     border-radius: 50px;
     position: absolute;
     right: 15px;
     top: auto;
-    line-height: 80px;
+    line-height: 55px;
     text-align: center;
     overflow: hidden;
     height: 100%;
@@ -944,7 +944,7 @@ header.header-main {
     border-radius: 20px;
     position: absolute;
     right: 10px;
-    top: 25px;
+    top: 15px;
     line-height: 55px;
     text-align: center;
     overflow: hidden;
@@ -6702,7 +6702,7 @@ main.single-product .product .gallery-items li img:hover {
 }
 
 .tabs .tabs-content .content-expert-summary .mask-text {
-    max-height: 250px;
+    max-height: 300px;
     height: unset;
     overflow: hidden;
     padding-bottom: 15px;

@@ -11,7 +11,7 @@ public class CookieHelper
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public List<ShoppingCart> GetCartCookie()
+    public List<CartItemsViewModel> GetCartCookie()
     {
         try
         {

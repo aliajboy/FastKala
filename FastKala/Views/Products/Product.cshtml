@@ -416,7 +416,7 @@
                                                 <div class="product-seller-row add-to-cart">
                                                     @if (SignInManager.IsSignedIn(User))
                                                     {
-                                                        <a href="#" class="btn-add-to-cart btn btn-primary" onclick="addToCart(@(Model.Product.Id), $('#order-quantity').val())">
+                                                        <a href="javascript:void(0);" class="btn-add-to-cart btn btn-primary" onclick="addToCart(@(Model.Product.Id), $('#order-quantity').val())">
                                                             <span class="btn-add-to-cart-txt">افزودن به سبد خرید</span>
                                                         </a>
                                                     }
@@ -520,7 +520,7 @@
                                     <div class="mask-text">
                                         @Html.Raw(Model.Product.Description)
                                     </div>
-                                    @if (Model.Product.Description?.Length > 1600)
+                                    @if (Model.Product.Description?.Length > 300)
                                     {
                                         <a href="#" class="mask-handler">
                                             <span class="show-more">+ ادامه مطلب</span>

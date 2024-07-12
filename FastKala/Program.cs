@@ -1,7 +1,9 @@
 using FastKala.Application.Data;
 using FastKala.Application.Interfaces.Global;
+using FastKala.Application.Interfaces.Order;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Global;
+using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
 using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // Services
 builder.Services.AddTransient<IUploadService, UploadService>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 // Features
 builder.Services.AddControllersWithViews();

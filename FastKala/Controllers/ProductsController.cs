@@ -63,17 +63,4 @@ public class ProductsController : Controller
         }
         return RedirectToAction("AddComment", new { id = commentViewModel.ProductComment.ProductId });
     }
-
-    [HttpPost]
-    [Authorize]
-    public async Task<OperationResult> AddToCard(int productId, int quantity)
-    {
-        FastKalaUser user = await _userManager.GetUserAsync(User);
-        if (user != null && productId > 0 && quantity > 0)
-        {
-            return await _productService.AddToCard(productId, quantity, user.Id);
-        }
-
-        return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "AddToCart Controller Error"};
-    }
 }

@@ -3,6 +3,7 @@ using FastKala.Application.Data;
 using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.ViewModels.Global;
+using FastKala.Application.ViewModels.Orders;
 using FastKala.Application.ViewModels.Products;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Products;
@@ -1019,44 +1020,6 @@ public class ProductService : IProductService
         catch
         {
             return new OperationResult() { OperationStatus = OperationStatus.Exception };
-        }
-    }
-
-    #endregion
-
-    #region Cart
-
-    public async Task<OperationResult> AddToCard(int productId, int quantity, string userId)
-    {
-        try
-        {
-            string sql = "";
-            using (SqlConnection connection = _context.CreateConnection())
-            {
-                Cart cartItem = await connection.QuerySingleOrDefaultAsync<Cart>("Select * From Cart where CustomerId = @customerid and ProductId = @productid", new
-                {
-                    customerid = userId,
-                    productid = productId
-                });
-
-                if (cartItem != null)
-                {
-                    sql = "UPDATE Cart SET Quantity = (Quantity + @quantity) WHERE CustomerId = @customerid and ProductId = @productid";
-
-                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
-                }
-                else
-                {
-                    sql = "INSERT INTO Cart (ProductId,Quantity,CustomerId) VALUES (@productid,@quantity,@customerid)";
-
-                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
-                }
-            }
-            return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "با موفقیت به سبد خرید اضافه شد" };
-        }
-        catch (Exception ex)
-        {
-            return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = ex.StackTrace };
         }
     }
 

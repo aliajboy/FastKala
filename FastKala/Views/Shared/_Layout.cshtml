@@ -1,6 +1,12 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using FastKala.Application.Interfaces.Order
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<FastKalaUser> SignInManager
 @inject UserManager<FastKalaUser> UserManager
+@inject IOrderService orderService
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var cartItems = await orderService.GetCartItems(user?.Id);
+}
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
 <head>
@@ -806,109 +812,80 @@
                             </li>
                             <li class="divider-space-card">
                                 <div class="header-cart-basket">
-                                    <a href="#" class="cart-basket-box">
+                                    <a asp-controller="Order" asp-action="Cart" class="cart-basket-box">
                                         <span class="icon-cart">
                                             <i class="mdi mdi-shopping"></i>
                                         </span>
                                         <span class="title-cart">سبد خرید</span>
                                         <span class="price-cart">
-                                            25,000,000
-                                            <span>تومان</span>
+                                            @cartItems.Sum(x => x.TotalPrice).ToString("N0")
                                         </span>
-                                        <span class="count-cart">2</span>
+                                        <span>تومان</span>
+                                        <span class="count-cart">@cartItems.Count</span>
                                     </a>
-                                    <div class="widget-shopping-cart">
-                                        <div class="widget-shopping-cart-content">
-                                            <div class="wrapper">
-                                                <div class="scrollbar" id="style-1">
-                                                    <div class="force-overflow">
-                                                        <ul class="product-list-widget">
-                                                            <li class="mini-cart-item">
-                                                                <div class="mini-cart-item-content">
-                                                                    <a href="#" class="mini-cart-item-close">
-                                                                        <i class="mdi mdi-close"></i>
-                                                                    </a>
-                                                                    <a href="#" class="mini-cart-item-image d-block">
-                                                                        <img src="~/images/menu-main/img-card.jpg">
-                                                                    </a>
-                                                                    <span class="product-name-card">
-                                                                        لپ تاپ چووی
-                                                                        الترابوک 14
-                                                                        اینچ پرو
-                                                                    </span>
-                                                                    <div class="variation">
-                                                                        <span class="variation-n">
-                                                                            فروشنده :
-                                                                        </span>
-                                                                        <p class="mb-0">کالامارکت </p>
-                                                                    </div>
-                                                                    <div class="header-basket-list-item-color-badge">
-                                                                        رنگ:
-                                                                        <span style="background: #000"></span>
-                                                                    </div>
-                                                                    <div class="quantity">
-                                                                        <span class="quantity-Price-amount">
-                                                                            15,000,000
-                                                                            <span>تومان</span>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li class="mini-cart-item">
-                                                                <div class="mini-cart-item-content">
-                                                                    <a href="#" class="mini-cart-item-close">
-                                                                        <i class="mdi mdi-close"></i>
-                                                                    </a>
-                                                                    <a href="#" class="mini-cart-item-image d-block">
-                                                                        <img src="~/images/menu-main/img-card-2.jpg">
-                                                                    </a>
-                                                                    <span class="product-name-card">
-                                                                        هواوای میت
-                                                                        بوک X پرو
-                                                                        13.9 اینچ
-                                                                    </span>
-                                                                    <div class="variation">
-                                                                        <span class="variation-n">
-                                                                            فروشنده :
-                                                                        </span>
-                                                                        <p class="mb-0">کالامارکت </p>
-                                                                    </div>
-                                                                    <div class="header-basket-list-item-color-badge">
-                                                                        رنگ:
-                                                                        <span style="background: #ccc"></span>
-                                                                    </div>
-                                                                    <div class="quantity">
-                                                                        <span class="quantity-Price-amount">
-                                                                            10,000,000
-                                                                            <span>تومان</span>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
+                                    @if (SignInManager.IsSignedIn(User) && cartItems.Count > 0)
+                                    {
+                                        <div class="widget-shopping-cart">
+                                            <div class="widget-shopping-cart-content">
+                                                <div class="wrapper">
+                                                    <div class="scrollbar" id="style-1">
+                                                        <div class="force-overflow w-100">
+                                                            <ul class="product-list-widget">
+                                                                @foreach (var item in cartItems)
+                                                                {
+                                                                    <li class="mini-cart-item" id="product-@item.ProductId">
+                                                                        <div class="mini-cart-item-content">
+                                                                            <a href="#" class="mini-cart-item-close">
+                                                                                <i class="mdi mdi-close"></i>
+                                                                            </a>
+                                                                            <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId" class="mini-cart-item-image d-block">
+                                                                                <img src="~/images/menu-main/img-card.jpg">
+                                                                            </a>
+                                                                            <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId">
+                                                                                <span class="product-name-card">
+                                                                                    @item.ProductName
+                                                                                </span>
+                                                                            </a>
+                                                                            <div class="variation">
+                                                                                <span class="variation-n">
+
+                                                                                </span>
+                                                                                <p class="mb-0"></p>
+                                                                            </div>
+                                                                            <div class="header-basket-list-item-color-badge">
+                                                                            </div>
+                                                                            <div class="quantity">
+                                                                                <span class="quantity-Price-amount">
+                                                                                    @item.Price.ToString("N0")
+                                                                                    <span>تومان</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="mini-card-total">
-                                                <strong>قیمت کل : </strong>
-                                                <span class="price-total">
-                                                    25,000,000
+                                                <div class="mini-card-total">
+                                                    <strong>قیمت کل : </strong>
+                                                    <span class="price-total">@cartItems.Sum(x => x.TotalPrice).ToString("N0")</span>
                                                     <span>تومان</span>
-                                                </span>
-                                            </div>
-                                            <div class="mini-card-button">
-                                                <a href="cart.html" class="view-card">مشاهده سبد خرید</a>
-                                                <a href="checkout.html" class="card-checkout">تسویه حساب</a>
+                                                </div>
+                                                <div class="mini-card-button">
+                                                    <a asp-controller="Order" asp-action="Cart" class="view-card">مشاهده سبد خرید</a>
+                                                    <a href="checkout.html" class="card-checkout">تسویه حساب</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
-                                @* <div class="header-cart-interest">
-                                <a href="#" class="d-block">
-                                <i class="fa fa-heart"></i>
-                                <span class="counter">۲</span>
-                                </a>
-                                </div> *@
+                                <div class="header-cart-interest">
+                                    <a href="#" class="d-block">
+                                        <i class="fa fa-heart"></i>
+                                        <span class="counter">۲</span>
+                                    </a>
+                                </div>
                             </li>
                         </ul>
                     </div>
