@@ -7,6 +7,7 @@ using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
 using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string 'sqlserver' not found.");

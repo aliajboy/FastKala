@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خوش آمدید</title>
+    <!-- font---------------------------------------->
+    <link rel="stylesheet" href="~/css/shop/materialdesignicons.css">
+    <!-- plugin-------------------------------------->
+    <link rel="stylesheet" href="~/css/shop/bootstrap.css">
+    <!-- main-style---------------------------------->
+    <link rel="stylesheet" href="~/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <section class="page-account-box">
+                    <div class="col-lg-6 col-md-6 col-xs-12 mx-auto">
+                        <div class="ds-userlogin">
+                            <a asp-controller="Home" asp-action="Index" class="account-box-logo">FastKala</a>
+                            <div class="account-box">
+                                <div class="Login-to-account mt-4">
+                                    <div class="account-box-content">
+                                        <h4 class="mb-2">به فست کالا خوش آمدید</h4>
+                                        <form action="#" class="form-account text-center">
+                                            <div class="user-account-welcome">
+                                                <img src="~/images/man.png">
+                                            </div>
+                                            <div class="made-account">
+                                                <h2>حساب کاربری شما در فست کالا ساخته شد</h2>
+                                                <p>
+                                                    اکنون می‌توانید به صفحه‌ای که در آن بودید بازگردید و یا با تکمیل اطلاعات حساب کاربری
+                                                    خود به کلیه امکانات و
+                                                    سرویس‌های فست کالا و سرویس‌های وابسته به آن دسترسی داشته باشید
+                                                </p>
+                                            </div>
+                                            <div class="form-row-account">
+                                                <button class="btn btn-primary btn-login">تکمیل حساب کاربری</button>
+                                                <button type="button" class="btn btn-secondary btn-login mt-0" onclick="redirect()">بازگشت</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+</body>
+<!-- file js---------------------------------------------------->
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/js/vendor/bootstrap.js"></script>
+<!-- plugin----------------------------------------------------->
+<script src="~/js/vendor/jquery.countdown.js"></script>
+<script src="~/js/vendor/ResizeSensor.min.js"></script>
+<script src="~/js/vendor/theia-sticky-sidebar.min.js"></script>
+<script src="~/js/vendor/wNumb.js"></script>
+<!-- main js---------------------------------------------------->
+<script src="~/js/main.js"></script>
+<script>
+    function redirect() {
+        document.location.href = '@ViewData["returnUrl"]';
+    }
+</script>
+</html>

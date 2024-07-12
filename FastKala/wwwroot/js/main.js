@@ -371,6 +371,8 @@ $(document).ready(function (e) {
                         title: 'حذف شد!',
                         confirmButtonText: 'باشه',
                         icon: 'success'
+                    }).then(function () {
+                        window.location.reload();
                     });
                 }
                 else {
@@ -381,7 +383,7 @@ $(document).ready(function (e) {
                     });
                 }
             }
-        })
+        });
     });
     // add-to-cart
     //$('.btn-add-to-cart').on('click', function (event) {

@@ -120,7 +120,7 @@ public class AccountController : Controller
                 else
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    return RedirectToAction("Welcome", "Account", new { returnUrl = returnUrl });
                 }
             }
             foreach (var error in result.Errors)
@@ -131,5 +131,31 @@ public class AccountController : Controller
 
         // If we got this far, something failed, redisplay form
         return View();
+    }
+
+    [Route("Welcome")]
+    [HttpGet]
+    public async Task<IActionResult> Welcome(string returnUrl = null)
+    {
+        returnUrl ??= Url.Content("~/");
+
+        ViewData["returnUrl"] = returnUrl;
+        return View();
+    }
+
+    [Route("Logout")]
+    [Authorize]
+    public async Task<IActionResult> Logout(string returnUrl = null)
+    {
+        await _signInManager.SignOutAsync();
+
+        if (returnUrl != null)
+        {
+            return LocalRedirect(returnUrl);
+        }
+        else
+        {
+            return LocalRedirect("/");
+        }
     }
 }

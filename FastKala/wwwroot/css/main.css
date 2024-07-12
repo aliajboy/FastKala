@@ -5363,7 +5363,7 @@ span.shipping-destination {
 }
 
 .middle-container .form-checkout .form-checkout-row label {
-    font-size: 12px;
+    font-size: 14px;
     color: #858585;
     width: 100%;
     margin-bottom: 10px;
@@ -5379,7 +5379,7 @@ span.shipping-destination {
     border: 1px solid #cfcfcf;
     padding: 0 10px;
     border-radius: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .middle-container .form-checkout .form-checkout-row .textarea-name-checkout {
@@ -5708,7 +5708,7 @@ span.shipping-destination {
     font-size: 20px;
     color: #757575;
     padding: 0 15px;
-    margin: 40px 0 15px;
+    margin: 0px 0 15px;
     display: block;
     float: right;
     width: 100%;

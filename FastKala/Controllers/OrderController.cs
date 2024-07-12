@@ -32,6 +32,12 @@ public class OrderController : Controller
         return View(cartItems);
     }
 
+    [Route("Checkout")]
+    public async Task<IActionResult> Checkout()
+    {
+        return View();
+    }
+
     [Route("ChangeCartValue")]
     [HttpPost]
     [Authorize]

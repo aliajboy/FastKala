@@ -254,7 +254,7 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" asp-area="Admin" asp-controller="Home" asp-action="Logout">
+                            <a class="dropdown-item d-flex align-items-center" asp-controller="Account" asp-action="Logout">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>خروج</span>
                             </a>
@@ -340,9 +340,61 @@
                             <i class="bi bi-circle"></i><span>سفارش ها</span>
                         </a>
                     </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Orders" asp-action="AddOrder" class="@Html.ActiveClass("Orders","AddOrder")">
+                            <i class="bi bi-circle"></i><span>ثبت سفارش جدید</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link @Html.ActiveClass("ShopSettings",null,"","collapsed")" data-bs-target="#shop-settings-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="ShopSettings" asp-action="Index">
+                    <i class="bi bi-cart-check"></i>
+                    <span>تنظیمات فروشگاه</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="shop-settings-nav" class="nav-content collapse @Html.ActiveClass("ShopSettings",null,"show","")" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="Admin" asp-controller="ShopSettings" asp-action="Index" class="@Html.ActiveClass("ShopSettings","Index")">
+                            <i class="bi bi-circle"></i><span>عمومی</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="ShopSettings" asp-action="Delivery" class="@Html.ActiveClass("ShopSettings","Delivery")">
+                            <i class="bi bi-circle"></i><span>ارسال</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="ShopSettings" asp-action="Payment" class="@Html.ActiveClass("ShopSettings","Payment")">
+                            <i class="bi bi-circle"></i><span>پرداخت</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @Html.ActiveClass("Settings",null,"","collapsed")" data-bs-target="#settings-nav" data-bs-toggle="collapse" asp-area="Admin" asp-controller="Settings" asp-action="Index">
+                    <i class="bi bi-gear"></i>
+                    <span>تنظیمات</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="settings-nav" class="nav-content collapse @Html.ActiveClass("Settings",null,"show","")" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Settings" asp-action="Index" class="@Html.ActiveClass("Settings","Index")">
+                            <i class="bi bi-circle"></i><span>عمومی</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Settings" asp-action="Users" class="@Html.ActiveClass("Settings","Users")">
+                            <i class="bi bi-circle"></i><span>کاربران</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Settings" asp-action="MainPage" class="@Html.ActiveClass("Settings","MainPage")">
+                            <i class="bi bi-circle"></i><span>صفحه اصلی</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
 
     </aside><!-- End Sidebar-->

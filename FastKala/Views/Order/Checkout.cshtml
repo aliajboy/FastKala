@@ -1,0 +1,239 @@
+﻿
+<div class="container-main">
+    <div class="d-block">
+        <section class="blog-checkout d-block order-1">
+            <div class="col-lg">
+                <div class="checkout woocommerce-checkout">
+                    <div class="content-checkout container">
+                        <div class="notices-wrapper">
+                            <div class="form-coupon-toggle">
+                                <div class="info">
+                                    کد تخفیف دارید؟
+                                    <a href="javascript:void(0)" class="showcoupon">برای نوشتن کد اینجا کلیک کنید</a>
+                                </div>
+                                <div class="checkout-coupon form-coupon">
+                                    <p>اگر کد تخفیف دارید، لطفا وارد کنید.</p>
+                                    <form method="post" class="form-coupon">
+                                        <div class="form-row">
+                                            <input type="text" name="coupon-code" class="checkout-discount-code"
+                                                   placeholder="کد تخفیف">
+                                            <div class="append pl">
+                                                <button class="btn-append btn btn-primary" type="button">
+                                                    اعمال
+                                                    تخفیف
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="middle-container">
+                            <form method="post" class="form-checkout">
+                                <div class="col2-set" id="customer-details">
+                                    <div class="billing-fields mt-4">
+                                        <h4>جزئیات صورتحساب</h4>
+                                        <div class="form-checkout-row row">
+                                            <div class="col-6">
+                                                <label for="name">
+                                                    نام <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="name">
+                                                    نام خانوادگی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="name">
+                                                    استان <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="name">
+                                                    شهر <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                            </div>
+                                            <div class="col-9">
+                                                <label for="Street">
+                                                    خیابان <abbr class="required" title="ضروری"
+                                                                 style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="post-code" class="input-name-checkout form-control">
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="post-code">
+                                                    کد پستی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="post-code" class="input-name-checkout form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="phone-number">
+                                                    شماره موبایل <abbr class="required" title="ضروری" style="color:red;">*</abbr>
+                                                </label>
+                                                <input type="text" id="phone-number" class="input-name-checkout form-control text-left">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="phone-number">
+                                                    ایمیل (اختیاری)
+                                                </label>
+                                                <input type="text" id="phone-number" class="input-name-checkout form-control text-left">
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label for="address">
+                                                    توضیحات سفارش
+                                                    <span class="optional">(اختیاری)</span>
+                                                </label>
+                                                <textarea rows="5" cols="30" id="address"
+                                                          class="textarea-name-checkout form-control"
+                                                          placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="order-review-heading">سفارش شما</h3>
+                                <div class="checkout-review-order">
+                                    <table class="checkout-review-order-table table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="product-name">محصول</th>
+                                                <th scope="col" class="product-quanity">تعداد</th>
+                                                <th scope="col" class="product-price">قیمت کل</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="checkout-cart-item">
+                                                <td class="product-name">تی شرت به رسم طرح دریم کچر کد 558</td>
+                                                <td class="product-name">1 عدد</td>
+                                                <td class="product-price text-info">
+                                                    <span class="amount">
+                                                        32,000
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="order-total">
+                                                <th>حمل ونقل</th>
+                                                <td class="product-name"></td>
+                                                <td>
+                                                    <span class="amount">
+                                                        32,000
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr class="cart-subtotal">
+                                                <th>مجموع</th>
+                                                <td class="product-name">1 عدد</td>
+                                                <td>
+                                                    <span class="amount">
+                                                        32,000
+                                                        <span>تومان</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <ul class="checkout-payment-methods">
+                                        <h6 class="pt-3 px-3">نحوه ارسال</h6>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method" id="payment-option-online"
+                                                       checked>
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">
+                                                    ارسال رایگان
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method"
+                                                       id="payment-option-online">
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">پست پیشتاز</div>
+                                            </label>
+                                        </li>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method"
+                                                       id="payment-option-online">
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">تیپاکس</div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <ul class="checkout-payment-methods">
+                                        <h6 class="pt-3 px-3">روش پرداخت</h6>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method" id="payment-option-online"
+                                                       checked>
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">
+                                                    افزایش اعتبار و پرداخت از کیف پول
+                                                </div>
+                                            </label>
+                                        </li>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method"
+                                                       id="payment-option-online">
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">پرداخت اینترنتی هوشمند</div>
+                                            </label>
+                                        </li>
+                                        <li class="checkout-payment-method-item d-block">
+                                            <label for="#" class="outline-radio">
+                                                <input type="radio" name="payment_method"
+                                                       id="payment-option-online">
+                                                <span class="outline-radio-check"></span>
+                                            </label>
+                                            <label for="#" class="shipping-totals-title-row">
+                                                <div class="shipping-totals-title">پرداخت هنگام دریافت</div>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                    <div class="form-auth-row">
+                                        <label for="#" class="ui-checkbox mt-1">
+                                            <input type="checkbox" value="1" name="login" id="remember">
+                                            <span class="ui-checkbox-check"></span>
+                                        </label>
+                                        <label for="remember" class="remember-me mr-0">
+                                            <a href="#">حریم خصوصی</a> و
+                                            <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را
+                                            مطالعه نموده و با کلیه موارد آن موافقم <abbr class="required"
+                                                                                         title="ضروری" style="color:red;">*</abbr>
+                                        </label>
+                                    </div>
+                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit">
+                                        ثبت
+                                        سفارش
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
