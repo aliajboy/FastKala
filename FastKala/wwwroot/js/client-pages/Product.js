@@ -54,11 +54,11 @@ async function addToCart(productId, quantity) {
                                     <ul class="product-list-widget">
                                             <li class="mini-cart-item" id="product-${productId}">
                                                 <div class="mini-cart-item-content">
-                                                    <a href="#" class="minicartitemclose">
+                                                    <a href="#" class="mini-cart-item-close">
                                                         <i class="mdi mdi-close"></i>
                                                     </a>
                                                     <a href="/Product/${productId}" class="mini-cart-item-image d-block">
-                                                        <img src="/images/menu-main/img-card.jpg">
+                                                        <img src="${$('#img-product-zoom').attr('src')}">
                                                     </a>
                                                     <span class="product-name-card">
                                                         ${$('.product-title').html().toString()}
@@ -107,7 +107,7 @@ async function addToCart(productId, quantity) {
                         <i class="mdi mdi-close"></i>
                     </a>
                     <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId" class="mini-cart-item-image d-block">
-                        <img src="/images/menu-main/img-card.jpg">
+                        <img src="${$('#img-product-zoom').attr('src')}">
                     </a>
                     <span class="product-name-card">
                         ${$('.product-title').html().toString()}

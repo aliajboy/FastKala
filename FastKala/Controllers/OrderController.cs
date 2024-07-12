@@ -32,6 +32,20 @@ public class OrderController : Controller
         return View(cartItems);
     }
 
+    [Route("ChangeCartValue")]
+    [HttpPost]
+    [Authorize]
+    public async Task<OperationResult> ChangeCartValue(int quantity, int productId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user != null)
+        {
+            return await _orderService.ChangeCartValue(productId, quantity, user.Id);
+        }
+
+        return new OperationResult() { OperationStatus = OperationStatus.Fail};
+    }
+
     [HttpPost]
     [Authorize]
     [Route("AddToCard")]
@@ -45,5 +59,19 @@ public class OrderController : Controller
         }
 
         return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = "AddToCart Controller Error" };
+    }
+
+    [Route("RemoveCartItem")]
+    [HttpPost]
+    [Authorize]
+    public async Task<OperationResult> RemoveCartItem(int productId)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user != null)
+        {
+            return await _orderService.RemoveCartItem(productId, user.Id);
+        }
+
+        return new OperationResult() { OperationStatus = OperationStatus.Fail };
     }
 }

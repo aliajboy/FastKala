@@ -1,6 +1,8 @@
-﻿@using FastKala.Application.ViewModels.Orders
+﻿@using FastKala.Application.Interfaces.Global
+@using FastKala.Application.ViewModels.Orders
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<FastKalaUser> SignInManager
+@inject IUploadService uploadService
 @model List<CartItemsViewModel>
 
 @if (Model.Count < 1)
@@ -65,14 +67,14 @@ else
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                <tr>
+                                                <tr id="cartitem-@item.ProductId">
                                                     <th scope="row" class="product-cart-name">
                                                         <div class="product-thumbnail-img">
-                                                            <a href="#">
-                                                                <img src="~/images/slider-product/zenbook.jpg">
+                                                            <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId">
+                                                                <img src="@uploadService.GetImageUrl(ImageType.ProductImages,item.ProductImage)">
                                                             </a>
                                                             <div class="product-remove">
-                                                                <a href="#" class="remove">
+                                                                <a href="javascript:void(0)" class="remove" onclick="removeCartItem(@item.ProductId)">
                                                                     <i class="mdi mdi-close"></i>
                                                                 </a>
                                                             </div>
@@ -94,23 +96,23 @@ else
                                                         </div>
                                                     </th>
                                                     <td class="product-cart-price">
-                                                        <span class="amount">
+                                                        <span class="amount" id="product-price-@item.ProductId">
                                                             @item.Price.ToString("N0")
-                                                            <span>تومان</span>
                                                         </span>
+                                                        <span>تومان</span>
                                                     </td>
                                                     <td class="product-cart-quantity">
                                                         <div class="required-number before">
                                                             <div class="quantity">
-                                                                <input type="number" min="1" max="100" step="1" value="@item.Quantity">
+                                                                <input type="number" min="1" step="1" value="@item.Quantity" onkeyup="changeProductQuantity(this,@item.ProductId)" onchange="changeProductQuantity(this,@item.ProductId)">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="product-cart-Total">
-                                                        <span class="amount">
+                                                        <span class="amount" id="total-amount-@item.ProductId">
                                                             @item.TotalPrice.ToString("N0")
-                                                            <span>تومان</span>
                                                         </span>
+                                                        <span>تومان</span>
                                                     </td>
                                                 </tr>
                                             }
@@ -124,7 +126,7 @@ else
                                             <ul class="checkout-summary-summary">
                                                 <li class="cart-subtotal">
                                                     <span class="amount">قیمت کل</span>
-                                                    <span> @Model.Sum(x => x.TotalPrice) تومان</span>
+                                                    <span id="total-without-shipping"> @Model.Sum(x => x.TotalPrice).ToString("N0") تومان</span>
                                                 </li>
                                                 <li class="shipping-totals">
                                                     <span class="amount">حمل و نقل</span>
@@ -162,7 +164,7 @@ else
                                                 </li>
                                                 <li class="order-total">
                                                     <span class="amount"> مجموع</span>
-                                                    <span> @Model.Sum(x => x.TotalPrice) تومان</span>
+                                                    <span> @Model.Sum(x => x.TotalPrice).ToString("N0") تومان</span>
                                                 </li>
                                                 <li class="discount-code">
                                                     <div class=" align-items-center">
@@ -200,4 +202,8 @@ else
             </div>
         </div>
     </div>
+}
+
+@section Scripts {
+    <script src="~/js/client-pages/cart.js" asp-append-version="true"></script>
 }

@@ -358,13 +358,28 @@ $(document).ready(function (e) {
             cancelButtonColor: '#d33',
             confirmButtonText: 'بله',
             cancelButtonText: 'خیر'
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'حذف شد!',
-                    confirmButtonText: 'باشه',
-                    icon: 'success'
-                })
+                const res = await $.ajax({
+                    url: '/RemoveCartItem',
+                    method: 'POST',
+                    data: { productId: $('.mini-cart-item-close').attr('productId') }
+                });
+
+                if (res.operationStatus === 0) {
+                    Swal.fire({
+                        title: 'حذف شد!',
+                        confirmButtonText: 'باشه',
+                        icon: 'success'
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: 'خطا در حذف آیتم!',
+                        confirmButtonText: 'باشه',
+                        icon: 'error'
+                    });
+                }
             }
         })
     });

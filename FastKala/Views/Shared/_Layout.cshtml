@@ -1,8 +1,10 @@
-﻿@using FastKala.Application.Interfaces.Order
+﻿@using FastKala.Application.Interfaces.Global
+@using FastKala.Application.Interfaces.Order
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<FastKalaUser> SignInManager
 @inject UserManager<FastKalaUser> UserManager
 @inject IOrderService orderService
+@inject IUploadService uploadService
 @{
     var user = await UserManager.GetUserAsync(User);
     var cartItems = await orderService.GetCartItems(user?.Id);
@@ -835,11 +837,11 @@
                                                                 {
                                                                     <li class="mini-cart-item" id="product-@item.ProductId">
                                                                         <div class="mini-cart-item-content">
-                                                                            <a href="#" class="mini-cart-item-close">
+                                                                            <a href="javascript:void(0)" class="mini-cart-item-close" productId="@item.ProductId">
                                                                                 <i class="mdi mdi-close"></i>
                                                                             </a>
                                                                             <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId" class="mini-cart-item-image d-block">
-                                                                                <img src="~/images/menu-main/img-card.jpg">
+                                                                                <img src="@uploadService.GetImageUrl(ImageType.ProductImages,item.ProductImage)">
                                                                             </a>
                                                                             <a asp-controller="Products" asp-action="Product" asp-route-id="@item.ProductId">
                                                                                 <span class="product-name-card">
