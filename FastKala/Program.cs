@@ -7,7 +7,6 @@ using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
 using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string 'sqlserver' not found.");
@@ -43,6 +42,7 @@ builder.Services.AddTransient<IOrderService, OrderService>();
 
 // Features
 builder.Services.AddControllersWithViews();
+builder.Services.AddWebOptimizer();
 builder.Services.AddResponseCompression();
 //builder.Services.AddResponseCaching();
 
@@ -56,9 +56,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseResponseCompression();
+app.UseWebOptimizer();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+app.UseResponseCompression();
 
 app.UseRouting();
 
