@@ -34,7 +34,7 @@
                                 <form method="post">
                                     <a class="product-name" asp-area="Admin" asp-action="EditProduct" asp-controller="Products" asp-route-id="@item.Id">ویرایش</a> |
                                     <button type="submit" class="btn btn-link p-0 text-decoration-none product-name remove-product" asp-area="Admin" asp-controller="Products" asp-action="RemoveProduct" asp-route-id="@item.Id">حذف</button> |
-                                    <a class="product-name link-success" asp-page="/Products/Product" asp-route-id="@item.Id">نمایش محصول</a>
+                                    <a class="product-name link-success" asp-controller="Products" asp-action="Product" asp-route-id="@item.Id">نمایش محصول</a>
                                 </form>
                             </div>
                         </td>

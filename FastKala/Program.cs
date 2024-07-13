@@ -32,9 +32,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 // Add services to the container.
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 // Services
 builder.Services.AddTransient<IUploadService, UploadService>();
 builder.Services.AddTransient<IProductService, ProductService>();
