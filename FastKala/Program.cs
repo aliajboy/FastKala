@@ -9,6 +9,7 @@ using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var connectionString = builder.Configuration.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Connection string 'sqlserver' not found.");
 
 builder.Services.AddDbContext<FastKalaContext>(options => options.UseSqlServer(connectionString));
@@ -53,6 +54,11 @@ if (!app.Environment.IsDevelopment())
 
     app.UseHsts();
 }
+app.Use((context, next) =>
+{
+    context.Response.Headers.AltSvc = "h3=\":443\"";
+    return next(context);
+});
 
 app.UseWebOptimizer();
 
