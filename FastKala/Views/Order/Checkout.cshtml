@@ -1,4 +1,10 @@
-﻿
+﻿@using FastKala.Application.ViewModels.Orders
+@using FastKala.Domain.Enums.Orders
+@model CheckoutViewModel
+@{
+    bool first = true;
+}
+
 <div class="container-main">
     <div class="d-block">
         <section class="blog-checkout d-block order-1">
@@ -15,12 +21,10 @@
                                     <p>اگر کد تخفیف دارید، لطفا وارد کنید.</p>
                                     <form method="post" class="form-coupon">
                                         <div class="form-row">
-                                            <input type="text" name="coupon-code" class="checkout-discount-code"
-                                                   placeholder="کد تخفیف">
+                                            <input type="text" name="coupon-code" class="checkout-discount-code" placeholder="کد تخفیف">
                                             <div class="append pl">
                                                 <button class="btn-append btn btn-primary" type="button">
-                                                    اعمال
-                                                    تخفیف
+                                                    اعمال تخفیف
                                                 </button>
                                             </div>
                                         </div>
@@ -31,202 +35,180 @@
                         <div class="middle-container">
                             <form method="post" class="form-checkout">
                                 <div class="col2-set" id="customer-details">
-                                    <div class="billing-fields mt-4">
-                                        <h4>جزئیات صورتحساب</h4>
+                                    <div class="billing-fields">
+                                        <h4 class="pr-0">جزئیات صورتحساب</h4>
                                         <div class="form-checkout-row row">
                                             <div class="col-6">
-                                                <label for="name">
+                                                <label asp-for="Name">
                                                     نام <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Name" class="input-name-checkout form-control">
                                             </div>
                                             <div class="col-6">
-                                                <label for="name">
+                                                <label asp-for="Family">
                                                     نام خانوادگی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Family" class="input-name-checkout form-control">
                                             </div>
                                             <div class="col-6">
-                                                <label for="name">
+                                                <label asp-for="Town">
                                                     استان <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Town" class="input-name-checkout form-control">
                                             </div>
                                             <div class="col-6">
-                                                <label for="name">
+                                                <label asp-for="City">
                                                     شهر <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="name" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="City" class="input-name-checkout form-control">
                                             </div>
                                             <div class="col-9">
-                                                <label for="Street">
+                                                <label asp-for="Address">
                                                     خیابان <abbr class="required" title="ضروری"
                                                                  style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="post-code" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Address" class="input-name-checkout form-control">
                                             </div>
                                             <div class="col-3">
-                                                <label for="post-code">
+                                                <label asp-for="PostalCode">
                                                     کد پستی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="post-code" class="input-name-checkout form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
+                                                <input type="text" asp-for="PostalCode" class="input-name-checkout form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
                                             </div>
                                             <div class="col-6">
-                                                <label for="phone-number">
+                                                <label asp-for="Phone">
                                                     شماره موبایل <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" id="phone-number" class="input-name-checkout form-control text-left">
+                                                <input type="text" asp-for="Phone" class="input-name-checkout form-control text-left">
                                             </div>
                                             <div class="col-6">
-                                                <label for="phone-number">
+                                                <label asp-for="Email">
                                                     ایمیل (اختیاری)
                                                 </label>
-                                                <input type="text" id="phone-number" class="input-name-checkout form-control text-left">
+                                                <input type="text" asp-for="Email" class="input-name-checkout form-control text-left">
                                             </div>
 
                                             <div class="col-12">
-                                                <label for="address">
+                                                <label asp-for="Description">
                                                     توضیحات سفارش
                                                     <span class="optional">(اختیاری)</span>
                                                 </label>
-                                                <textarea rows="5" cols="30" id="address"
+                                                <textarea rows="5" cols="30" asp-for="Description"
                                                           class="textarea-name-checkout form-control"
                                                           placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                                <h3 class="order-review-heading">سفارش شما</h3>
                                 <div class="checkout-review-order">
-                                    <table class="checkout-review-order-table table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="product-name">محصول</th>
-                                                <th scope="col" class="product-quanity">تعداد</th>
-                                                <th scope="col" class="product-price">قیمت کل</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="checkout-cart-item">
-                                                <td class="product-name">تی شرت به رسم طرح دریم کچر کد 558</td>
-                                                <td class="product-name">1 عدد</td>
-                                                <td class="product-price text-info">
-                                                    <span class="amount">
-                                                        32,000
+                                    <div class="bg-light mb-3 p-3" style="border-radius:20px;">
+                                        <table class="checkout-review-order-table table table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="product-name">مجموع کل سفارش</td>
+                                                    <td class="product-price">
+                                                        <span class="amount">
+                                                            @Model.TotalPrice.ToString("N0")
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>حمل ونقل</th>
+                                                    <td class="product-price">
+                                                        <span class="amount">
+                                                            30,000
+                                                            <span>تومان</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="checkout-cart-item">
+                                                    <th>مجموع قابل پرداخت</th>
+                                                    <td class="product-price text-info">
+                                                        <span class="amount" id="total-amount">
+                                                            @((Model.TotalPrice + 30000).ToString("N0"))
+                                                            <input asp-for="TotalPrice" type="hidden" value="@Model.TotalPrice" readonly />
+                                                        </span>
                                                         <span>تومان</span>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr class="order-total">
-                                                <th>حمل ونقل</th>
-                                                <td class="product-name"></td>
-                                                <td>
-                                                    <span class="amount">
-                                                        32,000
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr class="cart-subtotal">
-                                                <th>مجموع</th>
-                                                <td class="product-name">1 عدد</td>
-                                                <td>
-                                                    <span class="amount">
-                                                        32,000
-                                                        <span>تومان</span>
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                    <ul class="checkout-payment-methods">
-                                        <h6 class="pt-3 px-3">نحوه ارسال</h6>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method" id="payment-option-online"
-                                                       checked>
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">
-                                                    ارسال رایگان
-                                                </div>
-                                            </label>
-                                        </li>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method"
-                                                       id="payment-option-online">
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">پست پیشتاز</div>
-                                            </label>
-                                        </li>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method"
-                                                       id="payment-option-online">
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">تیپاکس</div>
-                                            </label>
-                                        </li>
-                                    </ul>
-                                    <ul class="checkout-payment-methods">
-                                        <h6 class="pt-3 px-3">روش پرداخت</h6>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method" id="payment-option-online"
-                                                       checked>
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">
-                                                    افزایش اعتبار و پرداخت از کیف پول
-                                                </div>
-                                            </label>
-                                        </li>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method"
-                                                       id="payment-option-online">
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">پرداخت اینترنتی هوشمند</div>
-                                            </label>
-                                        </li>
-                                        <li class="checkout-payment-method-item d-block">
-                                            <label for="#" class="outline-radio">
-                                                <input type="radio" name="payment_method"
-                                                       id="payment-option-online">
-                                                <span class="outline-radio-check"></span>
-                                            </label>
-                                            <label for="#" class="shipping-totals-title-row">
-                                                <div class="shipping-totals-title">پرداخت هنگام دریافت</div>
-                                            </label>
-                                        </li>
-                                    </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="row px-0">
+                                        <div class="col-md-6 pl-md-1">
+                                            <ul class="checkout-payment-methods">
+                                                <h6 class="pt-3 px-3">نحوه ارسال</h6>
+                                                @foreach (ShippingMethods shipping in System.Enum.GetValues(typeof(ShippingMethods)))
+                                                {
+                                                    <li class="checkout-payment-method-item d-block">
+                                                        <label for="@shipping.ToString()" class="outline-radio">
+                                                            @if (first)
+                                                            {
+                                                                <input type="radio" asp-for="ShippingMethod" id="@shipping.ToString()" value="@((int)shipping)" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" asp-for="ShippingMethod" id="@shipping.ToString()" value="@((int)shipping)">
+                                                            }
+                                                            <span class="outline-radio-check"></span>
+                                                        </label>
+                                                        <label for="@shipping.ToString()" class="shipping-totals-title-row">
+                                                            <div class="shipping-totals-title">
+                                                                @shipping.ToDisplay()
+                                                            </div>
+                                                        </label>
+                                                    </li>
+                                                    first = false;
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6 pr-md-1">
+                                            <ul class="checkout-payment-methods">
+                                                <h6 class="pt-3 px-3">روش پرداخت</h6>
+                                                @{
+                                                    first = true;
+                                                }
+                                                @foreach (PaymentMethods payment in System.Enum.GetValues(typeof(PaymentMethods)))
+                                                {
+                                                    <li class="checkout-payment-method-item d-block">
+                                                        <label for="@payment.ToString()" class="outline-radio">
+                                                            @if (first)
+                                                            {
+                                                                <input type="radio" asp-for="PaymentMethod" id="@payment.ToString()" value="@((int)payment)" checked>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" asp-for="PaymentMethod" id="@payment.ToString()" value="@((int)payment)">
+                                                            }
+                                                            <span class="outline-radio-check"></span>
+                                                        </label>
+                                                        <label for="@payment.ToString()" class="shipping-totals-title-row">
+                                                            <div class="shipping-totals-title">
+                                                                @payment.ToDisplay()
+                                                            </div>
+                                                        </label>
+                                                    </li>
+                                                    first = false;
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div class="form-auth-row">
-                                        <label for="#" class="ui-checkbox mt-1">
-                                            <input type="checkbox" value="1" name="login" id="remember">
+                                        <label asp-for="AcceptTerms" class="ui-checkbox mt-1">
+                                            <input asp-for="AcceptTerms" type="checkbox" onchange="acceptTerms()">
                                             <span class="ui-checkbox-check"></span>
                                         </label>
-                                        <label for="remember" class="remember-me mr-0">
-                                            <a href="#">حریم خصوصی</a> و
-                                            <a href="#">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را
-                                            مطالعه نموده و با کلیه موارد آن موافقم <abbr class="required"
-                                                                                         title="ضروری" style="color:red;">*</abbr>
+                                        <label asp-for="AcceptTerms" class="remember-me mr-0">
+                                            <a asp-controller="Home" asp-action="Privacy">حریم خصوصی</a> و
+                                            <a asp-controller="Home" asp-action="Terms">شرایط قوانین </a>استفاده از سرویس های سایت دیجی‌اسمارت را
+                                            مطالعه نموده و با کلیه موارد آن موافقم <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                         </label>
                                     </div>
-                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit">
-                                        ثبت
-                                        سفارش
+                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit" disabled>
+                                        ثبت سفارش
                                     </button>
                                 </div>
                             </form>
@@ -237,3 +219,7 @@
         </section>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/client-pages/checkout.js"></script>
+}

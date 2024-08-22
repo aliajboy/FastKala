@@ -8,11 +8,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastKala.Controllers;
+
+[Authorize]
 public class OrderController : Controller
 {
     private readonly UserManager<FastKalaUser> _userManager;
     private readonly SignInManager<FastKalaUser> _signinManager;
     private readonly IOrderService _orderService;
+
     public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService)
     {
         _userManager = userManager;
@@ -24,23 +27,34 @@ public class OrderController : Controller
     public async Task<IActionResult> Cart()
     {
         List<CartItemsViewModel> cartItems = new List<CartItemsViewModel>();
-        if (_signinManager.IsSignedIn(User))
-        {
-            var user = await _userManager.GetUserAsync(User);
-            cartItems = await _orderService.GetCartItems(user?.Id);
-        }
+
+        string? user = _userManager.GetUserId(User);
+        cartItems = await _orderService.GetCartItems(user ?? "");
+
         return View(cartItems);
     }
 
     [Route("Checkout")]
     public async Task<IActionResult> Checkout()
     {
-        return View();
+        string? user = _userManager.GetUserId(User);
+        long totalPrice = 0;
+        if (user != null)
+        {
+            totalPrice = await _orderService.GetTotalOrderPrice(user);
+        }
+        return View(new CheckoutViewModel() { TotalPrice = totalPrice});
+    }
+
+    [Route("Checkout")]
+    [HttpPost]
+    public async Task<IActionResult> Checkout(CheckoutViewModel checkout)
+    {
+        return View(checkout);
     }
 
     [Route("ChangeCartValue")]
     [HttpPost]
-    [Authorize]
     public async Task<OperationResult> ChangeCartValue(int quantity, int productId)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -49,11 +63,10 @@ public class OrderController : Controller
             return await _orderService.ChangeCartValue(productId, quantity, user.Id);
         }
 
-        return new OperationResult() { OperationStatus = OperationStatus.Fail};
+        return new OperationResult() { OperationStatus = OperationStatus.Fail };
     }
 
     [HttpPost]
-    [Authorize]
     [Route("AddToCard")]
     public async Task<OperationResult> AddToCard(int productId, int quantity)
     {
@@ -69,7 +82,6 @@ public class OrderController : Controller
 
     [Route("RemoveCartItem")]
     [HttpPost]
-    [Authorize]
     public async Task<OperationResult> RemoveCartItem(int productId)
     {
         var user = await _userManager.GetUserAsync(User);

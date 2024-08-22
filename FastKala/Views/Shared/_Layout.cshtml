@@ -876,7 +876,7 @@
                                                 </div>
                                                 <div class="mini-card-button">
                                                     <a asp-controller="Order" asp-action="Cart" class="view-card">مشاهده سبد خرید</a>
-                                                    <a href="checkout.html" class="card-checkout">تسویه حساب</a>
+                                                    <a asp-controller="Order" asp-action="Checkout" class="card-checkout">تسویه حساب</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1412,7 +1412,7 @@
     <script src="~/js/vendor/jquery.ez-plus.js"></script>
     <script src="~/js/vendor/sweetalert2.all.min.js"></script>
     <!-- main js---------------------------------------------------->
-    <script src="~/js/main-admin.js"></script>
+    <script src="~/js/main.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

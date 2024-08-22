@@ -117,4 +117,19 @@ public class OrderService : IOrderService
             return new OperationResult() { OperationStatus = OperationStatus.Fail, Message = ex.StackTrace };
         }
     }
+
+    public async Task<long> GetTotalOrderPrice(string userId)
+    {
+        try
+        {
+            using (SqlConnection connection = _context.CreateConnection())
+            {
+                return await connection.ExecuteScalarAsync<long>("select (Price * c.Quantity) from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
+            }
+        }
+        catch
+        {
+            return 0;
+        }
+    }
 }
