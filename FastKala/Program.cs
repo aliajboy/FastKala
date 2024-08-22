@@ -43,7 +43,6 @@ builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddWebOptimizer();
 builder.Services.AddResponseCompression();
-//builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -71,8 +70,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.UseResponseCaching();
 
 app.MapAreaControllerRoute(
     name: "adminArea",
