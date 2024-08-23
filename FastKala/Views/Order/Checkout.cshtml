@@ -5,7 +5,7 @@
 @inject IOrderService orderService
 @model CheckoutViewModel
 @{
-    List<Shipping> shippings = await orderService.GetShippingTypes();
+    List<Shippings> shippings = await orderService.GetShippingTypes();
     bool first = true;
 }
 

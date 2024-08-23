@@ -13,7 +13,7 @@ public interface IOrderService
     public Task<OperationResult> RemoveCartItem(int productId, string userId);
     public Task<OperationResult> RemoveAllCartItems(string userId);
     public Task<long> GetTotalOrderPrice(string userId);
-    public Task<OperationResult> SubmitOrder(CheckoutViewModel checkout);
-    public Task<List<Shipping>> GetShippingTypes();
+    public Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId);
+    public Task<List<Shippings>> GetShippingTypes();
     public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice);
 }

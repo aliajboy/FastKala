@@ -9,6 +9,8 @@ using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Text.Json;
 
@@ -136,33 +138,72 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OperationResult> SubmitOrder(CheckoutViewModel checkout)
+    public async Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId)
     {
         try
         {
             using SqlConnection connection = _context.CreateConnection();
             await connection.OpenAsync();
 
+            var cartItems = await GetCartItems(userId);
+
+            var order = new
+            {
+                status = ,
+                datetimepaid = ,
+                datetimecompleted = ,
+                customerid = ,
+                name = ,
+                family = ,
+                town = ,
+                city = ,
+                address = ,
+                email = ,
+                phone = ,
+                description = ,
+                paymentmethod = ,
+                transactionid = ,
+                cartnumber = ,
+                totalprice = ,
+                totaltax = ,
+                totalshipping = ,
+                shippingtypeid =
+            };
+
+            // Make New Order
+            await connection.ExecuteAsync("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId) VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address ,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid)", order);
+
+            await connection.ExecuteAsync("INSERT INTO dbo.OrderItems (ProductId,Quantity,Fee,OrderId) VALUES (@productid,@quantity,@fee,@orderid)", new
+            {
+                productid = ,
+                quantity = ,
+                fee = ,
+                orderid = 
+            });
+
+            await connection.ExecuteAsync("DELETE from Cart where CustomerId = @customerid");
+            await connection.CloseAsync();
+
+            return new OperationResult() { OperationStatus = OperationStatus.Success };
         }
         catch
         {
-
+            return new OperationResult() { OperationStatus = OperationStatus.Exception };
         }
-        return new OperationResult();
     }
 
-    public async Task<List<Shipping>> GetShippingTypes()
+    public async Task<List<Shippings>> GetShippingTypes()
     {
         try
         {
             using SqlConnection connection = _context.CreateConnection();
-            var shippings = await connection.QueryAsync<Shipping>("select * from Shipping");
+            var shippings = await connection.QueryAsync<Shippings>("select * from Shippings");
             return shippings.ToList();
 
         }
         catch
         {
-            return new List<Shipping>();
+            return new List<Shippings>();
         }
     }
 
@@ -172,7 +213,7 @@ public class OrderService : IOrderService
         {
             using SqlConnection connection = _context.CreateConnection();
             // Get Shipping Data From Database
-            Shipping shippingData = await connection.QuerySingleAsync<Shipping>("SELECT * FROM Shipping Where Type = @type", new
+            Shippings shippingData = await connection.QuerySingleAsync<Shippings>("SELECT * FROM Shippings Where Type = @type", new
             {
                 type = (byte)shipping
             });
