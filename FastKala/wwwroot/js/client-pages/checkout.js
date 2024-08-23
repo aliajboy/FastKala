@@ -1,4 +1,6 @@
-﻿function acceptTerms() {
+﻿$(function () { acceptTerms() });
+
+function acceptTerms() {
     if ($('#AcceptTerms').is(":checked")) {
         $('.btn-Order').attr("disabled", false);
     }
@@ -6,6 +8,8 @@
         $('.btn-Order').attr("disabled", true);
     }
 }
+
+$('input[type=checkbox][id=AcceptTerms]').on('change', acceptTerms);
 
 $('input[type=radio][name=ShippingMethod]').on('change', async function () {
     const res = await $.ajax({

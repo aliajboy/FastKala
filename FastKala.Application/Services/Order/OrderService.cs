@@ -9,10 +9,9 @@ using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Numerics;
 using System.Text;
 using System.Text.Json;
+using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Order;
 public class OrderService : IOrderService
@@ -138,72 +137,78 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId)
+    public async Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId, long shippingPrice)
     {
         try
         {
             using SqlConnection connection = _context.CreateConnection();
             await connection.OpenAsync();
 
-            var cartItems = await GetCartItems(userId);
-
             var order = new
             {
-                status = ,
-                datetimepaid = ,
-                datetimecompleted = ,
-                customerid = ,
-                name = ,
-                family = ,
-                town = ,
-                city = ,
-                address = ,
-                email = ,
-                phone = ,
-                description = ,
-                paymentmethod = ,
-                transactionid = ,
-                cartnumber = ,
-                totalprice = ,
-                totaltax = ,
-                totalshipping = ,
-                shippingtypeid =
+                status = OrderStatus.Waiting,
+                datetimepaid = (DateTime?)null,
+                datetimecompleted = (DateTime?)null,
+                customerid = userId,
+                name = checkout.Name,
+                family = checkout.Family,
+                town = checkout.Town,
+                city = checkout.City,
+                address = checkout.Address,
+                email = checkout.Email,
+                phone = checkout.Phone,
+                description = checkout.Description,
+                paymentmethod = checkout.PaymentMethod,
+                transactionid = (string?)null,
+                cartnumber = (string?)null,
+                totalprice = checkout.TotalPrice,
+                totaltax = 0,
+                totalshipping = shippingPrice,
+                shippingtypeid = (byte)checkout.ShippingMethod,
+                authority = checkout.Authority
             };
 
             // Make New Order
-            await connection.ExecuteAsync("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId) VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address ,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid)", order);
+            int orderId = await connection.ExecuteScalarAsync<int>("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId,Authority) OUTPUT Inserted.Id VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address ,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid,@authority)", order);
 
-            await connection.ExecuteAsync("INSERT INTO dbo.OrderItems (ProductId,Quantity,Fee,OrderId) VALUES (@productid,@quantity,@fee,@orderid)", new
+            List<OrderItem> orderItems = new List<OrderItem>();
+            var cartItems = await connection.QueryAsync("select p.Id as ProductId, Name as ProductName, Price, c.Quantity, p.MainImage as ProductImage from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
+            foreach (var item in cartItems)
             {
-                productid = ,
-                quantity = ,
-                fee = ,
-                orderid = 
-            });
+                orderItems.Add(new OrderItem()
+                {
+                    ProductId = item.ProductId,
+                    Fee = item.Price,
+                    Quantity = item.Quantity,
+                    OrderId = orderId
+                });
+            }
 
-            await connection.ExecuteAsync("DELETE from Cart where CustomerId = @customerid");
+            await connection.BulkInsertAsync<OrderItem>(orderItems);
+
+            await connection.ExecuteAsync("DELETE from Cart where CustomerId = @customerid", new { customerid = userId });
             await connection.CloseAsync();
 
-            return new OperationResult() { OperationStatus = OperationStatus.Success };
+            return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "عملیات با موفقیت انجام شد" };
         }
         catch
         {
-            return new OperationResult() { OperationStatus = OperationStatus.Exception };
+            return new OperationResult() { OperationStatus = OperationStatus.Exception, Message = "خطا سرویس ثبت سفارش" };
         }
     }
 
-    public async Task<List<Shippings>> GetShippingTypes()
+    public async Task<List<ShippingSettings>> GetShippingTypes()
     {
         try
         {
             using SqlConnection connection = _context.CreateConnection();
-            var shippings = await connection.QueryAsync<Shippings>("select * from Shippings");
+            var shippings = await connection.QueryAsync<ShippingSettings>("select * from ShippingSettings");
             return shippings.ToList();
 
         }
         catch
         {
-            return new List<Shippings>();
+            return new List<ShippingSettings>();
         }
     }
 
@@ -213,7 +218,7 @@ public class OrderService : IOrderService
         {
             using SqlConnection connection = _context.CreateConnection();
             // Get Shipping Data From Database
-            Shippings shippingData = await connection.QuerySingleAsync<Shippings>("SELECT * FROM Shippings Where Type = @type", new
+            ShippingSettings shippingData = await connection.QuerySingleAsync<ShippingSettings>("SELECT * FROM ShippingSettings Where Type = @type", new
             {
                 type = (byte)shipping
             });

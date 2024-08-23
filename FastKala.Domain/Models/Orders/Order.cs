@@ -26,4 +26,5 @@ public record Orders
     public long TotalTax { get; set; } = 0;
     public long TotalShipping { get; set; } = 0;
     public int ShippingTypeId { get; set; }
+    public string? Authority { get; set; }
 }

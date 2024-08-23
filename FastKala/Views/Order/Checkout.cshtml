@@ -5,7 +5,7 @@
 @inject IOrderService orderService
 @model CheckoutViewModel
 @{
-    List<Shippings> shippings = await orderService.GetShippingTypes();
+    List<ShippingSettings> shippings = await orderService.GetShippingTypes();
     bool first = true;
 }
 
@@ -201,7 +201,7 @@
                                     </div>
                                     <div class="form-auth-row">
                                         <label asp-for="AcceptTerms" class="ui-checkbox mt-1">
-                                            <input asp-for="AcceptTerms" type="checkbox" onchange="acceptTerms()">
+                                            <input asp-for="AcceptTerms" type="checkbox">
                                             <span class="ui-checkbox-check"></span>
                                         </label>
                                         <label asp-for="AcceptTerms" class="remember-me mr-0">
@@ -210,7 +210,7 @@
                                             مطالعه نموده و با کلیه موارد آن موافقم <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                         </label>
                                     </div>
-                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit" disabled>
+                                    <button class="btn-Order btn btn-primary mt-4 mb-3" type="submit">
                                         ثبت سفارش
                                     </button>
                                 </div>

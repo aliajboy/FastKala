@@ -2,7 +2,7 @@
 
 namespace FastKala.Domain.Models.Orders;
 
-public record Shippings
+public record ShippingSettings
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -11,10 +11,11 @@ public class CheckoutViewModel
     public string Address { get; set; }
     public string PostalCode { get; set; }
     public string Phone { get; set; }
-    public string Email { get; set; }
-    public string Description { get; set; }
+    public string? Email { get; set; }
+    public string? Description { get; set; }
     public ShippingMethods ShippingMethod { get; set; }
     public PaymentMethods PaymentMethod { get; set; }
     public long TotalPrice { get; set; }
     public bool AcceptTerms { get; set; }
+    public string? Authority { get; set; }
 }

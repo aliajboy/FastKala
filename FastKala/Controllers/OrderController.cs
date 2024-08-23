@@ -1,4 +1,5 @@
 ﻿using FastKala.Application.Data;
+using FastKala.Application.Interfaces.OnlinePayment;
 using FastKala.Application.Interfaces.Order;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
@@ -16,12 +17,14 @@ public class OrderController : Controller
     private readonly UserManager<FastKalaUser> _userManager;
     private readonly SignInManager<FastKalaUser> _signinManager;
     private readonly IOrderService _orderService;
+    private readonly IZarinPalService _zarinpalService;
 
-    public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService)
+    public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService, IZarinPalService zarinPalService)
     {
         _userManager = userManager;
         _signinManager = signInManager;
         _orderService = orderService;
+        _zarinpalService = zarinPalService;
     }
 
     [Route("Cart")]
@@ -70,7 +73,18 @@ public class OrderController : Controller
             return View(checkout);
         }
 
-        return RedirectToAction("Index","Home");
+        var result = await _zarinpalService.RequestPayment(checkout.TotalPrice, "خرید آنلاین", checkout.Phone, "https://localhost:7002/");
+        if (result.errors == null && result.data?.code == 100)
+        {
+            checkout.Authority = result.data.authority;
+            var submitOrderResult = await _orderService.SubmitOrder(checkout, userid, shippingPrice);
+            if (submitOrderResult.OperationStatus == OperationStatus.Success)
+            {
+                return Redirect("https://payment.zarinpal.com/pg/StartPay/" + result.data.authority);
+            }
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     [Route("ChangeCartValue")]

@@ -5,7 +5,7 @@ namespace FastKala.Application.ViewModels.OnlinePayment;
 public class RequestPaymentModel
 {
     public required string merchant_id { get; set; }
-    public required int amount { get; set; }
+    public required long amount { get; set; }
     public string? currency { get; set; } = "IRT";
     public required string description { get; set; }
     public required string callback_url { get; set; }
