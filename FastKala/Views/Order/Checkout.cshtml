@@ -1,7 +1,11 @@
-﻿@using FastKala.Application.ViewModels.Orders
+﻿@using FastKala.Application.Interfaces.Order
+@using FastKala.Application.ViewModels.Orders
 @using FastKala.Domain.Enums.Orders
+@using FastKala.Domain.Models.Orders
+@inject IOrderService orderService
 @model CheckoutViewModel
 @{
+    List<Shipping> shippings = await orderService.GetShippingTypes();
     bool first = true;
 }
 
@@ -107,28 +111,28 @@
                                                 <tr>
                                                     <td class="product-name">مجموع کل سفارش</td>
                                                     <td class="product-price">
-                                                        <span class="amount">
+                                                        <span class="amount" id="order-price">
                                                             @Model.TotalPrice.ToString("N0")
-                                                            <span>تومان</span>
                                                         </span>
+                                                        <span>تومان</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>حمل ونقل</th>
                                                     <td class="product-price">
-                                                        <span class="amount">
-                                                            30,000
-                                                            <span>تومان</span>
+                                                        <span id="shipping-price" class="amount">
+                                                            0
                                                         </span>
+                                                        <span>تومان</span>
                                                     </td>
                                                 </tr>
                                                 <tr class="checkout-cart-item">
                                                     <th>مجموع قابل پرداخت</th>
                                                     <td class="product-price text-info">
-                                                        <span class="amount" id="total-amount">
-                                                            @((Model.TotalPrice + 30000).ToString("N0"))
-                                                            <input asp-for="TotalPrice" type="hidden" value="@Model.TotalPrice" readonly />
+                                                        <span class="amount" id="total-price">
+                                                            @((Model.TotalPrice).ToString("N0"))
                                                         </span>
+                                                        <input asp-for="TotalPrice" type="hidden" value="@Model.TotalPrice" />
                                                         <span>تومان</span>
                                                     </td>
                                                 </tr>
@@ -141,27 +145,26 @@
                                         <div class="col-md-6 pl-md-1">
                                             <ul class="checkout-payment-methods">
                                                 <h6 class="pt-3 px-3">نحوه ارسال</h6>
-                                                @foreach (ShippingMethods shipping in System.Enum.GetValues(typeof(ShippingMethods)))
+                                                @foreach (var shipping in shippings)
                                                 {
                                                     <li class="checkout-payment-method-item d-block">
-                                                        <label for="@shipping.ToString()" class="outline-radio">
-                                                            @if (first)
+                                                        <label for="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" class="outline-radio">
+                                                            @if (shipping == shippings.First())
                                                             {
-                                                                <input type="radio" asp-for="ShippingMethod" id="@shipping.ToString()" value="@((int)shipping)" checked>
+                                                                <input type="radio" asp-for="ShippingMethod" id="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" value="@((int)shipping.Type)" price="@shipping.Price" checked="checked">
                                                             }
                                                             else
                                                             {
-                                                                <input type="radio" asp-for="ShippingMethod" id="@shipping.ToString()" value="@((int)shipping)">
+                                                                <input type="radio" asp-for="ShippingMethod" id="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" value="@((int)shipping.Type)" price="@shipping.Price">
                                                             }
                                                             <span class="outline-radio-check"></span>
                                                         </label>
-                                                        <label for="@shipping.ToString()" class="shipping-totals-title-row">
+                                                        <label for="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" class="shipping-totals-title-row">
                                                             <div class="shipping-totals-title">
-                                                                @shipping.ToDisplay()
+                                                                @shipping.Name
                                                             </div>
                                                         </label>
                                                     </li>
-                                                    first = false;
                                                 }
                                             </ul>
                                         </div>

@@ -1,5 +1,7 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
+using FastKala.Domain.Enums.Orders;
+using FastKala.Domain.Models.Orders;
 
 namespace FastKala.Application.Interfaces.Order;
 
@@ -11,4 +13,7 @@ public interface IOrderService
     public Task<OperationResult> RemoveCartItem(int productId, string userId);
     public Task<OperationResult> RemoveAllCartItems(string userId);
     public Task<long> GetTotalOrderPrice(string userId);
+    public Task<OperationResult> SubmitOrder(CheckoutViewModel checkout);
+    public Task<List<Shipping>> GetShippingTypes();
+    public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice);
 }

@@ -3,6 +3,7 @@ using FastKala.Application.Interfaces.Order;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Global;
+using FastKala.Domain.Enums.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,19 +39,38 @@ public class OrderController : Controller
     public async Task<IActionResult> Checkout()
     {
         string? user = _userManager.GetUserId(User);
-        long totalPrice = 0;
+
         if (user != null)
         {
-            totalPrice = await _orderService.GetTotalOrderPrice(user);
+            long totalPrice = await _orderService.GetTotalOrderPrice(user);
+            return View(new CheckoutViewModel() { TotalPrice = totalPrice });
         }
-        return View(new CheckoutViewModel() { TotalPrice = totalPrice});
+        return Unauthorized();
     }
 
     [Route("Checkout")]
     [HttpPost]
     public async Task<IActionResult> Checkout(CheckoutViewModel checkout)
     {
-        return View(checkout);
+        if (!ModelState.IsValid)
+        {
+            return View(checkout);
+        }
+        var userid = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userid))
+        {
+            return Unauthorized();
+        }
+
+        long totalPrice = await _orderService.GetTotalOrderPrice(userid);
+        long shippingPrice = await _orderService.GetShippingPrice(checkout.ShippingMethod, totalPrice);
+
+        if ((totalPrice + shippingPrice) != checkout.TotalPrice)
+        {
+            return View(checkout);
+        }
+
+        return RedirectToAction("Index","Home");
     }
 
     [Route("ChangeCartValue")]
@@ -91,5 +111,14 @@ public class OrderController : Controller
         }
 
         return new OperationResult() { OperationStatus = OperationStatus.Fail };
+    }
+
+    [HttpPost]
+    public async Task<long> GetShippingPrice(ShippingMethods shipping)
+    {
+        var userId = _userManager.GetUserId(User);
+        long shippingPrice = await _orderService.GetShippingPrice(shipping, await _orderService.GetTotalOrderPrice(userId));
+
+        return shippingPrice;
     }
 }

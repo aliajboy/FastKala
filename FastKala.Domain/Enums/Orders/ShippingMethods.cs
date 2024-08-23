@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Domain.Enums.Orders;
 
-public enum ShippingMethods
+public enum ShippingMethods : byte
 {
     [Display(Name = "پست")]
     Post = 0,
