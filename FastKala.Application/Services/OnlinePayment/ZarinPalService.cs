@@ -4,6 +4,9 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using Newtonsoft;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FastKala.Application.Services.OnlinePayment;
 
@@ -41,7 +44,7 @@ public class ZarinPalService : IZarinPalService
 
             var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
             string stringResult = await result.Content.ReadAsStringAsync();
-            RequestPaymentResponseModel? responseModel = JsonSerializer.Deserialize<RequestPaymentResponseModel>(stringResult);
+            RequestPaymentResponseModel? responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(stringResult);
             if (responseModel != null)
             {
                 return responseModel;
@@ -69,7 +72,7 @@ public class ZarinPalService : IZarinPalService
             };
 
             var result = await client.PostAsync("pg/v4/payment/verify.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
-            var requestVerify = JsonSerializer.Deserialize<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
+            var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
             if (requestVerify != null)
             {
                 return requestVerify;
@@ -105,7 +108,7 @@ public class ZarinPalService : IZarinPalService
                     }
                 };
                 var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
-                var responseModel = JsonSerializer.Deserialize<RequestPaymentResponseModel>(await result.Content.ReadAsStringAsync());
+                var responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(await result.Content.ReadAsStringAsync());
                 if (responseModel != null)
                 {
                     return responseModel;
@@ -138,7 +141,7 @@ public class ZarinPalService : IZarinPalService
                 };
 
                 var result = await client.PostAsJsonAsync("pg/v4/payment/verify.json", parameters);
-                var requestVerify = JsonSerializer.Deserialize<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
+                var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
                 if (requestVerify != null)
                 {
                     return requestVerify;

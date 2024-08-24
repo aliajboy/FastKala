@@ -54,6 +54,7 @@ public enum VerifyPaymentError
 
 public class JsonSingleOrEmptyArrayConverter<T> : JsonConverter where T : class
 {
+    public JsonSingleOrEmptyArrayConverter() { }
     public override bool CanConvert(Type objectType)
     {
         return typeof(T).IsAssignableFrom(objectType);
