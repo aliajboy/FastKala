@@ -1,14 +1,16 @@
-﻿namespace FastKala.Domain.Models.Orders;
+﻿using FastKala.Domain.Enums.Orders;
+
+namespace FastKala.Domain.Models.Orders;
 
 public record Orders
 {
     public int Id { get; set; }
     public int OrderNumber { get; set; }
-    public byte Status { get; set; }
+    public OrderStatus Status { get; set; }
     public DateTime DateTimeCreated { get; set; } = new DateTime();
     public DateTime? DateTimePaid { get; set; }
     public DateTime? DateTimeCompleted { get; set; }
-    public int CustomerId { get; set; } = 0;
+    public string CustomerId { get; set; }
     public string CustomerFirstName { get; set; }
     public string CustomerLastName { get; set; }
     public string CustomerTown { get; set; }
@@ -24,4 +26,5 @@ public record Orders
     public long TotalTax { get; set; } = 0;
     public long TotalShipping { get; set; } = 0;
     public int ShippingTypeId { get; set; }
+    public string? Authority { get; set; }
 }

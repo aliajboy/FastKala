@@ -1,8 +1,10 @@
 using FastKala.Application.Data;
 using FastKala.Application.Interfaces.Global;
+using FastKala.Application.Interfaces.OnlinePayment;
 using FastKala.Application.Interfaces.Order;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Services.Global;
+using FastKala.Application.Services.OnlinePayment;
 using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
 using FastKala.Utilities;
@@ -32,10 +34,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/AccessDenied";
 });
 
+builder.Services.AddHttpClient("zarinpal", httpClient =>
+{
+    httpClient.BaseAddress = new Uri("https://payment.zarinpal.com/");
+    httpClient.Timeout = TimeSpan.FromSeconds(10);
+});
+
 // Add services to the container.
 builder.Services.AddSingleton<DapperContext>();
-// Services
 builder.Services.AddTransient<IUploadService, UploadService>();
+builder.Services.AddSingleton<IPaymentService, PaymentService>();
+builder.Services.AddSingleton<IZarinPalService, ZarinPalService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 
@@ -43,7 +52,6 @@ builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddWebOptimizer();
 builder.Services.AddResponseCompression();
-//builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 app.Use((context, next) =>
@@ -71,8 +79,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-//app.UseResponseCaching();
 
 app.MapAreaControllerRoute(
     name: "adminArea",

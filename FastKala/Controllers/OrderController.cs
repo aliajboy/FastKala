@@ -1,46 +1,94 @@
 ﻿using FastKala.Application.Data;
+using FastKala.Application.Interfaces.OnlinePayment;
 using FastKala.Application.Interfaces.Order;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Global;
+using FastKala.Domain.Enums.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FastKala.Controllers;
+
+[Authorize]
 public class OrderController : Controller
 {
     private readonly UserManager<FastKalaUser> _userManager;
     private readonly SignInManager<FastKalaUser> _signinManager;
     private readonly IOrderService _orderService;
-    public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService)
+    private readonly IZarinPalService _zarinpalService;
+
+    public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService, IZarinPalService zarinPalService)
     {
         _userManager = userManager;
         _signinManager = signInManager;
         _orderService = orderService;
+        _zarinpalService = zarinPalService;
     }
 
     [Route("Cart")]
     public async Task<IActionResult> Cart()
     {
         List<CartItemsViewModel> cartItems = new List<CartItemsViewModel>();
-        if (_signinManager.IsSignedIn(User))
-        {
-            var user = await _userManager.GetUserAsync(User);
-            cartItems = await _orderService.GetCartItems(user?.Id);
-        }
+
+        string? user = _userManager.GetUserId(User);
+        cartItems = await _orderService.GetCartItems(user ?? "");
+
         return View(cartItems);
     }
 
     [Route("Checkout")]
     public async Task<IActionResult> Checkout()
     {
-        return View();
+        string? user = _userManager.GetUserId(User);
+
+        if (user != null)
+        {
+            long totalPrice = await _orderService.GetTotalOrderPrice(user);
+            return View(new CheckoutViewModel() { TotalPrice = totalPrice });
+        }
+        return Unauthorized();
+    }
+
+    [Route("Checkout")]
+    [HttpPost]
+    public async Task<IActionResult> Checkout(CheckoutViewModel checkout)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(checkout);
+        }
+        var userid = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userid))
+        {
+            return Unauthorized();
+        }
+
+        long totalPrice = await _orderService.GetTotalOrderPrice(userid);
+        long shippingPrice = await _orderService.GetShippingPrice(checkout.ShippingMethod, totalPrice);
+
+        if ((totalPrice + shippingPrice) != checkout.TotalPrice)
+        {
+            return View(checkout);
+        }
+
+        var result = await _zarinpalService.RequestPayment(checkout.TotalPrice, "خرید آنلاین", checkout.Phone, "https://localhost:7002/");
+        if (result.errors == null && result.data?.code == 100)
+        {
+            checkout.Authority = result.data.authority;
+            var submitOrderResult = await _orderService.SubmitOrder(checkout, userid, shippingPrice);
+            if (submitOrderResult.OperationStatus == OperationStatus.Success)
+            {
+                return Redirect("https://payment.zarinpal.com/pg/StartPay/" + result.data.authority);
+            }
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     [Route("ChangeCartValue")]
     [HttpPost]
-    [Authorize]
     public async Task<OperationResult> ChangeCartValue(int quantity, int productId)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -49,11 +97,10 @@ public class OrderController : Controller
             return await _orderService.ChangeCartValue(productId, quantity, user.Id);
         }
 
-        return new OperationResult() { OperationStatus = OperationStatus.Fail};
+        return new OperationResult() { OperationStatus = OperationStatus.Fail };
     }
 
     [HttpPost]
-    [Authorize]
     [Route("AddToCard")]
     public async Task<OperationResult> AddToCard(int productId, int quantity)
     {
@@ -69,7 +116,6 @@ public class OrderController : Controller
 
     [Route("RemoveCartItem")]
     [HttpPost]
-    [Authorize]
     public async Task<OperationResult> RemoveCartItem(int productId)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -79,5 +125,14 @@ public class OrderController : Controller
         }
 
         return new OperationResult() { OperationStatus = OperationStatus.Fail };
+    }
+
+    [HttpPost]
+    public async Task<long> GetShippingPrice(ShippingMethods shipping)
+    {
+        var userId = _userManager.GetUserId(User);
+        long shippingPrice = await _orderService.GetShippingPrice(shipping, await _orderService.GetTotalOrderPrice(userId));
+
+        return shippingPrice;
     }
 }

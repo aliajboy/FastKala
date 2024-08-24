@@ -14,14 +14,9 @@
     <meta content="" name="keywords">
     <meta name="robots" content="noindex,nofollow">
 
-
     <!-- Favicons -->
     <link href="~/img/favicon.png" rel="icon">
     <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
-@*     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> *@
 
     <!-- Vendor CSS Files -->
     <link href="~/lib/bootstrap/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -379,18 +374,23 @@
                 </a>
                 <ul id="settings-nav" class="nav-content collapse @Html.ActiveClass("Settings",null,"show","")" data-bs-parent="#sidebar-nav">
                     <li>
+                        <a asp-area="Admin" asp-controller="Settings" asp-action="MainPage" class="@Html.ActiveClass("Settings","MainPage")">
+                            <i class="bi bi-circle"></i><span>صفحه اصلی</span>
+                        </a>
+                    </li>
+                    <li>
                         <a asp-area="Admin" asp-controller="Settings" asp-action="Index" class="@Html.ActiveClass("Settings","Index")">
                             <i class="bi bi-circle"></i><span>عمومی</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-controller="Settings" asp-action="Users" class="@Html.ActiveClass("Settings","Users")">
-                            <i class="bi bi-circle"></i><span>کاربران</span>
+                        <a asp-area="Admin" asp-controller="Menu" asp-action="Index" class="@Html.ActiveClass("Settings","Index")">
+                            <i class="bi bi-circle"></i><span>منو</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-controller="Settings" asp-action="MainPage" class="@Html.ActiveClass("Settings","MainPage")">
-                            <i class="bi bi-circle"></i><span>صفحه اصلی</span>
+                        <a asp-area="Admin" asp-controller="Settings" asp-action="Users" class="@Html.ActiveClass("Settings","Users")">
+                            <i class="bi bi-circle"></i><span>کاربران</span>
                         </a>
                     </li>
                 </ul>

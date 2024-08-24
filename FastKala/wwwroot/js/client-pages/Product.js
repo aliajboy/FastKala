@@ -54,7 +54,7 @@ async function addToCart(productId, quantity) {
                                     <ul class="product-list-widget">
                                             <li class="mini-cart-item" id="product-${productId}">
                                                 <div class="mini-cart-item-content">
-                                                    <a href="#" class="mini-cart-item-close">
+                                                    <a href="javascript:void(0)" class="mini-cart-item-close" productId="${productId}">
                                                         <i class="mdi mdi-close"></i>
                                                     </a>
                                                     <a href="/Product/${productId}" class="mini-cart-item-image d-block">
@@ -138,6 +138,42 @@ async function addToCart(productId, quantity) {
             Toast.fire({
                 icon: 'success',
                 title: 'به سبد خرید اضافه شد'
+            });
+            $('.mini-cart-item-close').on('click', function () {
+                Swal.fire({
+                    text: "آیا مطمئن هستید حذف شود؟",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'بله',
+                    cancelButtonText: 'خیر'
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        const res = await $.ajax({
+                            url: '/RemoveCartItem',
+                            method: 'POST',
+                            data: { productId: $('.mini-cart-item-close').attr('productId') }
+                        });
+
+                        if (res.operationStatus === 0) {
+                            Swal.fire({
+                                title: 'حذف شد!',
+                                confirmButtonText: 'باشه',
+                                icon: 'success'
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                title: 'خطا در حذف آیتم!',
+                                confirmButtonText: 'باشه',
+                                icon: 'error'
+                            });
+                        }
+                    }
+                });
             });
         }
         else {
