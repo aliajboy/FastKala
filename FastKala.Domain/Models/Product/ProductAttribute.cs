@@ -7,7 +7,7 @@ public record ProductAttribute
 {
     public int Id { get; set; }
     [DisplayName("نام ویژگی")]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     [DisplayName("لینک")]
     public string? Link { get; set; }
     [DisplayName("نوع ویژگی")]

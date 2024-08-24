@@ -462,8 +462,7 @@
                                 <div class="owl-item active">
                                     <div class="item">
                                         <a asp-controller="Products" asp-action="Product" asp-route-id="@item.Id" class="d-block hover-img-link">
-                                            <img data-src="@uploadService.GetImageUrl(FastKala.Application.ViewModels.Global.ImageType.ProductImages, item.MainImage)"
-                                                 class="lazyload img-fluid" alt="">
+                                            <img data-src="@uploadService.GetImageUrl(FastKala.Application.ViewModels.Global.ImageType.ProductImages, item.MainImage)" class="lazyload img-fluid" alt="">
                                         </a>
                                         <h2 class="post-title">
                                             <a asp-controller="Products" asp-action="Product" asp-route-id="@item.Id">

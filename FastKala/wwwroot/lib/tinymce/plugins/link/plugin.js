@@ -989,13 +989,27 @@
       document.body.removeChild(link);
     };
     const open = url => {
-      const link = document.createElement('a');
-      link.target = '_blank';
-      link.href = url;
-      link.rel = 'noreferrer noopener';
-      const evt = document.createEvent('MouseEvents');
-      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      appendClickRemove(link, evt);
+        const link = document.createElement('a');
+        link.target = '_blank';
+        link.href = url;
+        link.rel = 'noreferrer noopener';
+        const evt = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+            detail: 0,
+            screenX: 0,
+            screenY: 0,
+            clientX: 0,
+            clientY: 0,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false,
+            button: 0,
+            relatedTarget: null
+        });
+        link.dispatchEvent(evt);
     };
 
     const isSelectionOnImageWithEmbeddedLink = editor => {

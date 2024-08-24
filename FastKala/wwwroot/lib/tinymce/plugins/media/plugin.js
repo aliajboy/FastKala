@@ -605,9 +605,9 @@
         const target = e.target;
         if (target.getAttribute('data-mce-object')) {
           let html = target.getAttribute('data-mce-html');
-          if (html) {
-            html = unescape(html);
-            target.setAttribute('data-mce-html', escape(updateHtml(html, {
+            if (html) {
+                html = decodeURI(html);
+                target.setAttribute('data-mce-html', decodeURI(updateHtml(html, {
               width: String(e.width),
               height: String(e.height)
             }, false, editor.schema)));
@@ -1014,8 +1014,8 @@
           previewNode.attr(attrName, node.attr(attrName));
         });
         const sanitizedHtml = previewWrapper.attr('data-mce-html');
-        if (isNonNullable(sanitizedHtml)) {
-          appendNodeContent(editor, name, previewNode, unescape(sanitizedHtml));
+          if (isNonNullable(sanitizedHtml)) {
+              appendNodeContent(editor, name, previewNode, decodeURI(sanitizedHtml));
         }
       }
       const shimNode = new global$2('span', 1);
@@ -1042,8 +1042,8 @@
       const tempNode = new global$2('div', 1);
       each$1(sourceNode.children(), child => tempNode.append(child));
       const innerHtml = serializer.serialize(tempNode);
-      if (innerHtml) {
-        targetNode.attr('data-mce-html', escape(innerHtml));
+        if (innerHtml) {
+            targetNode.attr('data-mce-html', decodeURI(innerHtml));
         targetNode.empty();
       }
     };
@@ -1145,7 +1145,7 @@
             }
             const innerHtml = node.attr('data-mce-html');
             if (innerHtml) {
-              const fragment = parseAndSanitize(editor, realElmName, unescape(innerHtml));
+              const fragment = parseAndSanitize(editor, realElmName, decodeURI(innerHtml));
               each$1(fragment.children(), child => realElm.append(child));
             }
             node.replace(realElm);

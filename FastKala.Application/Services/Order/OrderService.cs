@@ -29,7 +29,7 @@ public class OrderService : IOrderService
             string sql = "";
             using (SqlConnection connection = _context.CreateConnection())
             {
-                Cart cartItem = await connection.QuerySingleOrDefaultAsync<Cart>("Select * From Cart where CustomerId = @customerid and ProductId = @productid", new
+                Cart? cartItem = await connection.QuerySingleOrDefaultAsync<Cart>("Select * From Cart where CustomerId = @customerid and ProductId = @productid", new
                 {
                     customerid = userId,
                     productid = productId
@@ -276,7 +276,7 @@ public class OrderService : IOrderService
                             var result = JsonSerializer.Deserialize<TapinResponsePriceModel>(resultString);
                             if (result != null)
                             {
-                                var shippingPrice = result.entries.total_price;
+                                var shippingPrice = result.entries?.total_price;
                                 return Convert.ToInt64((Math.Round(Convert.ToDecimal(shippingPrice) / 500) * 500)) / 10;
                             }
                         }

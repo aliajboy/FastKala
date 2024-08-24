@@ -21,11 +21,11 @@ public class TapinResponsePriceEntriesModel
 public class TapinResponsePriceReturnsModel
 {
     public int status { get; set; }
-    public string message { get; set; }
+    public string message { get; set; } = null!;
 }
 
 public class TapinResponsePriceModel
 {
-    public TapinResponsePriceReturnsModel returns { get; set; }
-    public TapinResponsePriceEntriesModel entries { get; set; }
+    public TapinResponsePriceReturnsModel returns { get; set; } = new TapinResponsePriceReturnsModel();
+    public TapinResponsePriceEntriesModel? entries { get; set; }
 }

@@ -9,7 +9,7 @@ public class RequestPaymentModel
     public string? currency { get; set; } = "IRT";
     public required string description { get; set; }
     public required string callback_url { get; set; }
-    public RequestPaymentMetaDataModel metadata { get; set; }
+    public required RequestPaymentMetaDataModel metadata { get; set; }
 }
 
 public class RequestPaymentMetaDataModel

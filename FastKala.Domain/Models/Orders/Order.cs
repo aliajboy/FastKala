@@ -10,14 +10,14 @@ public record Orders
     public DateTime DateTimeCreated { get; set; } = new DateTime();
     public DateTime? DateTimePaid { get; set; }
     public DateTime? DateTimeCompleted { get; set; }
-    public string CustomerId { get; set; }
-    public string CustomerFirstName { get; set; }
-    public string CustomerLastName { get; set; }
-    public string CustomerTown { get; set; }
-    public string CustomerCity { get; set; }
-    public string CustomerAddress { get; set; }
+    public string CustomerId { get; set; } = null!;
+    public string CustomerFirstName { get; set; } = null!;
+    public string CustomerLastName { get; set; } = null!;
+    public string CustomerTown { get; set; } = null!;
+    public string CustomerCity { get; set; } = null!;
+    public string CustomerAddress { get; set; } = null!;
     public string? CustomerEmail { get; set; }
-    public string CustomerPhone { get; set; }
+    public string CustomerPhone { get; set; } = null!;
     public string? CustomerNote { get; set; }
     public byte PaymentMethod { get; set; }
     public string? TransactionId { get; set; }

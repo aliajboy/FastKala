@@ -5,7 +5,7 @@ namespace FastKala.Domain.Models.Orders;
 public record ShippingSettings
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public ShippingMethods Type { get; set; }
     public bool Active { get; set; }
     public long FreeShippingPrice { get; set; }

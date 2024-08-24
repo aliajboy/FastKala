@@ -1,13 +1,18 @@
 ﻿@using FastKala.Application.Interfaces.Global
 @using FastKala.Application.Interfaces.Order
+@using FastKala.Application.ViewModels.Orders
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<FastKalaUser> SignInManager
 @inject UserManager<FastKalaUser> UserManager
 @inject IOrderService orderService
 @inject IUploadService uploadService
 @{
-    var user = await UserManager.GetUserAsync(User);
-    var cartItems = await orderService.GetCartItems(user?.Id);
+    List<CartItemsViewModel>? cartItems = null;
+    var userId = UserManager.GetUserId(User);
+    if (userId != null)
+    {
+        cartItems = await orderService.GetCartItems(userId);
+    }
 }
 <!DOCTYPE html>
 <html dir="rtl" lang="fa">
@@ -86,54 +91,54 @@
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     قطعات بدنه
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     سیستم تعلیق
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     گوشی موبایل
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     تبلت
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     لپ تاپ
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
                                                     <i class="mdi mdi-clock-outline"></i>
                                                     دوربین
-                                                    <button class="btn btn-light btn-continue-search" type="submit">
+                                                    <span class="btn btn-light btn-continue-search" type="submit">
                                                         <i class="fa fa-angle-left"></i>
-                                                    </button>
+                                                    </span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -820,12 +825,12 @@
                                         </span>
                                         <span class="title-cart">سبد خرید</span>
                                         <span class="price-cart">
-                                            @cartItems.Sum(x => x.TotalPrice).ToString("N0")
+                                            @cartItems?.Sum(x => x.TotalPrice).ToString("N0")
                                         </span>
                                         <span>تومان</span>
-                                        <span class="count-cart">@cartItems.Count</span>
+                                        <span class="count-cart">@cartItems?.Count</span>
                                     </a>
-                                    @if (SignInManager.IsSignedIn(User) && cartItems.Count > 0)
+                                    @if (SignInManager.IsSignedIn(User) && cartItems?.Count > 0 && cartItems != null)
                                     {
                                         <div class="widget-shopping-cart">
                                             <div class="widget-shopping-cart-content">
@@ -1123,54 +1128,54 @@
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             کالای دیجیتال
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             آرایشی و بهداشتی
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             گوشی موبایل
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             تبلت
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             لپ تاپ
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#">
                                             <i class="mdi mdi-clock-outline"></i>
                                             دوربین
-                                            <button class="btn btn-light btn-continue-search" type="submit">
+                                            <span class="btn btn-light btn-continue-search" type="submit">
                                                 <i class="fa fa-angle-left"></i>
-                                            </button>
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>

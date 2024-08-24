@@ -3,5 +3,5 @@
 namespace FastKala.Application.ViewModels.Products;
 public class AttributeValuesResponse
 {
-    public List<ProductAttributeValue> results { get; set; }
+    public List<ProductAttributeValue> results { get; set; } = new List<ProductAttributeValue>();
 }

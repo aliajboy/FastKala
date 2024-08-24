@@ -14,18 +14,18 @@ public class RequestPaymentVerifyResponseModel
 public class VerifyData
 {
     public int code { get; set; }
-    public string message { get; set; }
-    public string card_hash { get; set; }
-    public string card_pan { get; set; }
+    public string message { get; set; } = null!;
+    public string card_hash { get; set; } = null!;
+    public string card_pan { get; set; } = null!;
     public int ref_id { get; set; }
-    public string fee_type { get; set; }
+    public string fee_type { get; set; } = null!;
     public int fee { get; set; }
 }
 
 public class ZarinpalError
 {
     public VerifyPaymentError code { get; set; }
-    public string message { get; set; }
+    public string message { get; set; } = null!;
 }
 
 public enum VerifyPaymentError
@@ -61,7 +61,7 @@ public class JsonSingleOrEmptyArrayConverter<T> : JsonConverter where T : class
 
     public override bool CanWrite { get { return false; } }
 
-    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
         var contract = serializer.ContractResolver.ResolveContract(objectType);
         if (!(contract is Newtonsoft.Json.Serialization.JsonObjectContract || contract is Newtonsoft.Json.Serialization.JsonDictionaryContract))
@@ -110,7 +110,7 @@ public class JsonSingleOrEmptyArrayConverter<T> : JsonConverter where T : class
         }
     }
 
-    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
         throw new NotImplementedException();
     }

@@ -9,14 +9,13 @@ public static class EnumExtensions
     {
         Assert.NotNull(value, nameof(value));
 
-        var attribute = value.GetType().GetField(value.ToString())
-            .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
+        var attribute = value.GetType().GetField(value.ToString())?.GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
 
         if (attribute == null)
             return value.ToString();
 
-        var propValue = attribute.GetType().GetProperty(property.ToString()).GetValue(attribute, null);
-        return propValue.ToString();
+        var propValue = attribute.GetType().GetProperty(property.ToString())?.GetValue(attribute, null);
+        return propValue?.ToString() ?? "";
     }
 }
 
@@ -32,14 +31,14 @@ public enum DisplayProperty
 
 public static class Assert
 {
-    public static void NotNull<T>(T obj, string name, string message = null)
+    public static void NotNull<T>(T obj, string name, string? message = null)
         where T : class
     {
         if (obj is null)
             throw new ArgumentNullException($"{name} : {typeof(T)}", message);
     }
 
-    public static void NotNull<T>(T? obj, string name, string message = null)
+    public static void NotNull<T>(T? obj, string name, string? message = null)
         where T : struct
     {
         if (!obj.HasValue)
@@ -47,7 +46,7 @@ public static class Assert
 
     }
 
-    public static void NotEmpty<T>(T obj, string name, string message = null, T defaultValue = null)
+    public static void NotEmpty<T>(T obj, string name, string? message = null, T? defaultValue = null)
         where T : class
     {
         if (obj == defaultValue

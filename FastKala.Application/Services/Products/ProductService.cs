@@ -494,7 +494,11 @@ public class ProductService : IProductService
                 }
                 else if (id > 0)
                 {
-                    productCategories.Category = await connection.QuerySingleOrDefaultAsync<ProductCategory>("Select TOP 1 * From ProductCategories where Id = @Id", new { Id = id });
+                    var productCategory = await connection.QuerySingleOrDefaultAsync<ProductCategory>("Select TOP 1 * From ProductCategories where Id = @Id", new { Id = id });
+                    if (productCategory != null)
+                    {
+                        productCategories.Category = productCategory;
+                    }
                 }
             }
             return productCategories;
@@ -602,7 +606,11 @@ public class ProductService : IProductService
                 }
                 else if (id > 0)
                 {
-                    productTags.ProductTag = await connection.QuerySingleOrDefaultAsync<ProductTag>("Select * From ProductTags where Id = @Id", new { Id = id });
+                    var productTag = await connection.QuerySingleOrDefaultAsync<ProductTag>("Select * From ProductTags where Id = @Id", new { Id = id });
+                    if (productTag != null)
+                    {
+                        productTags.ProductTag = productTag;
+                    }
                 }
             }
             return productTags;
@@ -709,7 +717,11 @@ public class ProductService : IProductService
                 }
                 else if (id > 0)
                 {
-                    productBrands.Brand = await connection.QuerySingleOrDefaultAsync<ProductBrand>("Select * From ProductBrands where Id = @Id", new { Id = id });
+                    var brand = await connection.QuerySingleOrDefaultAsync<ProductBrand>("Select * From ProductBrands where Id = @Id", new { Id = id });
+                    if (brand != null)
+                    {
+                        productBrands.Brand = brand;
+                    }
                 }
             }
             return productBrands;

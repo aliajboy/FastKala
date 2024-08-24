@@ -5,9 +5,9 @@ namespace FastKala.Application.ViewModels.OnlinePayment;
 public class Data
 {
     public int code { get; set; }
-    public string message { get; set; }
-    public string authority { get; set; }
-    public string fee_type { get; set; }
+    public string message { get; set; } = null!;
+    public string authority { get; set; } = null!;
+    public string fee_type { get; set; } = null!;
     public int fee { get; set; }
 }
 

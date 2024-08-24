@@ -209,8 +209,8 @@
       if (!selector) {
         return;
       }
-      const elementName = selector[1];
-      const classes = selector[2].substr(1).split('.').join(' ');
+        const elementName = selector[1];
+        const classes = selector[2].slice(1).split('.').join(' ');
       const inlineSelectorElements = global.makeMap('a,img');
       if (selector[1]) {
         format = { title: selectorText };

@@ -4,14 +4,14 @@ namespace FastKala.Domain.Models.Product;
 public record ProductComment
 {
     public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string Title { get; set; } = null!;
+    public string Description { get; set; } = null!;
     public byte Rate { get; set; } = 5;
     public int HelpedCount { get; set; }
     public int NotHelpedCount { get; set; }
     public DateTime SubmitDate { get; set; }
     public CommentStatus Status { get; set; }
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
     public bool IsBuyer { get; set; } = false;
     public bool Recommended { get; set; } = true;
     public ProductCommentRatings Quality { get; set; } = ProductCommentRatings.Perfect;
@@ -28,7 +28,7 @@ public record ProductComment
 public record ProductCommentsProsCons
 {
     public int Id { get; set; }
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
     public bool IsPros { get; set; }
     public int CommentId { get; set; }
 }

@@ -1,6 +1,6 @@
-$(document).ready(function (e) {
+$(function (e) {
     //    hover-menu-overlay--------------------------
-    $('li.nav-overlay').hover(function () {
+    $('li.nav-overlay').on('hover', function () {
         $('.mega-menu').removeClass('active');
         $('.nav-categories-overlay').addClass('active');
     }, function () {
@@ -63,7 +63,7 @@ $(document).ready(function (e) {
         $(this).parents('.header-search').addClass('show-result').find('.search-result').fadeIn();
         $(".overlay-search-box").css({ "opacity": "1", "visibility": "visible" });
     })
-    $(document).click(function (e) {
+    $(document).on('click', function (e) {
         if ($(e.target).is('.header-search *')) return;
         $('.search-result').hide();
         $(".overlay-search-box").css({ "opacity": "0", "visibility": "hidden" });
@@ -252,7 +252,7 @@ $(document).ready(function (e) {
         inputChangeCallback.bind(this)();
         $(this).on('change keyup', inputChangeCallback.bind(this));
     });
-    $("#advantages").delegate(".js-icon-form-add", 'click', function (e) {
+    $("#advantages").on('click', '.js-icon-form-add', function (e) {
 
         var parent = $('.js-advantages-list');
         if (parent.find(".js-advantage-item").length >= 5) {
@@ -270,15 +270,15 @@ $(document).ready(function (e) {
                     .val() + '">\n' +
                 '</div>');
 
-            advantageInput.val('').change();
-            advantageInput.focus();
+            advantageInput.val('').on('change');
+            advantageInput.on('focus');
         }
 
-    }).delegate(".js-icon-form-remove", 'click', function (e) {
+    }).on('click', ".js-icon-form-remove", function (e) {
         $(this).parent('.js-advantage-item').remove();
     });
 
-    $("#disadvantages").delegate(".js-icon-form-add", 'click', function (e) {
+    $("#disadvantages").on('click', ".js-icon-form-add", function (e) {
 
         var parent = $('.js-disadvantages-list');
         if (parent.find(".js-disadvantage-item").length >= 5) {
@@ -296,11 +296,11 @@ $(document).ready(function (e) {
                 disadvantageInput.val() + '">\n' +
                 '</div>');
 
-            disadvantageInput.val('').change();
-            disadvantageInput.focus();
+            disadvantageInput.val('').on('change');
+            disadvantageInput.on('focus');
         }
 
-    }).delegate(".js-icon-form-remove", 'click', function (e) {
+    }).on('click', ".js-icon-form-remove", function (e) {
         $(this).parent('.js-disadvantage-item').remove();
     });
     // advantages-----------------------------
@@ -485,7 +485,7 @@ $(document).ready(function (e) {
             min = input.attr('min'),
             max = input.attr('max');
 
-        btnUp.click(function () {
+        btnUp.on('click', function () {
             var oldValue = parseFloat(input.val());
             if (oldValue >= max) {
                 var newVal = oldValue;
@@ -496,7 +496,7 @@ $(document).ready(function (e) {
             spinner.find("input").trigger("change");
         });
 
-        btnDown.click(function () {
+        btnDown.on('click', function () {
             var oldValue = parseFloat(input.val());
             if (oldValue <= min) {
                 var newVal = oldValue;
@@ -537,7 +537,7 @@ $(document).ready(function (e) {
         progressPath.style.strokeDashoffset = progress;
     }
     updateProgress();
-    $(window).scroll(updateProgress);
+    $(window).on('scroll', updateProgress);
     var offset = 50;
     var duration = 1500;
     jQuery(window).on('scroll', function () {
@@ -566,13 +566,13 @@ $(document).ready(function (e) {
             }
         });
     }
-    $(".line-number-account").keyup(function () {
-        $(this).next().focus();
+    $(".line-number-account").on('keyup', function () {
+        $(this).next().on('focus');
     });
     //    verify-phone-number-----------------------
 
     // tab-------------------------------------
-    $(".mask-handler").click(function (e) {
+    $(".mask-handler").on('click', function (e) {
         e.preventDefault();
         var sumaryBox = $(this).parents('.content-expert-summary');
         sumaryBox.find('.mask-text').toggleClass('active');
@@ -581,7 +581,7 @@ $(document).ready(function (e) {
         $(this).find('.show-less').fadeToggle(0);
     });
 
-    $(".content-expert-button").click(function (e) {
+    $(".content-expert-button").on('click', function (e) {
         e.preventDefault();
         var sumaryBox = $(this).parents('.content-expert-article');
         sumaryBox.find('.content-expert-article').toggleClass('active');
@@ -608,7 +608,7 @@ $(document).ready(function (e) {
         }
     });
 
-    $('.back-to-top').click(function (e) {
+    $('.back-to-top').on('click', function (e) {
         e.preventDefault();
         $('html, body').animate({ scrollTop: 0 }, 800, 'easeInExpo');
     });

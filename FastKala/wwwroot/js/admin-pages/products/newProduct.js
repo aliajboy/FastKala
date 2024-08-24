@@ -73,21 +73,21 @@ function toggleStockQuantityInput(isVisible) {
 }
 
 // Event listener for the "manage-sale-quantity" checkbox
-$("#manage-sale-quantity").change(function () {
+$("#manage-sale-quantity").on('change', function () {
     toggleSaleQuantityInputs(this.checked);
 });
 
 // Event listener for the "manage-stock-quantity" checkbox
-$("#manage-stock-quantity").change(function () {
+$("#manage-stock-quantity").on('change', function () {
     toggleStockQuantityInput(this.checked);
 });
 
-$(document).ready(function () {
+$(function () {
 
     let productProsIndex = 1;
     let productConsIndex = 1;
 
-    $('#addProductPros').click(function () {
+    $('#addProductPros').on('click', function () {
         const newInputField = `<div class="input-group mb-2">
                                                                                                                                                                             <input class="form-control" name="ProductPros[${productProsIndex}]" type="text" />
                                                                                                                                                                             <button class="btn btn-primary remove-button" type="button">-</button>
@@ -105,7 +105,7 @@ $(document).ready(function () {
         productProsIndex--; // Decrement index after removal
     });
 
-    $('#addProductCons').click(function () {
+    $('#addProductCons').on('click', function () {
         const newInputField = `<div class="input-group mb-2">
                                                                                                                                                                             <input class="form-control" name="ProductCons[${productConsIndex}]" type="text" />
                                                                                                                                                                             <button class="btn btn-danger remove-button" type="button">-</button>
@@ -309,7 +309,7 @@ $('#brand-select').select2({
     }
 });
 
-$("#addproductform").submit(function (eventObj) {
+$("#addproductform").on('submit', function (eventObj) {
     const attributeSelects = $('.select2-hidden-accessible').map(function () { return this.id; });
     const checkedCategories = $("input[name='categories']:checked");
 
