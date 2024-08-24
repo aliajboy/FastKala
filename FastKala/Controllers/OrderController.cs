@@ -130,7 +130,7 @@ public class OrderController : Controller
     [HttpPost]
     public async Task<long> GetShippingPrice(ShippingMethods shipping)
     {
-        var userId = _userManager.GetUserId(User);
+        string userId = _userManager.GetUserId(User) ?? "";
         long shippingPrice = await _orderService.GetShippingPrice(shipping, await _orderService.GetTotalOrderPrice(userId));
 
         return shippingPrice;

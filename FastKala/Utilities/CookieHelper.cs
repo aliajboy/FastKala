@@ -11,7 +11,7 @@ public class CookieHelper
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public List<CartItemsViewModel> GetCartCookie()
+    public List<CartItemsViewModel>? GetCartCookie()
     {
         try
         {
@@ -53,14 +53,9 @@ public class CookieHelper
     {
         try
         {
-            if (guid != null)
-            {
-                string cookieKey = "shopping-cart";
-                _httpContextAccessor.HttpContext?.Response.Cookies.Append(cookieKey, guid.ToString());
-                return true;
-            }
-
-            return false;
+            string cookieKey = "shopping-cart";
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append(cookieKey, guid.ToString());
+            return true;
         }
         catch
         {

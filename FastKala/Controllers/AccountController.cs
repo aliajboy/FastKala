@@ -106,14 +106,17 @@ public class AccountController : Controller
                     // Confirm Email
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
+                    string? callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(loginViewModel.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    if (callbackUrl != null)
+                    {
+                        await _emailSender.SendEmailAsync(loginViewModel.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    }
 
                     return RedirectToPage("RegisterConfirmation", new { email = loginViewModel.Email, returnUrl = returnUrl });
                 }
@@ -135,7 +138,7 @@ public class AccountController : Controller
 
     [Route("Welcome")]
     [HttpGet]
-    public async Task<IActionResult> Welcome(string returnUrl = null)
+    public IActionResult Welcome(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
 
@@ -145,7 +148,7 @@ public class AccountController : Controller
 
     [Route("Logout")]
     [Authorize]
-    public async Task<IActionResult> Logout(string returnUrl = null)
+    public async Task<IActionResult> Logout(string? returnUrl = null)
     {
         await _signInManager.SignOutAsync();
 

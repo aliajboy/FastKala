@@ -17,31 +17,31 @@ public class HomeController : Controller
     }
 
     [Route("/ContactUs")]
-    public async Task<IActionResult> ContactUs()
+    public IActionResult ContactUs()
     {
         return View();
     }
 
     [Route("/About")]
-    public async Task<IActionResult> About()
+    public IActionResult About()
     {
         return View();
     }
 
     [Route("/FAQ")]
-    public async Task<IActionResult> FAQ()
+    public IActionResult FAQ()
     {
         return View();
     }
 
     [Route("/Privacy")]
-    public async Task<IActionResult> Privacy()
+    public IActionResult Privacy()
     {
         return View();
     }
 
     [Route("/Terms-Conditions")]
-    public async Task<IActionResult> Terms()
+    public IActionResult Terms()
     {
         return View();
     }
