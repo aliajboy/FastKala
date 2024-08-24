@@ -46,6 +46,11 @@ builder.Services.AddResponseCompression();
 //builder.Services.AddResponseCaching();
 
 var app = builder.Build();
+app.Use((context, next) =>
+{
+    context.Response.Headers.AltSvc = "h3=\":443\"";
+    return next(context);
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -54,11 +59,6 @@ if (!app.Environment.IsDevelopment())
 
     app.UseHsts();
 }
-app.Use((context, next) =>
-{
-    context.Response.Headers.AltSvc = "h3=\":443\"";
-    return next(context);
-});
 
 app.UseWebOptimizer();
 

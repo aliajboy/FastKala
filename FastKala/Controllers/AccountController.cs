@@ -27,7 +27,7 @@ public class AccountController : Controller
 
     [Route("Login")]
     [HttpGet]
-    public async Task<IActionResult> Login(string returnUrl = null)
+    public async Task<IActionResult> Login(string? returnUrl = null)
     {
         if (!_signInManager.IsSignedIn(User))
         {
@@ -44,7 +44,7 @@ public class AccountController : Controller
 
     [Route("Login")]
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnUrl = null)
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel, string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
 
@@ -69,7 +69,7 @@ public class AccountController : Controller
 
     [Route("Register")]
     [HttpGet]
-    public IActionResult Register(string returnUrl = null)
+    public IActionResult Register(string? returnUrl = null)
     {
         if (!_signInManager.IsSignedIn(User))
         {
@@ -81,7 +81,7 @@ public class AccountController : Controller
 
     [Route("Register")]
     [HttpPost]
-    public async Task<IActionResult> Register(LoginViewModel loginViewModel, string returnUrl = null)
+    public async Task<IActionResult> Register(LoginViewModel loginViewModel, string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
 
