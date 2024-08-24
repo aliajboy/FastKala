@@ -54,6 +54,7 @@ builder.Services.AddWebOptimizer();
 builder.Services.AddResponseCompression();
 
 var app = builder.Build();
+
 app.Use((context, next) =>
 {
     context.Response.Headers.AltSvc = "h3=\":443\"";

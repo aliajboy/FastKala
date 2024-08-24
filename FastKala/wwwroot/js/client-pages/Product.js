@@ -96,7 +96,7 @@ async function addToCart(productId, quantity) {
                  </div>`;
 
                 $('.count-cart').html(parseInt(quantity));
-                $('.price-cart').html(newTotalPrice);
+                $('#price-cart').html(newTotalPrice);
                 $('.header-cart-basket').append(firstAddToCard);
             }
             else {
@@ -133,7 +133,7 @@ async function addToCart(productId, quantity) {
                 let totalPrice = parseInt($('.price-total').html().toString().replaceAll(',', ''));
                 const newTotalPrice = (totalPrice + (parseInt(quantity) * parseInt($('.amount').html().toString().replaceAll(',', '')))).toLocaleString();
                 $('.price-total').html(newTotalPrice);
-                $('.price-cart').html(newTotalPrice);
+                $('#price-cart').html(newTotalPrice);
             }
             Toast.fire({
                 icon: 'success',

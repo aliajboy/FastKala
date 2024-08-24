@@ -17,7 +17,7 @@
         });
 
         $('#total-without-shipping').html(totalPrice.toLocaleString() + ' تومان');
-        $('.price-cart').html(totalPrice.toLocaleString());
+        $('#price-cart').html(totalPrice.toLocaleString());
         $('.price-total').html(totalPrice.toLocaleString());
     }
     else {
@@ -73,7 +73,7 @@ async function removeCartItem(productId) {
                     totalPrice += parsedValue;
                 });
 
-                $('.price-cart').html(totalPrice.toLocaleString());
+                $('#price-cart').html(totalPrice.toLocaleString());
                 $('.count-cart').html(parseInt($('.count-cart').html()) - 1);
 
                 if (totalPrice === 0) {

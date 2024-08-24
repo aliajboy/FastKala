@@ -20,6 +20,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow">
+    <meta name="cdn-site-verification" content="DThpcWBJKMHLnu" />
     @if (Html.ActiveClass("Home", "Index") == "active")
     {
         <title>فست کالا - @ViewData["Title"]</title>
@@ -824,11 +825,26 @@
                                             <i class="mdi mdi-shopping"></i>
                                         </span>
                                         <span class="title-cart">سبد خرید</span>
-                                        <span class="price-cart">
-                                            @cartItems?.Sum(x => x.TotalPrice).ToString("N0")
-                                        </span>
-                                        <span>تومان</span>
-                                        <span class="count-cart">@cartItems?.Count</span>
+                                        @if (cartItems != null)
+                                        {
+                                            <span class="price-cart">
+                                                <span id="price-cart">
+                                                    @cartItems.Sum(x => x.TotalPrice).ToString("N0")
+                                                </span>
+                                                <span>تومان</span>
+                                            </span>
+                                            <span class="count-cart">@cartItems.Count</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price-cart">
+                                                <span id="price-cart">0</span>
+                                                <span>تومان</span>
+                                            </span>
+                                            <span class="count-cart">
+                                                0
+                                            </span>
+                                        }
                                     </a>
                                     @if (SignInManager.IsSignedIn(User) && cartItems?.Count > 0 && cartItems != null)
                                     {
