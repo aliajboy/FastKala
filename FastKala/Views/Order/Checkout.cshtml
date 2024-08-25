@@ -2,11 +2,12 @@
 @using FastKala.Application.ViewModels.Orders
 @using FastKala.Domain.Enums.Orders
 @using FastKala.Domain.Models.Orders
+@using FastKala.Domain.Models.Payment
 @inject IShopSettings shopSettingsService
 @model CheckoutViewModel
 @{
     List<ShippingSettings> shippings = await shopSettingsService.GetActiveShippingTypes();
-    bool first = true;
+    List<PaymentSettings>? payments = await shopSettingsService.GetAllPayments();
 }
 
 <div class="container-main">
@@ -171,30 +172,29 @@
                                         <div class="col-md-6 pr-md-1">
                                             <ul class="checkout-payment-methods">
                                                 <h6 class="pt-3 px-3">روش پرداخت</h6>
-                                                @{
-                                                    first = true;
-                                                }
-                                                @foreach (PaymentMethods payment in System.Enum.GetValues(typeof(PaymentMethods)))
+                                                @if (payments != null)
                                                 {
-                                                    <li class="checkout-payment-method-item d-block">
-                                                        <label for="@payment.ToString()" class="outline-radio">
-                                                            @if (first)
-                                                            {
-                                                                <input type="radio" asp-for="PaymentMethod" id="@payment.ToString()" value="@((int)payment)" checked>
-                                                            }
-                                                            else
-                                                            {
-                                                                <input type="radio" asp-for="PaymentMethod" id="@payment.ToString()" value="@((int)payment)">
-                                                            }
-                                                            <span class="outline-radio-check"></span>
-                                                        </label>
-                                                        <label for="@payment.ToString()" class="shipping-totals-title-row">
-                                                            <div class="shipping-totals-title">
-                                                                @payment.ToDisplay()
-                                                            </div>
-                                                        </label>
-                                                    </li>
-                                                    first = false;
+                                                    foreach (var payment in payments)
+                                                    {
+                                                        <li class="checkout-payment-method-item d-block">
+                                                            <label for="@payment.Type" class="outline-radio">
+                                                                @if (payment == payments.First())
+                                                                {
+                                                                    <input type="radio" asp-for="PaymentMethod" id="@payment.Type" value="@((int)payment.Type)" checked>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="radio" asp-for="PaymentMethod" id="@payment.Type" value="@((int)payment.Type)">
+                                                                }
+                                                                <span class="outline-radio-check"></span>
+                                                            </label>
+                                                            <label for="@payment.Type" class="shipping-totals-title-row">
+                                                                <div class="shipping-totals-title">
+                                                                    @payment.Name
+                                                                </div>
+                                                            </label>
+                                                        </li>
+                                                    }
                                                 }
                                             </ul>
                                         </div>

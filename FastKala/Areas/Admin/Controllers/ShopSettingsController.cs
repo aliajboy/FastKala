@@ -10,10 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace FastKala.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class ShopSettingsController(IShopSettings shopSettings, IPaymentService paymentService) : Controller
+public class ShopSettingsController(IShopSettings shopSettings) : Controller
 {
     private readonly IShopSettings _shopSettings = shopSettings;
-    private readonly IPaymentService _paymentService = paymentService;
 
     public IActionResult Index()
     {
@@ -29,7 +28,7 @@ public class ShopSettingsController(IShopSettings shopSettings, IPaymentService 
 
     public async Task<IActionResult> Payment()
     {
-        var payments = await _paymentService.GetAllPayments();
+        var payments = await _shopSettings.GetAllPayments();
         if (payments != null)
         {
             return View(new PaymentSettingsViewModel()
@@ -68,13 +67,13 @@ public class ShopSettingsController(IShopSettings shopSettings, IPaymentService 
     [HttpPost]
     public async Task<OperationResult> UpdateGateway(UpdatePaymentViewModel viewModel)
     {
-        return await _paymentService.UpdateGateway(viewModel);
+        return await _shopSettings.UpdateGateway(viewModel);
     }
 
     [HttpPost]
     public async Task<IActionResult> AddPayment(PaymentSettingsViewModel viewModel)
     {
-        var result = await _paymentService.AddPayment(viewModel.Payment);
+        var result = await _shopSettings.AddPayment(viewModel.Payment);
         if (result.OperationStatus == Domain.Enums.Global.OperationStatus.Success)
         {
             return View("Payment");
@@ -85,7 +84,7 @@ public class ShopSettingsController(IShopSettings shopSettings, IPaymentService 
     [HttpDelete]
     public async Task<OperationResult> RemovePayment(int id)
     {
-        return await _paymentService.RemovePayment(id);
+        return await _shopSettings.RemovePayment(id);
     }
     #endregion
 }

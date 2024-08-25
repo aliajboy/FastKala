@@ -25,7 +25,6 @@ public class ZarinPalService : IZarinPalService
         {
             using var client = _httpClient.CreateClient("zarinpal");
             var zarinpalData = await _paymentService.GetZarinpalData();
-
             if (zarinpalData != null)
             {
                 var parameters = new RequestPaymentModel()
