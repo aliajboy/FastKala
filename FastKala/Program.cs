@@ -3,10 +3,14 @@ using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.OnlinePayment;
 using FastKala.Application.Interfaces.Order;
 using FastKala.Application.Interfaces.Product;
+using FastKala.Application.Interfaces.Settings;
+using FastKala.Application.Interfaces.ShopSettings;
 using FastKala.Application.Services.Global;
 using FastKala.Application.Services.OnlinePayment;
 using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
+using FastKala.Application.Services.Settings;
+using FastKala.Application.Services.ShopSettings;
 using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +51,8 @@ builder.Services.AddSingleton<IPaymentService, PaymentService>();
 builder.Services.AddSingleton<IZarinPalService, ZarinPalService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<ISiteSettings, SiteSettings>();
+builder.Services.AddTransient<IShopSettings, ShopSettings>();
 
 // Features
 builder.Services.AddControllersWithViews();

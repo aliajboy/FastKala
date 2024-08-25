@@ -1,108 +1,55 @@
-﻿<div class="pagetitle">
+﻿@model DeliverySettingsViewModel
+
+<div class="pagetitle">
     <h1>مدیریت روش های ارسال</h1>
 </div>
 
 <div class="row">
-    <div class="col-6">
-        <div class="card mt-4">
-            <div class="card-body row">
-                <div class="col-8">
-                    پیک موتوری (شهر تهران)
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="card mt-4">
-            <div class="card-body row">
-                <div class="col-8">
-                    پست پیشتاز
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
+    @foreach (var shipping in Model.Shippings)
+    {
+        <div class="col-6">
+            <div class="card mt-4">
+                <div class="card-body row">
+                    <div class="col-8" id="shippingName-@shipping.Id">
+                        @shipping.Name
+                    </div>
+                    <div class="col-2 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" onchange="toggleShipping(@shipping.Id)" @(shipping.Active ? "checked" : "")>
+                    </div>
+                    <div class="col-2 d-flex justify-content-end align-items-center">
+                        <a href="javascript:void(0)" class="pe-3" onclick="showSettingsModal(@shipping.Id)">
+                            <i class="bi bi-gear-fill"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-6">
-        <div class="card mt-2">
-            <div class="card-body row">
-                <div class="col-8">
-                    تیپاکس (پس کرایه)
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
-                </div>
+    }
+</div>
+
+<div class="modal fade" id="shipping-settings-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">پست پیشتاز</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="card mt-2">
-            <div class="card-body row">
-                <div class="col-8">
-                    چاپار (پس کرایه)
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
-                </div>
+            <div class="modal-body">
+                <label class="form-label" for="">مبلغ پایه</label>
+                <input class="form-control mb-2 text-center" type="text" id="basePrice"/>
+                <label class="form-label" for="">حداقل مبلغ سفارش ارسال رایگان</label>
+                <input class="form-control mb-2 text-center" type="text" id="freePrice"/>
+                <label class="form-label" for="">مبلغ اضافه</label>
+                <input class="form-control mb-2 text-center" type="text" id="extraPrice"/>
             </div>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="card mt-2">
-            <div class="card-body row">
-                <div class="col-8">
-                    باربری (هماهنگی تلفنی)
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6">
-        <div class="card mt-2">
-            <div class="card-body row">
-                <div class="col-8">
-                    تحویل حضوری
-                </div>
-                <div class="col-2 form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked>
-                </div>
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                    <a href="javascript:void(0)" class="pe-3">
-                        <i class="bi bi-gear-fill"></i>
-                    </a>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                <button type="button" class="btn btn-primary" onclick="saveShippingSettings()" shippingId="0" id="saveButton">ذخیره</button>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/admin-pages/shopsettings/delivery.js" asp-append-version="true"></script>
+}

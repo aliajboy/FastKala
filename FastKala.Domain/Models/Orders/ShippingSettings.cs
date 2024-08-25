@@ -10,4 +10,5 @@ public record ShippingSettings
     public bool Active { get; set; }
     public long FreeShippingPrice { get; set; }
     public long Price { get; set; }
+    public long ExtraPrice { get; set; }
 }

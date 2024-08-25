@@ -14,6 +14,5 @@ public interface IOrderService
     public Task<OperationResult> RemoveAllCartItems(string userId);
     public Task<long> GetTotalOrderPrice(string userId);
     public Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId, long shippingPrice);
-    public Task<List<ShippingSettings>> GetShippingTypes();
     public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice);
 }

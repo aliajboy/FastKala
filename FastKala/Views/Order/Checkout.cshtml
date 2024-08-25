@@ -1,11 +1,11 @@
-﻿@using FastKala.Application.Interfaces.Order
+﻿@using FastKala.Application.Interfaces.ShopSettings
 @using FastKala.Application.ViewModels.Orders
 @using FastKala.Domain.Enums.Orders
 @using FastKala.Domain.Models.Orders
-@inject IOrderService orderService
+@inject IShopSettings shopSettingsService
 @model CheckoutViewModel
 @{
-    List<ShippingSettings> shippings = await orderService.GetShippingTypes();
+    List<ShippingSettings> shippings = await shopSettingsService.GetActiveShippingTypes();
     bool first = true;
 }
 

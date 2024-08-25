@@ -197,21 +197,6 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<List<ShippingSettings>> GetShippingTypes()
-    {
-        try
-        {
-            using SqlConnection connection = _context.CreateConnection();
-            var shippings = await connection.QueryAsync<ShippingSettings>("select * from ShippingSettings");
-            return shippings.ToList();
-
-        }
-        catch
-        {
-            return new List<ShippingSettings>();
-        }
-    }
-
     public async Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice)
     {
         try
