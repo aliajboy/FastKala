@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace FastKala.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class ShopSettingsController : Controller
+public class ShopSettingsController(IShopSettings shopSettings) : Controller
 {
-    private readonly IShopSettings _shopSettings;
-
-    public ShopSettingsController(IShopSettings shopSettings)
-    {
-        _shopSettings = shopSettings;
-    }
+    private readonly IShopSettings _shopSettings = shopSettings;
 
     public IActionResult Index()
     {

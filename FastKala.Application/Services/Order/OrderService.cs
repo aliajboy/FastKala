@@ -14,13 +14,9 @@ using System.Text.Json;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Order;
-public class OrderService : IOrderService
+public class OrderService(DapperContext context) : IOrderService
 {
-    private readonly DapperContext _context;
-    public OrderService(DapperContext context)
-    {
-        _context = context;
-    }
+    private readonly DapperContext _context = context;
 
     public async Task<OperationResult> AddToCard(int productId, int quantity, string userId)
     {
@@ -39,13 +35,13 @@ public class OrderService : IOrderService
                 {
                     sql = "UPDATE Cart SET Quantity = (Quantity + @quantity) WHERE CustomerId = @customerid and ProductId = @productid";
 
-                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
+                    await connection.ExecuteAsync(sql, new { productid = productId, quantity, customerid = userId });
                 }
                 else
                 {
                     sql = "INSERT INTO Cart (ProductId,Quantity,CustomerId) VALUES (@productid,@quantity,@customerid)";
 
-                    await connection.ExecuteAsync(sql, new { productid = productId, quantity = quantity, customerid = userId });
+                    await connection.ExecuteAsync(sql, new { productid = productId, quantity, customerid = userId });
                 }
             }
             return new OperationResult() { OperationStatus = OperationStatus.Success, Message = "با موفقیت به سبد خرید اضافه شد" };
@@ -71,7 +67,7 @@ public class OrderService : IOrderService
         }
         catch
         {
-            return new List<CartItemsViewModel>();
+            return new();
         }
     }
 
@@ -171,7 +167,7 @@ public class OrderService : IOrderService
             // Make New Order
             int orderId = await connection.ExecuteScalarAsync<int>("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId,Authority) OUTPUT Inserted.Id VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address ,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid,@authority)", order);
 
-            List<OrderItem> orderItems = new List<OrderItem>();
+            List<OrderItem> orderItems = new();
             var cartItems = await connection.QueryAsync("select p.Id as ProductId, Name as ProductName, Price, c.Quantity, p.MainImage as ProductImage from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
             foreach (var item in cartItems)
             {
@@ -220,6 +216,7 @@ public class OrderService : IOrderService
                 case ShippingMethods.Post:
                     using (var client = new HttpClient())
                     {
+                        // TODO: add weight, city code, province code, postal code, package weight and product price
                         client.BaseAddress = new Uri("https://api.tapin.ir/");
                         client.Timeout = TimeSpan.FromSeconds(5);
                         client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZmE1NWE0ZDctOGUzMC00MTk2LWI1NzktMTNlZDU4MTFmNzliIiwidXNlcm5hbWUiOiIwOTM5MzI0MDM0MCIsImVtYWlsIjoiamViYWxlYWxpQGdtYWlsLmNvbSIsImV4cCI6MjU4ODQyMzE5OSwib3JpZ19pYXQiOjE3MjQ0MjMxOTl9.Ewj8GGAY9XrzFNnATtgfYK9xdHj-x23cKGbCtgwEMkE");
@@ -241,7 +238,7 @@ public class OrderService : IOrderService
                             order_type = 1,
                             pay_type = 1,
                             package_weight = 0,
-                            products = new List<TapinRequestPriceProductModel>()
+                            products = new()
                             {
                                 new TapinRequestPriceProductModel()
                                 {
