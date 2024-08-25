@@ -3,8 +3,6 @@ using FastKala.Application.ViewModels.OnlinePayment;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json;
-using Newtonsoft;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -28,26 +26,29 @@ public class ZarinPalService : IZarinPalService
             using var client = _httpClient.CreateClient("zarinpal");
             var zarinpalData = await _paymentService.GetZarinpalData();
 
-            var parameters = new RequestPaymentModel()
+            if (zarinpalData != null)
             {
-                callback_url = callBackUrl,
-                amount = amount,
-                description = description,
-                currency = zarinpalData.Currency,
-                merchant_id = zarinpalData.ApiKey,
-                metadata = new RequestPaymentMetaDataModel()
+                var parameters = new RequestPaymentModel()
                 {
-                    mobile = mobile,
-                    order_id = orderId
-                }
-            };
+                    callback_url = callBackUrl,
+                    amount = amount,
+                    description = description,
+                    currency = zarinpalData.Currency.ToString(),
+                    merchant_id = zarinpalData.ApiKey,
+                    metadata = new RequestPaymentMetaDataModel()
+                    {
+                        mobile = mobile,
+                        order_id = orderId
+                    }
+                };
 
-            var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
-            string stringResult = await result.Content.ReadAsStringAsync();
-            RequestPaymentResponseModel? responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(stringResult);
-            if (responseModel != null)
-            {
-                return responseModel;
+                var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
+                string stringResult = await result.Content.ReadAsStringAsync();
+                RequestPaymentResponseModel? responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(stringResult);
+                if (responseModel != null)
+                {
+                    return responseModel;
+                }
             }
             return new RequestPaymentResponseModel();
         }
@@ -64,18 +65,21 @@ public class ZarinPalService : IZarinPalService
             using var client = _httpClient.CreateClient("zarinpal");
             var zarinpalData = await _paymentService.GetZarinpalData();
 
-            var parameters = new RequestPaymentVerifyModel()
+            if (zarinpalData != null)
             {
-                authority = authority,
-                merchant_id = zarinpalData.ApiKey,
-                amount = amount
-            };
+                var parameters = new RequestPaymentVerifyModel()
+                {
+                    authority = authority,
+                    merchant_id = zarinpalData.ApiKey,
+                    amount = amount
+                };
 
-            var result = await client.PostAsync("pg/v4/payment/verify.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
-            var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
-            if (requestVerify != null)
-            {
-                return requestVerify;
+                var result = await client.PostAsync("pg/v4/payment/verify.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
+                var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
+                if (requestVerify != null)
+                {
+                    return requestVerify;
+                }
             }
             return new RequestPaymentVerifyResponseModel();
         }
@@ -91,30 +95,33 @@ public class ZarinPalService : IZarinPalService
         try
         {
             var zarinpalData = await _paymentService.GetZarinpalData();
-            using (HttpClient client = new HttpClient())
+            if (zarinpalData != null)
             {
-                client.BaseAddress = new Uri("https://sandbox.zarinpal.com/");
-                var parameters = new RequestPaymentModel()
+                using (HttpClient client = new HttpClient())
                 {
-                    callback_url = callBackUrl,
-                    amount = amount,
-                    description = description,
-                    currency = zarinpalData.Currency,
-                    merchant_id = zarinpalData.ApiKey,
-                    metadata = new RequestPaymentMetaDataModel()
+                    client.BaseAddress = new Uri("https://sandbox.zarinpal.com/");
+                    var parameters = new RequestPaymentModel()
                     {
-                        mobile = mobile,
-                        order_id = orderId
+                        callback_url = callBackUrl,
+                        amount = amount,
+                        description = description,
+                        currency = zarinpalData.Currency.ToString(),
+                        merchant_id = zarinpalData.ApiKey,
+                        metadata = new RequestPaymentMetaDataModel()
+                        {
+                            mobile = mobile,
+                            order_id = orderId
+                        }
+                    };
+                    var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
+                    var responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(await result.Content.ReadAsStringAsync());
+                    if (responseModel != null)
+                    {
+                        return responseModel;
                     }
-                };
-                var result = await client.PostAsync("pg/v4/payment/request.json", new StringContent(JsonSerializer.Serialize(parameters), Encoding.UTF8, "application/json"));
-                var responseModel = JsonConvert.DeserializeObject<RequestPaymentResponseModel>(await result.Content.ReadAsStringAsync());
-                if (responseModel != null)
-                {
-                    return responseModel;
                 }
-                return new RequestPaymentResponseModel();
             }
+            return new RequestPaymentResponseModel();
         }
         catch
         {
@@ -127,27 +134,30 @@ public class ZarinPalService : IZarinPalService
         try
         {
             var zarinpalData = await _paymentService.GetZarinpalData();
-            using (HttpClient client = new HttpClient())
+            if (zarinpalData != null)
             {
-                client.BaseAddress = new Uri("https://sandbox.zarinpal.com/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var parameters = new RequestPaymentVerifyModel()
+                using (HttpClient client = new HttpClient())
                 {
-                    authority = authority,
-                    merchant_id = zarinpalData.ApiKey,
-                    amount = amount
-                };
+                    client.BaseAddress = new Uri("https://sandbox.zarinpal.com/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var result = await client.PostAsJsonAsync("pg/v4/payment/verify.json", parameters);
-                var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
-                if (requestVerify != null)
-                {
-                    return requestVerify;
+                    var parameters = new RequestPaymentVerifyModel()
+                    {
+                        authority = authority,
+                        merchant_id = zarinpalData.ApiKey,
+                        amount = amount
+                    };
+
+                    var result = await client.PostAsJsonAsync("pg/v4/payment/verify.json", parameters);
+                    var requestVerify = JsonConvert.DeserializeObject<RequestPaymentVerifyResponseModel>(await result.Content.ReadAsStringAsync());
+                    if (requestVerify != null)
+                    {
+                        return requestVerify;
+                    }
                 }
-                return new RequestPaymentVerifyResponseModel();
             }
+            return new RequestPaymentVerifyResponseModel();
         }
         catch
         {

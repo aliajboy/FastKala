@@ -1,5 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using FastKala.Domain.Enums.OnlinePayment
+@using FastKala.Domain.Models.Payment
+@model PaymentSettingsViewModel
+
+<button type="button" class="btn btn-primary mb-4" onclick="addPaymentSetting()">افزودن درگاه پرداخت</button>
+
+@foreach (var payment in Model.PaymentSettings)
+{
+    <div class="card">
+        <div class="card-header">
+            <h5>@payment.Name</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @if (string.IsNullOrEmpty(payment.CartNumber) && string.IsNullOrEmpty(payment.ShebaNumber) && string.IsNullOrEmpty(payment.AccountNumber))
+                {
+                    <div class="col-4 row">
+                        <div class="col-4 d-flex align-items-center">
+                            <label class="form-label mb-0">
+                                نام درگاه پرداخت :
+                            </label>
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <input type="text" class="form-control" id="name-@payment.Id" value="@payment.Name" disabled />
+                        </div>
+                    </div>
+                    <div class="col-3 row">
+                        <div class="col-5 d-flex align-items-center">
+                            <label class="form-label mb-0">
+                                نوع درگاه پرداخت :
+                            </label>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                            <select class="form-select text-center" id="type-@payment.Id" disabled>
+                                @foreach (PaymentType item in Enum.GetValues(typeof(PaymentType)))
+                                {
+                                    if (item != PaymentType.CartbeCart)
+                                    {
+                                        if (item == payment.Type)
+                                        {
+                                            <option value="@((int)item)" selected>@item.ToDisplay()</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@((int)item)">@item.ToDisplay()</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4 row">
+                        <div class="col-3 d-flex align-items-center">
+                            <label class="form-label mb-0">
+                                کلید درگاه :
+                            </label>
+                        </div>
+                        <div class="col-9 d-flex align-items-center">
+                            <input type="text" class="form-control" id="key-@payment.Id" value="@payment.ApiKey" disabled />
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-center">
+                        <button type="button" class="btn btn-primary" onclick="editGateWay(@payment.Id)">ویرایش</button>
+                        <button type="button" class="btn btn-danger ms-2" onclick="removeGateway(@payment.Id)">حذف</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="payment-settings-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">نحوه پرداخت جدید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-area="Admin" asp-controller="ShopSettings" asp-action="AddPayment">
+                <div class="modal-body">
+                    <label class="form-label" asp-for="Payment.Name">نام</label>
+                    <input class="form-control mb-2 text-center" type="text" asp-for="Payment.Name" />
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label class="form-label" asp-for="Payment.Type">نوع</label>
+                            <select asp-for="Payment.Type" class="form-select text-center">
+                                @foreach (PaymentType item in Enum.GetValues(typeof(PaymentType)))
+                                {
+                                    if (item != PaymentType.CartbeCart)
+                                    {
+                                        <option value="@((int)item)">@item.ToDisplay()</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" asp-for="Payment.Currency">واحد پول</label>
+                            <select asp-for="Payment.Currency" class="form-select text-center">
+                                @foreach (Currency item in Enum.GetValues(typeof(Currency)))
+                                {
+                                    <option value="@((int)item)">@item.ToDisplay()</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <label class="form-label" asp-for="Payment.ApiKey">کلید درگاه</label>
+                    <input class="form-control mb-2 text-center" type="text" asp-for="Payment.ApiKey" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" id="saveButton">افزودن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admin-pages/shopsettings/payment.js" asp-append-version="true"></script>
 }
