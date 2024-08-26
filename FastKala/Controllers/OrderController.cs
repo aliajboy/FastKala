@@ -5,6 +5,7 @@ using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Orders;
+using FastKala.Domain.Models.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +16,12 @@ namespace FastKala.Controllers;
 public class OrderController : Controller
 {
     private readonly UserManager<FastKalaUser> _userManager;
-    private readonly SignInManager<FastKalaUser> _signinManager;
     private readonly IOrderService _orderService;
     private readonly IZarinPalService _zarinpalService;
 
     public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService, IZarinPalService zarinPalService)
     {
         _userManager = userManager;
-        _signinManager = signInManager;
         _orderService = orderService;
         _zarinpalService = zarinPalService;
     }
@@ -46,6 +45,11 @@ public class OrderController : Controller
         if (user != null)
         {
             long totalPrice = await _orderService.GetTotalOrderPrice(user);
+            var iranStates = await _orderService.GetIranStates();
+            if (iranStates != null)
+            {
+                return View(new CheckoutViewModel() { TotalPrice = totalPrice, IranCities = iranStates });
+            }
             return View(new CheckoutViewModel() { TotalPrice = totalPrice });
         }
         return Unauthorized();
@@ -57,6 +61,12 @@ public class OrderController : Controller
     {
         if (!ModelState.IsValid)
         {
+            checkout.Error = "اطلاعات ارسالی نامعتبر است!";
+            return View(checkout);
+        }
+        if (!checkout.AcceptTerms)
+        {
+            checkout.Error = "لطفا قبل از خرید، شرایط و قوانین استفاده از خدمات فروشگاه را بپذیرید";
             return View(checkout);
         }
         var userid = _userManager.GetUserId(User);
@@ -66,10 +76,11 @@ public class OrderController : Controller
         }
 
         long totalPrice = await _orderService.GetTotalOrderPrice(userid);
-        long shippingPrice = await _orderService.GetShippingPrice(checkout.ShippingMethod, totalPrice);
+        long shippingPrice = await _orderService.GetShippingPrice(checkout.ShippingMethod, totalPrice, checkout.TownId, checkout.CityId);
 
         if ((totalPrice + shippingPrice) != checkout.TotalPrice)
         {
+            checkout.Error = "مبلغ ارسال شده نامعتبر است";
             return View(checkout);
         }
 
@@ -84,7 +95,8 @@ public class OrderController : Controller
             }
         }
 
-        return RedirectToAction("Index", "Home");
+        checkout.Error = "خطا در ارسال به درگاه پرداخت";
+        return View(checkout);
     }
 
     [Route("ChangeCartValue")]
@@ -128,10 +140,18 @@ public class OrderController : Controller
     }
 
     [HttpPost]
-    public async Task<long> GetShippingPrice(ShippingMethods shipping)
+    public async Task<long> GetShippingPrice(ShippingMethods shipping, int state, int city)
     {
         string userId = _userManager.GetUserId(User) ?? "";
-        long shippingPrice = await _orderService.GetShippingPrice(shipping, await _orderService.GetTotalOrderPrice(userId));
+        long shippingPrice = await _orderService.GetShippingPrice(shipping, await _orderService.GetTotalOrderPrice(userId), state, city);
+
+        return shippingPrice;
+    }
+
+    [HttpPost]
+    public async Task<List<IranCities>?> GetCities(int id)
+    {
+        var shippingPrice = await _orderService.GetStateCities(id);
 
         return shippingPrice;
     }

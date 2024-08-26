@@ -14,5 +14,7 @@ public interface IOrderService
     public Task<OperationResult> RemoveAllCartItems(string userId);
     public Task<long> GetTotalOrderPrice(string userId);
     public Task<OperationResult> SubmitOrder(CheckoutViewModel checkout, string userId, long shippingPrice);
-    public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice);
+    public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice, int state, int city);
+    public Task<List<IranCities>?> GetIranStates();
+    public Task<List<IranCities>?> GetStateCities(int stateId);
 }

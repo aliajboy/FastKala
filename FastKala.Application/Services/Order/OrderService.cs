@@ -14,9 +14,11 @@ using System.Text.Json;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Order;
-public class OrderService(DapperContext context) : IOrderService
+
+public class OrderService(DapperContext context, IHttpClientFactory httpClient) : IOrderService
 {
     private readonly DapperContext _context = context;
+    private readonly IHttpClientFactory _httpClient = httpClient;
 
     public async Task<OperationResult> AddToCard(int productId, int quantity, string userId)
     {
@@ -148,8 +150,8 @@ public class OrderService(DapperContext context) : IOrderService
                 customerid = userId,
                 name = checkout.Name,
                 family = checkout.Family,
-                town = checkout.Town,
-                city = checkout.City,
+                town = checkout.TownId,
+                city = checkout.CityId,
                 address = checkout.Address,
                 email = checkout.Email,
                 phone = checkout.Phone,
@@ -193,7 +195,7 @@ public class OrderService(DapperContext context) : IOrderService
         }
     }
 
-    public async Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice)
+    public async Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice, int state, int city)
     {
         try
         {
@@ -214,56 +216,44 @@ public class OrderService(DapperContext context) : IOrderService
             switch (shipping)
             {
                 case ShippingMethods.Post:
-                    using (var client = new HttpClient())
+
+                    int senderFee = 10500;
+                    int shippingPrice = 0;
+                    int services = 8550;
+                    int insurance = 4000;
+                    int boxPrice = 4000;
+
+                    switch (state)
                     {
-                        // TODO: add weight, city code, province code, postal code, package weight and product price
-                        client.BaseAddress = new Uri("https://api.tapin.ir/");
-                        client.Timeout = TimeSpan.FromSeconds(5);
-                        client.DefaultRequestHeaders.Add("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZmE1NWE0ZDctOGUzMC00MTk2LWI1NzktMTNlZDU4MTFmNzliIiwidXNlcm5hbWUiOiIwOTM5MzI0MDM0MCIsImVtYWlsIjoiamViYWxlYWxpQGdtYWlsLmNvbSIsImV4cCI6MjU4ODQyMzE5OSwib3JpZ19pYXQiOjE3MjQ0MjMxOTl9.Ewj8GGAY9XrzFNnATtgfYK9xdHj-x23cKGbCtgwEMkE");
-                        var requestModel = new TapinRequestPriceModel()
-                        {
-                            shop_id = "04eaf906-6dc0-4551-adce-aa808cafeaf2",
-                            address = "تهرانه دیگه",
-                            box_id = 1,
-                            city_code = 1,
-                            province_code = 1,
-                            description = null,
-                            email = null,
-                            employee_code = -1,
-                            first_name = "First Name",
-                            last_name = "Last Name",
-                            mobile = "09111111111",
-                            phone = null,
-                            postal_code = "1313131313",
-                            order_type = 1,
-                            pay_type = 1,
-                            package_weight = 0,
-                            products = new()
-                            {
-                                new TapinRequestPriceProductModel()
-                                {
-                                    count = 1,
-                                    discount = 0,
-                                    price = 0,
-                                    product_id = null,
-                                    title = "My Product",
-                                    weight = 250,
-                                }
-                            }
-                        };
-                        var response = await client.PostAsync("api/v2/public/order/post/check-price/", new StringContent(JsonSerializer.Serialize(requestModel), Encoding.UTF8, "application/json"));
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var resultString = await response.Content.ReadAsStringAsync();
-                            var result = JsonSerializer.Deserialize<TapinResponsePriceModel>(resultString);
-                            if (result != null)
-                            {
-                                var shippingPrice = result.entries?.total_price;
-                                return Convert.ToInt64((Math.Round(Convert.ToDecimal(shippingPrice) / 500) * 500)) / 10;
-                            }
-                        }
+                        case 1:
+                            // weight below 500g
+                            shippingPrice += 14200;
+                            shippingPrice += senderFee;
+                            shippingPrice += services;
+                            shippingPrice += insurance;
+                            shippingPrice += 1000; //box price tehran
+                            return shippingPrice;
+                        case 31:
+                        case 10:
+                        case 11:
+                        case 13:
+                        case 9:
+                            // weight below 500g
+                            shippingPrice += 19500;
+                            shippingPrice += senderFee;
+                            shippingPrice += services;
+                            shippingPrice += insurance;
+                            shippingPrice += boxPrice; //box price tehran
+                            return shippingPrice;
+                        default:
+                            // weight below 500g
+                            shippingPrice += 23400;
+                            shippingPrice += senderFee;
+                            shippingPrice += services;
+                            shippingPrice += insurance;
+                            shippingPrice += boxPrice; //box price tehran
+                            return shippingPrice;
                     }
-                    return shippingData.Price;
                 case ShippingMethods.Tipax:
                     return shippingData.Price;
                 case ShippingMethods.Peyk:
@@ -284,4 +274,38 @@ public class OrderService(DapperContext context) : IOrderService
         }
     }
 
+    public async Task<List<IranCities>?> GetIranStates()
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+
+            var states = await connection.QueryAsync<IranCities>("SELECT distinct State, StateId FROM IranCities order by State asc");
+
+            return states.ToList();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<IranCities>?> GetStateCities(int stateId)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+
+            var states = await connection.QueryAsync<IranCities>("SELECT distinct City, CityId FROM IranCities where StateId = @stateid order by City asc", new
+            {
+                stateid = stateId
+            });
+
+            return states.ToList();
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

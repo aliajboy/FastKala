@@ -37,6 +37,13 @@
                                 </div>
                             </div>
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.Error))
+                        {
+                            <div class="alert alert-danger">
+                                @Model.Error
+                            </div>
+                        }
+                        <div class="text-danger" asp-validation-summary="All"></div>
                         <div class="middle-container">
                             <form method="post" class="form-checkout">
                                 <div class="col2-set" id="customer-details">
@@ -47,50 +54,68 @@
                                                 <label asp-for="Name">
                                                     نام <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="Name" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Name" class=" form-control">
+                                                <span asp-validation-for="Name" class="text-danger"></span>
                                             </div>
                                             <div class="col-6">
                                                 <label asp-for="Family">
                                                     نام خانوادگی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="Family" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Family" class=" form-control">
+                                                <span asp-validation-for="Family" class="text-danger"></span>
                                             </div>
                                             <div class="col-6">
-                                                <label asp-for="Town">
+                                                <label asp-for="TownId">
                                                     استان <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="Town" class="input-name-checkout form-control">
+                                                <select asp-for="TownId" class="form-select text-center">
+                                                    @foreach (var item in Model.IranCities)
+                                                    {
+                                                        <option value="@item.StateId">@item.State</option>
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="TownId" class="text-danger"></span>
                                             </div>
                                             <div class="col-6">
-                                                <label asp-for="City">
+                                                <label asp-for="CityId">
                                                     شهر <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="City" class="input-name-checkout form-control">
+                                                <select asp-for="CityId" class="form-select text-center">
+                                                    @foreach (var item in Model.IranCities)
+                                                    {
+                                                        <option value="@item.StateId">@item.State</option>
+                                                    }
+                                                </select>
+                                                <span asp-validation-for="CityId" class="text-danger"></span>
                                             </div>
                                             <div class="col-9">
                                                 <label asp-for="Address">
                                                     خیابان <abbr class="required" title="ضروری"
                                                                  style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="Address" class="input-name-checkout form-control">
+                                                <input type="text" asp-for="Address" class=" form-control">
+                                                <span asp-validation-for="Address" class="text-danger"></span>
                                             </div>
                                             <div class="col-3">
                                                 <label asp-for="PostalCode">
                                                     کد پستی <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="PostalCode" class="input-name-checkout form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
+                                                <input type="text" asp-for="PostalCode" class=" form-control" placeholder="کد پستی را بدون خط تیره بنویسید">
+                                                <span asp-validation-for="PostalCode" class="text-danger"></span>
                                             </div>
                                             <div class="col-6">
                                                 <label asp-for="Phone">
                                                     شماره موبایل <abbr class="required" title="ضروری" style="color:red;">*</abbr>
                                                 </label>
-                                                <input type="text" asp-for="Phone" class="input-name-checkout form-control text-left">
+                                                <input type="text" asp-for="Phone" class=" form-control text-left">
+                                                <span asp-validation-for="Phone" class="text-danger"></span>
                                             </div>
                                             <div class="col-6">
                                                 <label asp-for="Email">
                                                     ایمیل (اختیاری)
                                                 </label>
-                                                <input type="text" asp-for="Email" class="input-name-checkout form-control text-left">
+                                                <input type="text" asp-for="Email" class=" form-control text-left">
+                                                <span asp-validation-for="Email" class="text-danger"></span>
                                             </div>
 
                                             <div class="col-12">
@@ -101,6 +126,7 @@
                                                 <textarea rows="5" cols="30" asp-for="Description"
                                                           class="textarea-name-checkout form-control"
                                                           placeholder="یادداشت ها درباره سفارش شما ، برای مثال نکات مهم برای تحویل بار "></textarea>
+                                                <span asp-validation-for="Description" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +176,7 @@
                                                 {
                                                     <li class="checkout-payment-method-item d-block">
                                                         <label for="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" class="outline-radio">
-                                                            @if (shipping == shippings.First())
+                                                            @if (shipping == shippings.First(x => x.Type != ShippingMethods.Post))
                                                             {
                                                                 <input type="radio" asp-for="ShippingMethod" id="@Enum.GetName(typeof(ShippingMethods),shipping.Type)" value="@((int)shipping.Type)" price="@shipping.Price" checked="checked">
                                                             }
@@ -225,4 +251,5 @@
 
 @section Scripts {
     <script src="~/js/client-pages/checkout.js"></script>
+    <partial name="_ValidationScriptsPartial.cshtml" />
 }
