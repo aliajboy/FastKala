@@ -57,7 +57,7 @@ builder.Services.AddSingleton<IZarinPalService, ZarinPalService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<ISiteSettings, SiteSettings>();
-builder.Services.AddTransient<IShopSettings, ShopSettings>();
+builder.Services.AddTransient<IShopSettingsService, ShopSettingsService>();
 
 // Features
 builder.Services.AddControllersWithViews();

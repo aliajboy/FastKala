@@ -10,11 +10,11 @@ using Microsoft.Data.SqlClient;
 
 namespace FastKala.Application.Services.ShopSettings;
 
-public class ShopSettings : IShopSettings
+public class ShopSettingsService : IShopSettingsService
 {
     private readonly DapperContext _dapperContext;
 
-    public ShopSettings(DapperContext dapperContext)
+    public ShopSettingsService(DapperContext dapperContext)
     {
         _dapperContext = dapperContext;
     }

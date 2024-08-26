@@ -5,7 +5,7 @@ using FastKala.Domain.Models.Payment;
 
 namespace FastKala.Application.Interfaces.ShopSettings;
 
-public interface IShopSettings
+public interface IShopSettingsService
 {
     public Task<List<ShippingSettings>> GetAllShippingTypes();
 

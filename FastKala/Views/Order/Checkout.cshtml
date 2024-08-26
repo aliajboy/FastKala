@@ -3,7 +3,7 @@
 @using FastKala.Domain.Enums.Orders
 @using FastKala.Domain.Models.Orders
 @using FastKala.Domain.Models.Payment
-@inject IShopSettings shopSettingsService
+@inject IShopSettingsService shopSettingsService
 @model CheckoutViewModel
 @{
     List<ShippingSettings> shippings = await shopSettingsService.GetActiveShippingTypes();

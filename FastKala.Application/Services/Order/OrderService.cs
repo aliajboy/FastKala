@@ -9,8 +9,6 @@ using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
-using System.Text.Json;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Order;
@@ -200,11 +198,15 @@ public class OrderService(DapperContext context, IHttpClientFactory httpClient) 
         try
         {
             using SqlConnection connection = _context.CreateConnection();
+            await connection.OpenAsync().ConfigureAwait(false);
             // Get Shipping Data From Database
             ShippingSettings shippingData = await connection.QuerySingleAsync<ShippingSettings>("SELECT * FROM ShippingSettings Where Type = @type", new
             {
                 type = (byte)shipping
             });
+
+            int defaultWeight = await connection.ExecuteScalarAsync<int>("SELECT TOP 1 DefaultWeight FROM ShopSettings");
+            await connection.CloseAsync().ConfigureAwait(false);
 
             // Free Shipping
             if (shippingData.FreeShippingPrice != 0 && orderPrice >= shippingData.FreeShippingPrice)

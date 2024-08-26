@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace FastKala.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class ShopSettingsController(IShopSettings shopSettings) : Controller
+public class ShopSettingsController(IShopSettingsService shopSettings) : Controller
 {
-    private readonly IShopSettings _shopSettings = shopSettings;
+    private readonly IShopSettingsService _shopSettings = shopSettings;
 
     public IActionResult Index()
     {
