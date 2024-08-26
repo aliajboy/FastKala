@@ -19,7 +19,7 @@ public class OrderController : Controller
     private readonly IOrderService _orderService;
     private readonly IZarinPalService _zarinpalService;
 
-    public OrderController(UserManager<FastKalaUser> userManager, SignInManager<FastKalaUser> signInManager, IOrderService orderService, IZarinPalService zarinPalService)
+    public OrderController(UserManager<FastKalaUser> userManager, IOrderService orderService, IZarinPalService zarinPalService)
     {
         _userManager = userManager;
         _orderService = orderService;
