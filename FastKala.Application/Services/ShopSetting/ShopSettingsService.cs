@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using FastKala.Application.Data;
+using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.ShopSetting;
 using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Payment;
+using FastKala.Domain.Models.Product;
 using FastKala.Domain.Models.Settings;
 using Microsoft.Data.SqlClient;
 
@@ -13,10 +15,12 @@ namespace FastKala.Application.Services.ShopSetting;
 public class ShopSettingsService : IShopSettingsService
 {
     private readonly DapperContext _dapperContext;
+    private readonly IUploadService _uploadService;
 
-    public ShopSettingsService(DapperContext dapperContext)
+    public ShopSettingsService(DapperContext dapperContext, IUploadService uploadService)
     {
         _dapperContext = dapperContext;
+        _uploadService = uploadService;
     }
 
     public async Task<List<ShippingSettings>> GetActiveShippingTypes()
@@ -283,6 +287,55 @@ public class ShopSettingsService : IShopSettingsService
         catch
         {
             return null;
+        }
+    }
+
+    public async Task<OperationResult> UpdateShopSettings(GeneralSiteSettingsViewModel updateSettings)
+    {
+        try
+        {
+            using var connection = _dapperContext.CreateConnection();
+            string mainImageURL = "";
+
+            if (updateSettings.LogoImage != null)
+            {
+                var result = await _uploadService.UploadSingleImages(updateSettings.LogoImage, ImageType.Logo, ImageSize.OneMegabyte);
+                mainImageURL = result.Message ?? "";
+            }
+
+            int status = await connection.ExecuteAsync("UPDATE ShopSettings SET Name = @name,Description = @description,LogoFileName = @logofilename,TaxPercent = @taxpercent,TownId = @townid,CityId = @cityid,DefaultWeight = @defaultweight", new
+            {
+                name = updateSettings.ShopSettings.Name,
+                description = updateSettings.ShopSettings.Description,
+                logofilename = updateSettings.LogoImage?.FileName,
+                taxpercent = updateSettings.ShopSettings.TaxPercent,
+                townid = updateSettings.ShopSettings.TownId,
+                cityid = updateSettings.ShopSettings.CityId,
+                defaultweight = updateSettings.ShopSettings.DefaultWeight
+            });
+
+            if (status == 1)
+            {
+                return new OperationResult()
+                {
+                    OperationStatus = Domain.Enums.Global.OperationStatus.Success,
+                    Message = "عملیات با موفقیت انجام شد"
+                };
+            }
+
+            return new OperationResult()
+            {
+                OperationStatus = Domain.Enums.Global.OperationStatus.Fail,
+                Message = "عملیات با خطا مواجه شد"
+            };
+        }
+        catch
+        {
+            return new OperationResult()
+            {
+                OperationStatus = Domain.Enums.Global.OperationStatus.Exception,
+                Message = "عملیات با خطا غیر منتظره مواجه شد"
+            };
         }
     }
 

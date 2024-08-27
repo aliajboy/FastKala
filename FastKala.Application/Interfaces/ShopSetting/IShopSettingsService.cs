@@ -27,4 +27,6 @@ public interface IShopSettingsService
     public Task<OperationResult> RemovePayment(int paymentId);
 
     public Task<ShopSettings?> GetShopSettings();
+
+    public Task<OperationResult> UpdateShopSettings(GeneralSiteSettingsViewModel updateSettings);
 }

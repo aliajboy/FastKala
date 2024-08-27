@@ -6,64 +6,67 @@
             مشخصات فروشگاه
         </div>
         <div class="card-body">
-            <div class="row mb-4">
-                <label class="col-xxl-1 col-md-2 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.Name">نام فروشگاه</label>
-                <div class="col-xxl-4 col-md-3">
-                    <input type="text" class="form-control text-center" asp-for="ShopSettings.Name" />
+            <form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="ShopSettings" asp-action="UpdateShopSettings">
+                <div class="row mb-4">
+                    <label class="col-xxl-1 col-md-2 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.Name">نام فروشگاه</label>
+                    <div class="col-xxl-4 col-md-3">
+                        <input type="text" class="form-control text-center" asp-for="ShopSettings.Name" />
+                    </div>
+                    <label class="col-xxl-2 col-md-3 form-label col-form-label" asp-for="ShopSettings.Description">معرفی کوتاه فروشگاه</label>
+                    <div class="col-xxl-5 col-md-4">
+                        <input type="text" class="form-control text-center" asp-for="ShopSettings.Description" />
+                    </div>
                 </div>
-                <label class="col-xxl-2 col-md-3 form-label col-form-label" asp-for="ShopSettings.Description">معرفی کوتاه فروشگاه</label>
-                <div class="col-xxl-5 col-md-4">
-                    <input type="text" class="form-control text-center" asp-for="ShopSettings.Description" />
-                </div>
-            </div>
-            <div class="row mb-4">
-                <label class="col-xxl-1 col-md-2 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.TaxPercent">درصد مالیات</label>
-                <div class="col-md-2 col-xl-1">
-                    <input type="text" class="form-control text-center" asp-for="ShopSettings.TaxPercent" />
-                </div>
-                <label class="col-lg-1 col-md-2 form-label col-form-label" asp-for="ShopSettings.TownId">استان</label>
-                <div class="col-xxl-4 col-lg-3 col-md-2">
-                    <select class="form-select text-center" asp-for="ShopSettings.TownId">
-                        @foreach (var item in Model.IranCities.DistinctBy(x => x.State))
-                        {
-                            if (item.StateId == Model.ShopSettings.TownId)
+                <div class="row mb-4">
+                    <label class="col-xxl-1 col-md-2 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.TaxPercent">درصد مالیات</label>
+                    <div class="col-md-2 col-xl-1">
+                        <input type="text" class="form-control text-center" asp-for="ShopSettings.TaxPercent" />
+                    </div>
+                    <label class="col-lg-1 col-md-2 form-label col-form-label" asp-for="ShopSettings.TownId">استان</label>
+                    <div class="col-xxl-4 col-lg-3 col-md-2">
+                        <select class="form-select text-center" asp-for="ShopSettings.TownId">
+                            @foreach (var item in Model.IranCities.DistinctBy(x => x.State))
                             {
-                                <option value="@item.StateId" selected>@item.State</option>
+                                if (item.StateId == Model.ShopSettings.TownId)
+                                {
+                                    <option value="@item.StateId" selected>@item.State</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.StateId">@item.State</option>
+                                }
                             }
-                            else
+                        </select>
+                    </div>
+                    <label class="col-lg-1 col-md-2 form-label col-form-label" asp-for="ShopSettings.CityId">شهر</label>
+                    <div class="col-xl-4 col-lg-3 col-md-2">
+                        <select class="form-select text-center" asp-for="ShopSettings.CityId">
+                            @foreach (var item in Model.IranCities.Where(x => x.StateId == Model.ShopSettings.TownId))
                             {
-                                <option value="@item.StateId">@item.State</option>
+                                if (item.CityId == Model.ShopSettings.CityId)
+                                {
+                                    <option value="@item.CityId" selected>@item.City</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.CityId">@item.City</option>
+                                }
                             }
-                        }
-                    </select>
+                        </select>
+                    </div>
                 </div>
-                <label class="col-lg-1 col-md-2 form-label col-form-label" asp-for="ShopSettings.CityId">شهر</label>
-                <div class="col-xl-4 col-lg-3 col-md-2">
-                    <select class="form-select text-center" asp-for="ShopSettings.CityId">
-                        @foreach (var item in Model.IranCities.Where(x => x.StateId == Model.ShopSettings.TownId))
-                        {
-                            if (item.CityId == Model.ShopSettings.CityId)
-                            {
-                                <option value="@item.CityId" selected>@item.City</option>
-                            }
-                            else
-                            {
-                                <option value="@item.CityId">@item.City</option>
-                            }
-                        }
-                    </select>
+                <div class="row">
+                    <label class="col-xxl-2 col-lg-3 col-md-4 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.DefaultWeight">وزن پیش فرض مرسولات (گرم)</label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control text-center" asp-for="ShopSettings.DefaultWeight" />
+                    </div>
+                    <label class="col-xl-2 col-md-3 form-label col-form-label pe-xxl-0" asp-for="LogoImage">لوگو اصلی فروشگاه</label>
+                    <div class="col-xxl-6 col-xl-5 col-lg-4 col-md-3">
+                        <input type="file" class="form-control" asp-for="LogoImage" />
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <label class="col-xxl-2 col-lg-3 col-md-4 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.DefaultWeight">وزن پیش فرض مرسولات (گرم)</label>
-                <div class="col-md-2">
-                    <input type="text" class="form-control text-center" asp-for="ShopSettings.DefaultWeight" />
-                </div>
-                <label class="col-xl-2 col-md-3 form-label col-form-label pe-xxl-0" asp-for="ShopSettings.Logo">لوگو اصلی فروشگاه</label>
-                <div class="col-xxl-6 col-xl-5 col-lg-4 col-md-3">
-                    <input type="file" class="form-control" asp-for="ShopSettings.Logo" />
-                </div>
-            </div>
+                <button class="btn btn-primary mt-2" type="submit">ذخیره</button>
+            </form>
         </div>
     </div>
 </div>

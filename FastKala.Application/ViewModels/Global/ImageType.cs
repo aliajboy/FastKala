@@ -6,5 +6,7 @@ public enum ImageType
     [Display(Name = "تصویر محصولات")]
     ProductImages = 1,
     [Display(Name = "تصویر پروفایل")]
-    ProfileImages = 2
+    ProfileImages = 2,
+    [Display(Name = "لوگو اصلی")]
+    Logo = 3
 }

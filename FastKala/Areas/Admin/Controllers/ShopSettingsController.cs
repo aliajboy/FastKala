@@ -93,4 +93,14 @@ public class ShopSettingsController(IShopSettingsService shopSettings, IOrderSer
         return await _shopSettings.RemovePayment(id);
     }
     #endregion
+
+    #region General
+    [HttpPost]
+    public async Task<IActionResult> UpdateShopSettings(GeneralSiteSettingsViewModel viewModel)
+    {
+        var result = await _shopSettings.UpdateShopSettings(viewModel);
+
+        return RedirectToAction("Index");
+    }
+    #endregion
 }
