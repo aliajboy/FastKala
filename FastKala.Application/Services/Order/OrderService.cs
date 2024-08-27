@@ -9,14 +9,14 @@ using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using Z.Dapper.Plus;
 
 namespace FastKala.Application.Services.Order;
 
-public class OrderService(DapperContext context, IHttpClientFactory httpClient) : IOrderService
+public class OrderService(DapperContext context) : IOrderService
 {
     private readonly DapperContext _context = context;
-    private readonly IHttpClientFactory _httpClient = httpClient;
 
     public async Task<OperationResult> AddToCard(int productId, int quantity, string userId)
     {

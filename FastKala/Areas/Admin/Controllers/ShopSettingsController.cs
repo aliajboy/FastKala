@@ -1,6 +1,4 @@
-﻿using FastKala.Application.Interfaces.OnlinePayment;
-using FastKala.Application.Interfaces.ShopSettings;
-using FastKala.Application.Services.OnlinePayment;
+﻿using FastKala.Application.Interfaces.ShopSettings;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.ShopSettings;
 using FastKala.Domain.Models.Orders;
@@ -76,9 +74,9 @@ public class ShopSettingsController(IShopSettingsService shopSettings) : Control
         var result = await _shopSettings.AddPayment(viewModel.Payment);
         if (result.OperationStatus == Domain.Enums.Global.OperationStatus.Success)
         {
-            return View("Payment");
+            return RedirectToAction("Payment");
         }
-        return View(viewModel);
+        return BadRequest();
     }
 
     [HttpDelete]

@@ -2,7 +2,7 @@
 
 namespace FastKala.Domain.Enums.OnlinePayment;
 
-public enum PaymentType
+public enum PaymentType : byte
 {
     [Display(Name = "زرین پال")]
     ZarinPal = 1,

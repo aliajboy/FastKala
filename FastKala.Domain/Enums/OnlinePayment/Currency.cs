@@ -2,7 +2,7 @@
 
 namespace FastKala.Domain.Enums.OnlinePayment;
 
-public enum Currency
+public enum Currency : byte
 {
     [Display(Name = "تومان")]
     IRT = 1,

@@ -43,11 +43,6 @@ builder.Services.AddHttpClient("zarinpal", httpClient =>
     httpClient.BaseAddress = new Uri("https://payment.zarinpal.com/");
     httpClient.Timeout = TimeSpan.FromSeconds(10);
 });
-builder.Services.AddHttpClient("tapin", httpClient =>
-{
-    httpClient.BaseAddress = new Uri("https://api.tapin.ir/");
-    httpClient.Timeout = TimeSpan.FromSeconds(5);
-});
 
 // Add services to the container.
 builder.Services.AddSingleton<DapperContext>();

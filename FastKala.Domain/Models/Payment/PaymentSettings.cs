@@ -9,7 +9,7 @@ public record PaymentSettings
     public PaymentType Type { get; set; }
     public string ApiKey { get; set; } = null!;
     public Currency Currency { get; set; }
-    public string CartNumber { get; set; } = null!;
-    public string AccountNumber { get; set; } = null!;
-    public string ShebaNumber { get; set; } = null!;
+    public string? CartNumber { get; set; }
+    public string? AccountNumber { get; set; }
+    public string? ShebaNumber { get; set; }
 }
