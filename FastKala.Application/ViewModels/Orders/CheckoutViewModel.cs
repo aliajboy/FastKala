@@ -6,7 +6,7 @@ namespace FastKala.Application.ViewModels.Orders;
 
 public class CheckoutViewModel
 {
-    [Required]
+    [Required(ErrorMessage = "وارد کردن این فیلد الزامیست")]
     public string Name { get; set; } = null!;
     [Required]
     public string Family { get; set; } = null!;

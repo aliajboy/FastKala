@@ -13,14 +13,12 @@
       "library": "lazysizes@5.3.2",
       "destination": "wwwroot/lib/lazysizes/",
       "files": [
-        "lazysizes-umd.js",
-        "lazysizes-umd.min.js",
         "lazysizes.js",
         "lazysizes.min.js"
       ]
     },
     {
-      "library": "tinymce@7.1.0",
+      "library": "tinymce@7.3.0",
       "destination": "wwwroot/lib/tinymce/",
       "files": [
         "tinymce.min.js",
@@ -56,82 +54,10 @@
         "plugins/help/plugin.min.js",
         "plugins/help/js/i18n/keynav/ar.js",
         "plugins/help/js/i18n/keynav/ar.min.js",
-        "plugins/help/js/i18n/keynav/bg_BG.js",
-        "plugins/help/js/i18n/keynav/bg_BG.min.js",
-        "plugins/help/js/i18n/keynav/ca.js",
-        "plugins/help/js/i18n/keynav/ca.min.js",
-        "plugins/help/js/i18n/keynav/cs.js",
-        "plugins/help/js/i18n/keynav/cs.min.js",
-        "plugins/help/js/i18n/keynav/da.js",
-        "plugins/help/js/i18n/keynav/da.min.js",
-        "plugins/help/js/i18n/keynav/de.js",
-        "plugins/help/js/i18n/keynav/de.min.js",
-        "plugins/help/js/i18n/keynav/el.js",
-        "plugins/help/js/i18n/keynav/el.min.js",
         "plugins/help/js/i18n/keynav/en.js",
         "plugins/help/js/i18n/keynav/en.min.js",
-        "plugins/help/js/i18n/keynav/es.js",
-        "plugins/help/js/i18n/keynav/es.min.js",
-        "plugins/help/js/i18n/keynav/eu.js",
-        "plugins/help/js/i18n/keynav/eu.min.js",
         "plugins/help/js/i18n/keynav/fa.js",
         "plugins/help/js/i18n/keynav/fa.min.js",
-        "plugins/help/js/i18n/keynav/fi.js",
-        "plugins/help/js/i18n/keynav/fi.min.js",
-        "plugins/help/js/i18n/keynav/fr_FR.js",
-        "plugins/help/js/i18n/keynav/fr_FR.min.js",
-        "plugins/help/js/i18n/keynav/he_IL.js",
-        "plugins/help/js/i18n/keynav/he_IL.min.js",
-        "plugins/help/js/i18n/keynav/hi.js",
-        "plugins/help/js/i18n/keynav/hi.min.js",
-        "plugins/help/js/i18n/keynav/hr.js",
-        "plugins/help/js/i18n/keynav/hr.min.js",
-        "plugins/help/js/i18n/keynav/hu_HU.js",
-        "plugins/help/js/i18n/keynav/hu_HU.min.js",
-        "plugins/help/js/i18n/keynav/id.js",
-        "plugins/help/js/i18n/keynav/id.min.js",
-        "plugins/help/js/i18n/keynav/it.js",
-        "plugins/help/js/i18n/keynav/it.min.js",
-        "plugins/help/js/i18n/keynav/ja.js",
-        "plugins/help/js/i18n/keynav/ja.min.js",
-        "plugins/help/js/i18n/keynav/kk.js",
-        "plugins/help/js/i18n/keynav/kk.min.js",
-        "plugins/help/js/i18n/keynav/ko_KR.js",
-        "plugins/help/js/i18n/keynav/ko_KR.min.js",
-        "plugins/help/js/i18n/keynav/ms.js",
-        "plugins/help/js/i18n/keynav/ms.min.js",
-        "plugins/help/js/i18n/keynav/nb_NO.js",
-        "plugins/help/js/i18n/keynav/nb_NO.min.js",
-        "plugins/help/js/i18n/keynav/nl.js",
-        "plugins/help/js/i18n/keynav/nl.min.js",
-        "plugins/help/js/i18n/keynav/pl.js",
-        "plugins/help/js/i18n/keynav/pl.min.js",
-        "plugins/help/js/i18n/keynav/pt_BR.js",
-        "plugins/help/js/i18n/keynav/pt_BR.min.js",
-        "plugins/help/js/i18n/keynav/pt_PT.js",
-        "plugins/help/js/i18n/keynav/pt_PT.min.js",
-        "plugins/help/js/i18n/keynav/ro.js",
-        "plugins/help/js/i18n/keynav/ro.min.js",
-        "plugins/help/js/i18n/keynav/ru.js",
-        "plugins/help/js/i18n/keynav/ru.min.js",
-        "plugins/help/js/i18n/keynav/sk.js",
-        "plugins/help/js/i18n/keynav/sk.min.js",
-        "plugins/help/js/i18n/keynav/sl_SI.js",
-        "plugins/help/js/i18n/keynav/sl_SI.min.js",
-        "plugins/help/js/i18n/keynav/sv_SE.js",
-        "plugins/help/js/i18n/keynav/sv_SE.min.js",
-        "plugins/help/js/i18n/keynav/th_TH.js",
-        "plugins/help/js/i18n/keynav/th_TH.min.js",
-        "plugins/help/js/i18n/keynav/tr.js",
-        "plugins/help/js/i18n/keynav/tr.min.js",
-        "plugins/help/js/i18n/keynav/uk.js",
-        "plugins/help/js/i18n/keynav/uk.min.js",
-        "plugins/help/js/i18n/keynav/vi.js",
-        "plugins/help/js/i18n/keynav/vi.min.js",
-        "plugins/help/js/i18n/keynav/zh_CN.js",
-        "plugins/help/js/i18n/keynav/zh_CN.min.js",
-        "plugins/help/js/i18n/keynav/zh_TW.js",
-        "plugins/help/js/i18n/keynav/zh_TW.min.js",
         "plugins/image/plugin.js",
         "plugins/image/plugin.min.js",
         "plugins/importcss/plugin.js",
@@ -195,6 +121,68 @@
       "files": [
         "js/bootstrap.bundle.min.js",
         "js/bootstrap.bundle.min.js.map"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.21.0",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js"
+      ]
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.min.map"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap-icons@1.11.3",
+      "destination": "wwwroot/lib/bootstrap-icons/",
+      "files": [
+        "font/fonts/bootstrap-icons.woff",
+        "font/fonts/bootstrap-icons.woff2",
+        "font/bootstrap-icons.json",
+        "font/bootstrap-icons.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "boxicons@2.1.4",
+      "destination": "wwwroot/lib/boxicons/",
+      "files": [
+        "css/animations.min.css",
+        "css/boxicons.min.css",
+        "css/transformations.min.css",
+        "fonts/boxicons.eot",
+        "fonts/boxicons.svg",
+        "fonts/boxicons.ttf",
+        "fonts/boxicons.woff",
+        "fonts/boxicons.woff2"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "remixicon@4.2.0",
+      "destination": "wwwroot/lib/remixicon/",
+      "files": [
+        "remixicon.woff2",
+        "remixicon.woff",
+        "remixicon.ttf",
+        "remixicon.symbol.svg",
+        "remixicon.svg",
+        "remixicon.min.css",
+        "remixicon.eot"
       ]
     }
   ]

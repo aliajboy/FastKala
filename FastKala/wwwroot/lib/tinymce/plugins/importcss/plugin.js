@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 7.1.0 (2024-05-08)
+ * TinyMCE version 7.3.0 (2024-08-07)
  */
 
 (function () {
@@ -209,8 +209,8 @@
       if (!selector) {
         return;
       }
-        const elementName = selector[1];
-        const classes = selector[2].slice(1).split('.').join(' ');
+      const elementName = selector[1];
+      const classes = selector[2].substr(1).split('.').join(' ');
       const inlineSelectorElements = global.makeMap('a,img');
       if (selector[1]) {
         format = { title: selectorText };

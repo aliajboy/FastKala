@@ -27,18 +27,10 @@
 	  <_ContentIncludedByDefault Remove="wwwroot\img\messages-3.jpg" />
 	  <_ContentIncludedByDefault Remove="wwwroot\img\not-found.svg" />
 	  <_ContentIncludedByDefault Remove="wwwroot\img\upload-image-icon.webp" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\additional-methods.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\additional-methods.min.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\jquery.validate.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\jquery.validate.min.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\localization\messages_fa.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validate\localization\messages_fa.min.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\jquery.min.js" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\jquery.min.map" />
-	  <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\select2\css\select2.min.css" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\select2\js\i18n\ar.min.js" />
 	  <_ContentIncludedByDefault Remove="wwwroot\lib\select2\js\i18n\el.js" />
@@ -468,8 +460,6 @@
 	<ItemGroup>
 	  <Folder Include="wwwroot\images\" />
 	  <Folder Include="wwwroot\js\admin-pages\settings\" />
-	  <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
-	  <Folder Include="wwwroot\lib\jquery\" />
 	</ItemGroup>
 
 </Project>
