@@ -146,7 +146,6 @@
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "bootstrap-icons@1.11.3",
       "destination": "wwwroot/lib/bootstrap-icons/",
       "files": [
@@ -157,7 +156,6 @@
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "boxicons@2.1.4",
       "destination": "wwwroot/lib/boxicons/",
       "files": [
@@ -172,7 +170,6 @@
       ]
     },
     {
-      "provider": "cdnjs",
       "library": "remixicon@4.2.0",
       "destination": "wwwroot/lib/remixicon/",
       "files": [
@@ -183,6 +180,13 @@
         "remixicon.svg",
         "remixicon.min.css",
         "remixicon.eot"
+      ]
+    },
+    {
+      "library": "sweetalert2@11.12.4",
+      "destination": "wwwroot/lib/sweetalert2/",
+      "files": [
+        "sweetalert2.all.min.js"
       ]
     }
   ]
