@@ -1,6 +1,6 @@
 ﻿using FastKala.Domain.Enums.OnlinePayment;
 
-namespace FastKala.Application.ViewModels.ShopSettings;
+namespace FastKala.Application.ViewModels.ShopSetting;
 
 public class UpdatePaymentViewModel
 {

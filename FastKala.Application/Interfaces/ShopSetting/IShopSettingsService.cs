@@ -1,9 +1,10 @@
 ﻿using FastKala.Application.ViewModels.Global;
-using FastKala.Application.ViewModels.ShopSettings;
+using FastKala.Application.ViewModels.ShopSetting;
 using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Payment;
+using FastKala.Domain.Models.Settings;
 
-namespace FastKala.Application.Interfaces.ShopSettings;
+namespace FastKala.Application.Interfaces.ShopSetting;
 
 public interface IShopSettingsService
 {
@@ -24,4 +25,6 @@ public interface IShopSettingsService
     public Task<OperationResult> AddPayment(PaymentSettings payment);
 
     public Task<OperationResult> RemovePayment(int paymentId);
+
+    public Task<ShopSettings?> GetShopSettings();
 }

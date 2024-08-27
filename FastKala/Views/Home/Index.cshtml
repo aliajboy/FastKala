@@ -470,8 +470,15 @@
                                             </a>
                                         </h2>
                                         <div class="price">
-                                            <del><span>@item.Price?.ToString("N0")<span>تومان</span></span></del>
-                                            <ins><span>@item.SalePrice?.ToString("N0")<span>تومان</span></span></ins>
+                                            @if (item.SalePrice != null)
+                                            {
+                                                <del><span>@item.Price?.ToString("N0")<span>تومان</span></span></del>
+                                                <ins><span>@item.SalePrice?.ToString("N0")<span>تومان</span></span></ins>
+                                            }
+                                            else
+                                            {
+                                                <ins><span>@item.Price?.ToString("N0")<span>تومان</span></span></ins>
+                                            }
                                         </div>
                                         <div class="actions">
                                             <ul>

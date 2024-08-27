@@ -1,4 +1,4 @@
-﻿namespace FastKala.Application.ViewModels.ShopSettings;
+﻿namespace FastKala.Application.ViewModels.ShopSetting;
 
 public class UpdateDeliveryViewModel
 {

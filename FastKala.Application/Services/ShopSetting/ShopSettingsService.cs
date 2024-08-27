@@ -1,14 +1,14 @@
 ﻿using Dapper;
 using FastKala.Application.Data;
-using FastKala.Application.Interfaces.ShopSettings;
+using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.ViewModels.Global;
-using FastKala.Application.ViewModels.ShopSettings;
-using FastKala.Domain.Enums.OnlinePayment;
+using FastKala.Application.ViewModels.ShopSetting;
 using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Payment;
+using FastKala.Domain.Models.Settings;
 using Microsoft.Data.SqlClient;
 
-namespace FastKala.Application.Services.ShopSettings;
+namespace FastKala.Application.Services.ShopSetting;
 
 public class ShopSettingsService : IShopSettingsService
 {
@@ -271,4 +271,19 @@ public class ShopSettingsService : IShopSettingsService
             };
         }
     }
+
+    public async Task<ShopSettings?> GetShopSettings()
+    {
+        try
+        {
+            using var connection = _dapperContext.CreateConnection();
+
+            return await connection.QuerySingleOrDefaultAsync<ShopSettings>("Select * From ShopSettings");
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 }

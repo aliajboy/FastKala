@@ -1,6 +1,6 @@
 ﻿using FastKala.Domain.Models.Payment;
 
-namespace FastKala.Application.ViewModels.ShopSettings;
+namespace FastKala.Application.ViewModels.ShopSetting;
 
 public class PaymentSettingsViewModel
 {

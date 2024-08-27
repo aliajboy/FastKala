@@ -151,7 +151,7 @@ public class OrderController : Controller
     [HttpPost]
     public async Task<List<IranCities>?> GetCities(int id)
     {
-        var shippingPrice = await _orderService.GetStateCities(id);
+        var shippingPrice = await _orderService.GetIranCities(id);
 
         return shippingPrice;
     }

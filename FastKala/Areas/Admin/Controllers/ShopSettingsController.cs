@@ -1,6 +1,7 @@
-﻿using FastKala.Application.Interfaces.ShopSettings;
+﻿using FastKala.Application.Interfaces.Order;
+using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.ViewModels.Global;
-using FastKala.Application.ViewModels.ShopSettings;
+using FastKala.Application.ViewModels.ShopSetting;
 using FastKala.Domain.Models.Orders;
 using FastKala.Domain.Models.Payment;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +9,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace FastKala.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class ShopSettingsController(IShopSettingsService shopSettings) : Controller
+public class ShopSettingsController(IShopSettingsService shopSettings, IOrderService orderService) : Controller
 {
     private readonly IShopSettingsService _shopSettings = shopSettings;
+    private readonly IOrderService _orderService = orderService;
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var shopSettings = await _shopSettings.GetShopSettings();
+        var iranCities = await _orderService.GetIranStatesAndCities();
+        if (shopSettings == null && iranCities == null)
+        {
+            return StatusCode(500);
+        }
+        return View(new GeneralSiteSettingsViewModel() { ShopSettings = shopSettings, IranCities = iranCities });
     }
 
     public async Task<IActionResult> Delivery()

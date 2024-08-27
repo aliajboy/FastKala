@@ -276,6 +276,22 @@ public class OrderService(DapperContext context) : IOrderService
         }
     }
 
+    public async Task<List<IranCities>?> GetIranStatesAndCities()
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+
+            var states = await connection.QueryAsync<IranCities>("SELECT * FROM IranCities order by State,city asc");
+
+            return states.ToList();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public async Task<List<IranCities>?> GetIranStates()
     {
         try
@@ -292,7 +308,7 @@ public class OrderService(DapperContext context) : IOrderService
         }
     }
 
-    public async Task<List<IranCities>?> GetStateCities(int stateId)
+    public async Task<List<IranCities>?> GetIranCities(int stateId)
     {
         try
         {

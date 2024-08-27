@@ -4,13 +4,13 @@ using FastKala.Application.Interfaces.OnlinePayment;
 using FastKala.Application.Interfaces.Order;
 using FastKala.Application.Interfaces.Product;
 using FastKala.Application.Interfaces.Settings;
-using FastKala.Application.Interfaces.ShopSettings;
+using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.Services.Global;
 using FastKala.Application.Services.OnlinePayment;
 using FastKala.Application.Services.Order;
 using FastKala.Application.Services.Products;
 using FastKala.Application.Services.Settings;
-using FastKala.Application.Services.ShopSettings;
+using FastKala.Application.Services.ShopSetting;
 using FastKala.Utilities;
 using Microsoft.EntityFrameworkCore;
 
