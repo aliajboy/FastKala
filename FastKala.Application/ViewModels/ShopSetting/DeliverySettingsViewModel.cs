@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Models.Orders;
+﻿using FastKala.Domain.Models.Order;
 
 namespace FastKala.Application.ViewModels.ShopSetting;
 

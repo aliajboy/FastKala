@@ -2,7 +2,7 @@
 using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.ShopSetting;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Models.Order;
 using FastKala.Domain.Models.Payment;
 using Microsoft.AspNetCore.Mvc;
 

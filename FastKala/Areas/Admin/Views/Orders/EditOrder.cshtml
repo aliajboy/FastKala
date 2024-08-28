@@ -1,0 +1,185 @@
+﻿@using FastKala.Application.Interfaces.ShopSetting
+@using FastKala.Domain.Enums.Orders
+@inject IShopSettingsService shopSettingsService
+@model OrderViewModel
+
+@{
+    ViewData["Title"] = "ویرایش سفارش " + Model.Order.Id;
+}
+
+<div class="row">
+    <div class="col-xl-9 col-md-8">
+        <div class="card">
+            <h5 class="p-3">
+                جزئیات سفارش شماره @Model.Order.Id
+            </h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-4 col-6 row col-form-label">
+                        <div class="col-xxl-3 col-4 d-flex align-items-center">
+                            <label class="form-label" asp-for="Order.DateTimeCreated">تاریخ ایجاد:</label>
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <input asp-for="Order.DateTimeCreated" class="form-control text-center" type="date"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-3 col-5 d-flex align-items-center">
+                        <input type="time" class="form-control text-center" value="@Model.Order.DateTimeCreated.ToString("HH:mm")" />
+                    </div>
+                </div>
+                <h6 class="text-secondary mt-2">اطلاعات مشتری</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="Order.CustomerFirstName">نام</label>
+                        <input type="text" class="form-control" asp-for="Order.CustomerFirstName" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" asp-for="Order.CustomerLastName">نام خانوادگی</label>
+                        <input type="text" class="form-control" asp-for="Order.CustomerLastName" />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerTown">استان</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.CustomerTown" value="@Model.IranCities.First(x=>x.StateId == Model.Order.CustomerTown).State" />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerCity">شهر</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.CustomerCity" value="@Model.IranCities.Single(x=>x.CityId == Model.Order.CustomerCity).City" />
+                    </div>
+                    <div class="col-md-9 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerAddress">آدرس</label>
+                        <input type="text" class="form-control" asp-for="Order.CustomerAddress" />
+                    </div>
+                    <div class="col-md-3 mt-1">
+                        <label class="form-label" asp-for="Order.PostalCode">کدپستی</label>
+                        <input type="text" class="form-control text-center" maxlength="10" asp-for="Order.PostalCode" />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerEmail">ایمیل</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.CustomerEmail" />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerPhone">شماره تماس</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.CustomerPhone" />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.PaymentMethod">روش پرداخت</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.PaymentMethod" value="@Model.Order.PaymentMethod.ToDisplay()" disabled />
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <label class="form-label" asp-for="Order.TransactionId">کدرهگیری پرداخت</label>
+                        <input type="text" class="form-control text-center" asp-for="Order.TransactionId" disabled />
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        <label class="form-label" asp-for="Order.CustomerNote">یادداشت مشتری</label>
+                        <textarea class="form-control" asp-for="Order.CustomerNote"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-xl-6">
+                        آیتم های سفارش
+                    </div>
+                </div>
+            </div>
+            <div class="card-body px-0 px-xxl-3">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">آیتم</th>
+                            <th scope="col" class="text-center">مبلغ (تومان)</th>
+                            <th scope="col" class="text-center">تعداد</th>
+                            <th scope="col" class="text-center">مجموع (تومان)</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-bottom:2px solid #dfdfdf;">
+                        @foreach (var item in Model.Products)
+                        {
+                            long fee = Model.OrderItems.Single(x => x.ProductId == item.Id).Fee;
+                            int quantity = Model.OrderItems.Single(x => x.ProductId == item.Id).Quantity;
+
+                            <tr>
+                                <td class="ps-3 py-3 align-middle">
+                                    <a asp-controller="Products" asp-action="Product" asp-route-id="@item.Id">@item.Name</a>
+                                    <br />
+                                    <strong>شناسه محصول :</strong> @item.Sku
+                                    @* <br />
+                                <strong>رنگ :</strong> آبی *@
+                                </td>
+                                <td class="text-center py-3 align-middle">@fee.ToString("N0") تومان</td>
+                                <td class="text-center py-3 align-middle">x@(quantity.ToString("N0"))</td>
+                                <td class="text-center py-3 align-middle">@((fee * quantity).ToString("N0")) تومان</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tbody style="border-top:10px solid #f8f8f8;">
+                        <tr>
+                            <td class="ps-3 py-4 align-middle fw-bold">@((await shopSettingsService.GetShippingByType(Model.Order.ShippingType))?.Name)</td>
+                            <td class="py-4"></td>
+                            <td></td>
+                            <td class="text-center py-4 align-middle">@Model.Order.TotalShipping.ToString("N0") تومان</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="bg-light py-3" style="overflow:hidden;">
+                    <table class="float-end col-lg-5">
+                        <tbody>
+                            <tr>
+                                <td class="py-1 align-middle text-end">جمع محصولات :</td>
+                                <td class="text-center pe-3 py-1 align-middle">@Model.OrderItems.Sum(x => x.Fee * x.Quantity).ToString("N0") تومان</td>
+                            </tr>
+                            <tr>
+                                <td class="py-1 align-middle text-end">هزینه ارسال :</td>
+                                <td class="text-center pe-3 py-1 align-middle">@Model.Order.TotalShipping.ToString("N0") تومان</td>
+                            </tr>
+                            <tr>
+                                <td class="pb-3 py-1 align-middle text-end">جمع کل :</td>
+                                <td class="text-center pe-3 pb-3 py-1 align-middle">@Model.Order.TotalPrice.ToString("N0") تومان</td>
+                            </tr>
+                            @if (Model.Order.Status == OrderStatus.Proccessing || Model.Order.Status == OrderStatus.Completed || Model.Order.Status == OrderStatus.Packaged || Model.Order.Status == OrderStatus.Sent)
+                            {
+                                <tr style="border-top: 1px solid #999;">
+                                    <td class="py-1 pt-3 align-middle text-end">
+                                        پرداخت شده :
+                                        <br />
+                                        <span class="text-body-secondary fw-light">دوشنبه 11 تیر 1403 (درگاه پرداخت زرین پال)</span>
+                                    </td>
+                                    <td class="text-center pe-3 pt-3 py-1 align-middle">@Model.Order.TotalPrice.ToString("N0") تومان</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 ps-0">
+        <div class="card">
+            <div class="card-header">
+                وضعیت
+            </div>
+            <div class="card-body">
+                <select class="form-select">
+                    <option>انتخاب وضعیت</option>
+                </select>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <button class="btn btn-danger text-end" href="#">حذف</button>
+                <button class="btn btn-primary" href="#">بروزرسانی</button>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                یادداشت های سفارش
+            </div>
+            <div class="card-body">
+                <div class="bg-light rounded mb-2" style="min-height:8rem;">
+                </div>
+                <label class="form-label">افزودن یادداشت</label>
+                <textarea class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+</div>

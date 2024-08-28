@@ -1,5 +1,5 @@
 ﻿using FastKala.Domain.Enums.Orders;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Models.Order;
 using System.ComponentModel.DataAnnotations;
 
 namespace FastKala.Application.ViewModels.Orders;

@@ -1,6 +1,6 @@
 ﻿using FastKala.Domain.Enums.Orders;
 
-namespace FastKala.Domain.Models.Orders;
+namespace FastKala.Domain.Models.Order;
 
 public record Orders
 {
@@ -13,18 +13,19 @@ public record Orders
     public string CustomerId { get; set; } = null!;
     public string CustomerFirstName { get; set; } = null!;
     public string CustomerLastName { get; set; } = null!;
-    public string CustomerTown { get; set; } = null!;
-    public string CustomerCity { get; set; } = null!;
+    public int CustomerTown { get; set; }
+    public int CustomerCity { get; set; }
     public string CustomerAddress { get; set; } = null!;
+    public string PostalCode { get; set; } = null!;
     public string? CustomerEmail { get; set; }
     public string CustomerPhone { get; set; } = null!;
     public string? CustomerNote { get; set; }
-    public byte PaymentMethod { get; set; }
+    public PaymentMethods PaymentMethod { get; set; }
     public string? TransactionId { get; set; }
     public string? CartNumber { get; set; }
     public long TotalPrice { get; set; } = 0;
     public long TotalTax { get; set; } = 0;
     public long TotalShipping { get; set; } = 0;
-    public int ShippingTypeId { get; set; }
+    public ShippingMethods ShippingType { get; set; }
     public string? Authority { get; set; }
 }

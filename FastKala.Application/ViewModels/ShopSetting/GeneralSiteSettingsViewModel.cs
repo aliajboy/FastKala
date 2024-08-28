@@ -1,4 +1,4 @@
-﻿using FastKala.Domain.Models.Orders;
+﻿using FastKala.Domain.Models.Order;
 using FastKala.Domain.Models.Settings;
 using Microsoft.AspNetCore.Http;
 

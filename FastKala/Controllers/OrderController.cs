@@ -5,7 +5,7 @@ using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Orders;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Models.Order;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

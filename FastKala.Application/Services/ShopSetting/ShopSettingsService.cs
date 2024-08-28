@@ -4,7 +4,8 @@ using FastKala.Application.Interfaces.Global;
 using FastKala.Application.Interfaces.ShopSetting;
 using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.ShopSetting;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Enums.Orders;
+using FastKala.Domain.Models.Order;
 using FastKala.Domain.Models.Payment;
 using FastKala.Domain.Models.Product;
 using FastKala.Domain.Models.Settings;
@@ -96,6 +97,27 @@ public class ShopSettingsService : IShopSettingsService
             var shipping = await connection.QuerySingleOrDefaultAsync<ShippingSettings>("select * from ShippingSettings where Id = @Id", new
             {
                 Id = id,
+            });
+            if (shipping == null)
+            {
+                return null;
+            }
+            return shipping;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<ShippingSettings?> GetShippingByType(ShippingMethods shippingType)
+    {
+        try
+        {
+            using SqlConnection connection = _dapperContext.CreateConnection();
+            var shipping = await connection.QuerySingleOrDefaultAsync<ShippingSettings>("select * from ShippingSettings where Type = @type", new
+            {
+                type = shippingType,
             });
             if (shipping == null)
             {

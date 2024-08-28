@@ -1,6 +1,6 @@
 ﻿using FastKala.Domain.Enums.Orders;
 
-namespace FastKala.Domain.Models.Orders;
+namespace FastKala.Domain.Models.Order;
 
 public record ShippingSettings
 {

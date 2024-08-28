@@ -1,8 +1,13 @@
-﻿@{
+﻿@using FastKala.Application.Interfaces.ShopSetting
+@using FastKala.Domain.Enums.Orders
+@inject IShopSettingsService shopSettingsService
+@model OrderListViewModel
+
+@{
     ViewData["Title"] = "سفارش ها";
 }
 
-@section Styles{
+@section Styles {
     <style>
         td, th {
             text-align: center !important;
@@ -14,17 +19,27 @@
 
 <div class="card">
     <div class="card-body">
+        <div class="row d-flex align-items-center mb-3">
+            <label class="form-label col-auto">عملیات :</label>
+            <div class="col-2">
+                <select class="form-select">
+                    <option value="0" selected>انتخاب کنید</option>
+                    <option value="1">حذف</option>
+                </select>
+            </div>
+            <button class="btn btn-primary col-auto">انجام</button>
+        </div>
         <table class="table table-striped bg-white border b-rounded">
             <thead>
                 <tr>
                     <th>
-                        <input type="checkbox" class="form-check-input"/>
+                        <input type="checkbox" class="form-check-input" />
                     </th>
                     <th class="text-start">
                         سفارش
                     </th>
                     <th>
-                        تاریخ
+                        تاریخ ثبت سفارش
                     </th>
                     <th>
                         وضعیت
@@ -33,32 +48,63 @@
                         مبلغ کل
                     </th>
                     <th>
-                        استان مقصد
+                        نوع ارسال
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <input type="checkbox" class="form-check-input" />
-                    </td>
-                    <td class="text-start">
-                        <a href="#">
-                            #35346 علی جبالی
-                        </a>
-                    </td>
-                    <td>1402-03-06</td>
-                    <td>
-                        <span class="badge bg-label-primary">در حال انجام</span>
-                    </td>
-                    <td>32,526,000 تومان</td>
-                    <td>تهران</td>
-                </tr>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="form-check-input" />
+                        </td>
+                        <td class="text-start">
+                            <a asp-area="Admin" asp-controller="Orders" asp-action="EditOrder" asp-route-id="@item.Id">
+                                <span class="fw-semibold" style="font-family:sans-serif">#@item.Id</span> @item.CustomerFirstName @item.CustomerLastName
+                            </a>
+                        </td>
+                        <td>
+                            <div>
+                                @item.DateTimeCreated.MiladiToPersianWithTime().SetDateTimeSeprator()
+                            </div>
+                        </td>
+                        <td>
+                            @switch (item.Status)
+                            {
+                                case OrderStatus.Waiting:
+                                    <span class="badge text-bg-secondary fs-6">در انتظار پرداخت</span>
+                                    break;
+                                case OrderStatus.Pending:
+                                    <span class="badge text-bg-warning fs-6">در انتظار واریز وجه</span>
+                                    break;
+                                case OrderStatus.Proccessing:
+                                    <span class="badge text-bg-primary fs-6">در حال انجام</span>
+                                    break;
+                                case OrderStatus.Packaged:
+                                    <span class="badge text-bg-dark fs-6">بسته بندی شده</span>
+                                    break;
+                                case OrderStatus.Sent:
+                                    <span class="badge text-bg-success fs-6">ارسال شده</span>
+                                    break;
+                                case OrderStatus.Completed:
+                                    <span class="badge text-bg-info text-light fs-6">تکمیل شده</span>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </td>
+                        <td>@item.TotalPrice.ToString("N0") تومان</td>
+                        <td>
+                            @((await shopSettingsService.GetShippingByType(item.ShippingType))?.Name)
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
     <script src="~/js/admin-pages/orders/orders.js" asp-append-version="true"></script>
 }

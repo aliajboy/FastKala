@@ -1,7 +1,7 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Orders;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Models.Order;
 
 namespace FastKala.Application.Interfaces.Order;
 
@@ -17,5 +17,10 @@ public interface IOrderService
     public Task<long> GetShippingPrice(ShippingMethods shipping, long orderPrice, int state, int city);
     public Task<List<IranCities>?> GetIranStatesAndCities();
     public Task<List<IranCities>?> GetIranStates();
+    public Task<IranCities?> GetIranStateById(int stateId);
     public Task<List<IranCities>?> GetIranCities(int stateId);
+    public Task<List<Orders>?> GetOrders(int count, int page = 1);
+    public Task<List<OrderItem>?> GetOrderItems(int orderId);
+    public Task<List<int>?> GetOrderItemsIds(int orderId);
+    public Task<Orders?> GetOrder(int orderId);
 }

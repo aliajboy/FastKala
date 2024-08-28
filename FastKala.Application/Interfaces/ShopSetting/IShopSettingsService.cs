@@ -1,6 +1,7 @@
 ﻿using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.ShopSetting;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Enums.Orders;
+using FastKala.Domain.Models.Order;
 using FastKala.Domain.Models.Payment;
 using FastKala.Domain.Models.Settings;
 
@@ -15,6 +16,8 @@ public interface IShopSettingsService
     public Task<OperationResult> ToggleShipping(int id);
 
     public Task<ShippingSettings?> GetShippingById(int id);
+
+    public Task<ShippingSettings?> GetShippingByType(ShippingMethods shippingType);
 
     public Task<OperationResult> UpdateShipping(UpdateDeliveryViewModel updateDelivery);
 

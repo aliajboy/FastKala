@@ -5,7 +5,7 @@ using FastKala.Application.ViewModels.Global;
 using FastKala.Application.ViewModels.Orders;
 using FastKala.Domain.Enums.Global;
 using FastKala.Domain.Enums.Orders;
-using FastKala.Domain.Models.Orders;
+using FastKala.Domain.Models.Order;
 using FastKala.Domain.Models.Product;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -125,7 +125,7 @@ public class OrderService(DapperContext context) : IOrderService
         {
             using SqlConnection connection = _context.CreateConnection();
 
-            return await connection.ExecuteScalarAsync<long>("select (Price * c.Quantity) from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
+            return await connection.ExecuteScalarAsync<long>("select SUM(Price * c.Quantity) from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
         }
         catch
         {
@@ -151,6 +151,7 @@ public class OrderService(DapperContext context) : IOrderService
                 town = checkout.TownId,
                 city = checkout.CityId,
                 address = checkout.Address,
+                postalcode = checkout.PostalCode,
                 email = checkout.Email,
                 phone = checkout.Phone,
                 description = checkout.Description,
@@ -165,7 +166,7 @@ public class OrderService(DapperContext context) : IOrderService
             };
 
             // Make New Order
-            int orderId = await connection.ExecuteScalarAsync<int>("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId,Authority) OUTPUT Inserted.Id VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address ,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid,@authority)", order);
+            int orderId = await connection.ExecuteScalarAsync<int>("INSERT INTO Orders (Status,DateTimeCreated,DateTimePaid,DateTimeCompleted,CustomerId,CustomerFirstName,CustomerLastName,CustomerTown,CustomerCity ,CustomerAddress, PostalCode,CustomerEmail,CustomerPhone,CustomerNote,PaymentMethod,TransactionId,CartNumber,TotalPrice,TotalTax,TotalShipping,ShippingTypeId,Authority) OUTPUT Inserted.Id VALUES (@status,GETDATE(),@datetimepaid,@datetimecompleted,@customerid,@name ,@family,@town,@city,@address, @postalcode,@email,@phone,@description,@paymentmethod ,@transactionid,@cartnumber,@totalprice,@totaltax,@totalshipping,@shippingtypeid,@authority)", order);
 
             List<OrderItem> orderItems = new();
             var cartItems = await connection.QueryAsync("select p.Id as ProductId, Name as ProductName, Price, c.Quantity, p.MainImage as ProductImage from Cart c join Products p on c.ProductId = p.Id where c.CustomerId = @customerid", new { customerid = userId });
@@ -320,6 +321,113 @@ public class OrderService(DapperContext context) : IOrderService
             });
 
             return states.ToList();
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<Orders>?> GetOrders(int count, int page = 1)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+            var offset = (page - 1) * count;
+            var orders = await connection.QueryAsync<Orders>("SELECT * FROM Orders ORDER BY Id desc OFFSET @offset ROWS FETCH NEXT @count ROWS ONLY", new
+            {
+                offset = offset,
+                count = count
+            });
+
+            if (orders != null)
+            {
+                return orders.ToList();
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<Orders?> GetOrder(int orderId)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+            var order = await connection.QuerySingleOrDefaultAsync<Orders>("SELECT * FROM Orders Where Id = @id", new
+            {
+                id = orderId
+            });
+
+            if (order != null)
+            {
+                return order;
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<OrderItem>?> GetOrderItems(int orderId)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+            var orders = await connection.QueryAsync<OrderItem>("SELECT * FROM OrderItems Where OrderId = @orderid", new
+            {
+                orderid = orderId
+            });
+
+            if (orders != null)
+            {
+                return orders.ToList();
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<int>?> GetOrderItemsIds(int orderId)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+            var orders = await connection.QueryAsync<int>("SELECT ProductId FROM OrderItems Where OrderId = @orderid", new
+            {
+                orderid = orderId
+            });
+
+            if (orders != null)
+            {
+                return orders.ToList();
+            }
+            return null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public async Task<IranCities?> GetIranStateById(int stateId)
+    {
+        try
+        {
+            using var connection = _context.CreateConnection();
+
+            return await connection.QuerySingleOrDefaultAsync<IranCities>("select top 1 * from IranCities where StateId = @stateid", new
+            {
+                stateid = stateId
+            });
         }
         catch
         {
